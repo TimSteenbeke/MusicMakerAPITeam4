@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+</head>
+
+<body>
+<!-- Fixed aside bar -->
+<div class="col-lg-2" th:fragment="aside">
+    <div class="list-group small">
+        <a href="/" class="list-group-item small"
+           th:classappend="${index == 'Home' ? 'active' : ''}">Home</a>
+    </div>
+</div>
+</body>
+</html>

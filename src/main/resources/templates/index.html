@@ -1,0 +1,232 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/html"
+      layout:decorator="base">
+<head>
+    <title>Integratie Project</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-lg-2" th:replace="fragments/aside :: aside(index='Home')"></div>
+        <div class="col-lg-10">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3>Integratieproject</h3></div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 text-justify">
+                            <div class="col-md-12">
+                                <h2>Welke stappen moet je nu ondernemen?</h2>
+                                <p>
+                                    Hieronder staan de stappen die je moet uitvoeren om dit project te laten draaien op
+                                    Heroku.
+
+                                </p>
+                                <ul class="nav nav-tabs">
+                                    <li class="active">
+                                        <a data-toggle="tab" href="#setup">Free Plan</a></li>
+                                    <li><a data-toggle="tab" href="#git">Folder .git</a></li>
+                                    <li><a data-toggle="tab" href="#procfile">Procfile</a></li>
+                                    <li><a data-toggle="tab" href="#git2">Git</a></li>
+                                    <li><a data-toggle="tab" href="#heroku">Heroku applicatie</a></li>
+                                    <li><a data-toggle="tab" href="#lokaal">Lokaal deployen</a></li>
+                                    <li><a data-toggle="tab" href="#remote">Remote deployen</a></li>
+                                    <li><a data-toggle="tab" href="#meer">Meer info</a></li>
+                                </ul>
+
+                                <div class="tab-content">
+                                    <div id="setup" class="tab-pane fade in active">
+                                        <h3>Heroku Free Plan</h3>
+                                        <p>
+                                            Ga naar <a href="https://signup.heroku.com/">Heroku's Free Plan</a>
+                                            en maak een account. Log vervolgens in met je account.
+                                        </p>
+                                        <p>
+                                            Je zal voor je project ook een <strong>databank</strong> nodig hebben.
+                                            Er zijn nu drie mogelijkheden:
+                                        </p>
+                                        <p>
+                                        <ol class="list-group">
+                                            <li class="list-group-item">
+                                                1. Je werkt met een H2 in-memory databank zoals in het Repair Cafe.
+                                                Je zal in Spring (Boot) een extra dependency moeten toevoegen. Meer
+                                                informatie vind je <a
+                                                    href="http://shengwangi.blogspot.be/2016/02/how-to-use-h2-embeded-database-in-spring.html">hier</a>.
+                                            </li>
+                                            <li class="list-group-item">2. Je gaat op zoek naar een <strong>gratis online provider</strong> van een
+                                                databank. De koppeling met een Spring Boot Applicatie is heel makkelijk
+                                                te realiseren via de <code>application.properties</code> file.
+                                                Bijvoorbeeld: voor MongoDB is er <a
+                                                        href="https://mlab.com/home">mLab</a>.
+                                                Deze is beschikbaar als add-on van Heroku (zie puntje 3)
+                                            </li>
+                                            <li class="list-group-item">
+                                                3. Je kan ook extra add-ons (o.a. databanken) toevoegen aan je Heroku
+                                                account.
+                                                Het probleem is dat je hiervoor eerst je kredietkaart gegevens moet
+                                                instellen,
+                                                ook al zijn de add-ons gratis. Je mag dit doen op <strong>eigen
+                                                verantwoordelijkheid</strong>,
+                                                maar we verplichten dit niet.
+                                                Wil je toch voor deze optie gaan, ga dan nu naar <a
+                                                    href=" https://dashboard.heroku.com/account/billing">billing</a>
+                                                en geef je kredietkaart gegevens in. Doe dit nu meteen want anders loop
+                                                je straks vast.
+                                            </li>
+                                        </ol>
+                                        </p>
+                                        <p>
+                                            Installeer de gepaste <a
+                                                href="https://devcenter.heroku.com/articles/heroku-cli#download-and-install">Heroku
+                                            CLI</a> voor jouw OS.
+                                        </p>
+                                        <p>Ga naar de volgende stap</p>
+                                    </div>
+                                    <div id="git" class="tab-pane fade">
+                                        <h3>Folder .git verwijderen</h3>
+                                        <p>
+                                            Clone dit project vanaf GitHub <code>git clone <a>https://github.com/DekwoKybon/IntegratieProject.git</a> IntegratieProject</code>
+                                        </p>
+                                        <p>
+                                            <strong>Verwijder</strong> nu de verborgen <em>.git directory</em> uit dit
+                                            project, zodat je dit project (voorlopig) ontdoet van alle versiebeheer.
+                                        </p>
+                                        <p>Ga naar de volgende stap</p>
+                                    </div>
+                                    <div id="procfile" class="tab-pane fade">
+                                        <h3>Procfile</h3>
+                                        <p>
+                                            Voeg onder je projectfolder een file toe met naam <em>Procfile</em> en
+                                            inhoud: <code>web: java -Dserver.port=$PORT -jar target/app.jar</code>
+                                        </p>
+                                        <p>
+                                            Let op: de naam app.jar is gedefinieerd in de pom-file van je Maven-project.
+                                            Zoek dit nu op. Je mag dit gerust wijzigen.
+                                        </p>
+                                        <p>
+                                            Heroku gebruikt de variabele <code>$PORT</code> om de juiste poortnummer mee
+                                            te geven aan je Spring Boot applicatie. Dat is grote voordeel van Spring
+                                            Boot: een webapplicatie is nu <strong>verpakt als JAR</strong> en je kan
+                                            deze starten vanaf
+                                            de command-line met parameters. Op die manier kan je applicatie draaien op
+                                            verschillende poorten tegelijkertijd.
+                                        </p>
+                                        <p>Ga naar de volgende stap</p>
+                                    </div>
+                                    <div id="git2" class="tab-pane fade">
+                                        <h3>Git repository aanmaken</h3>
+                                        <p>
+                                            Je kan dit het makkelijkst vanuit de console doen, maar je mag het ook via
+                                            IntellIJ uitvoeren. We gaan nu een nieuw lokale repository aanmaken.
+                                            De eerste twee stappen mag je overslaan als je deze al globaal hebt
+                                            ingesteld met de optie --global.
+
+                                            Open een terminal in je project folder en tik:
+                                        </p>
+                                        <p><code>git config user.email "voornaam.familienaam@student.kdg.be"</code></p>
+                                        <p><code>git config user.name "Voornaam Familienaam"</code></p>
+                                        <p><code>git init</code></p>
+                                        <p><code>git add .</code></p>
+                                        <p><code>git commit -m "Initial commit"</code></p>
+
+                                        <p>Ga naar de volgende stap</p>
+                                    </div>
+                                    <div id="heroku" class="tab-pane fade">
+                                        <h3>Heroku applicatie</h3>
+                                        <p>
+                                            Je kan dit ook weer het makkelijkst vanuit de console doen. Een andere
+                                            mogelijkheid is om sommige stappen via de website van Heroku te doen en/of
+                                            via IntellIJ.
+
+                                            Open een terminal in je project folder en tik.
+                                        <p><code>heroku create teamX</code>(je kiest hier uiteraard je eigen teamnaam)
+                                        </p>
+                                        <p><code>heroku addons:create mongolab</code></p>
+                                        <p><code>heroku config:get MONGODB_URI</code></p>
+                                        </p>
+                                        <p>
+                                            Zoek de file <code>applications.properties</code> in de project folder en
+                                            wijzig de Mongodb URI.
+                                            Gebruik een tool zoals <a href="https://robomongo.org/">RoboMongo</a> om te
+                                            connecteren met de Heroku Mongo databank. Hier zal je straks een nieuwe
+                                            collectie "users" zien verschijnen met daarin één gebruiker met credentials
+                                        <p><code>username: dummy@kdg.be</code></p>
+                                        <p><code>password: dummy</code></p>
+                                        </p>
+                                        <p>Ga naar de volgende stap</p>
+                                    </div>
+                                    <div id="lokaal" class="tab-pane fade">
+                                        <h3>Lokale Deploy</h3>
+                                        <p>
+                                            Je kan volgende stap ook weer het makkelijkst vanuit de console doen. Een
+                                            andere mogelijkheid is om ook weer sommige stappen via de website van Heroku
+                                            te
+                                            doen en/of via IntellIJ.
+
+                                            Open een terminal in je project folder en tik.
+
+                                        <p><code>Linux: ./mvnw clean install</code></p>
+                                        <p><code>Windows: mvnw clean install</code></p>
+
+                                        Hiermee hebben we ons project lokaal gebuild. We kunnen dit nu eerst eens
+                                        lokaal testen.
+
+                                        <p><code>heroku local</code></p>
+                                        <p>
+                                            Open een browser op <a
+                                                href="http://localhost:5000">http://localhost:5000</a>.
+                                            Een standaard Spring Boot applicatie draait op poort 8080, maar Heroku doet
+                                            ze
+                                            lokaal op poort 5000 draaien. Dit wordt wel vermeld in de output in de
+                                            console.
+                                        <p>
+                                            Je zou moeten kunnen inloggen met de credentials van uit stap de vorige
+                                            stap.
+                                        </p>
+                                        </p>
+                                    </div>
+                                    <div id="remote" class="tab-pane fade">
+                                        <h3>Remote Deploy</h3>
+                                        <p>
+                                            Nu gaan we de app <strong>remote laten draaien</strong> bij Heroku. We
+                                            verwijderen eerst alle onnodige files dus we moeten eerst een clean project
+                                            committen. Als je project commit of pusht zorg je steeds voor dat het clean
+                                            is.
+                                        <p><code>Linux: ./mvnw clean</code></p>
+                                        <p><code>Windows: mvnw clean</code></p>
+
+                                        <p><code>git push heroku master</code></p>
+                                        Je master-branch zal nu gepusht worden naar je remote Heroku repository. In
+                                        de console zal je zien dat het project meteen gebuild wordt.
+
+                                        Als alles goed gegaan, is kan je nu dit doen: <code>heroku open</code>
+                                        <p>
+                                            Je moet wel even geduld hebben, maar als het echt te lang duurt en na een
+                                            refresh nog niet lukt heb je waarschijnlijk fouten gemaakt. Bekijk de online
+                                            log files met:
+                                        </p>
+                                        <p><code>heroku logs</code> of <code>heroku logs --tail</code></p>
+                                    </div>
+                                    <div id="meer" class="tab-pane fade">
+                                        <h3>Meer informatie</h3>
+                                        <p>
+                                            Meer tutorials vind je op <a href="https://devcenter.heroku.com/start">Heroku's
+                                            Getting Started</a>
+                                        </p>
+                                        <p>
+                                            Meer achtergrond op <a
+                                                href="https://devcenter.heroku.com/categories/reference">Heroku's
+                                            Reference</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
