@@ -30,4 +30,13 @@ public class InstrumentServiceImpl implements InstrumentService {
     public List<Instrument> getAllInstruments() {
         return repository.findAll();
     }
+
+    @Override
+    public void removeInstrument(int instrumentId) {
+        Instrument instrument = repository.findOne(instrumentId);
+        //if (instrument == null)
+            //throw new ProductServiceException("Instrument not found");
+
+        repository.delete(instrument);
+    }
 }

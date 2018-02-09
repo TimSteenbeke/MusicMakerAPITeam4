@@ -10,7 +10,7 @@ public class Instrument {
     @GeneratedValue
     @Column(name="InstrumentId",nullable = false)
     private int InstrumentId;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "InstrumentSoortId")
     private InstrumentSoort soort;
     @Column

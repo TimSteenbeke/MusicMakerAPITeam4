@@ -8,11 +8,15 @@ import java.io.Serializable;
 public class InstrumentResource implements Serializable {
 
     private int InstrumentId;
-    private int InstrumentSoortId;
+    private InstrumentSoortResource instrumentSoortResource;
     private String naam;
     private String type;
     private String uitvoering;
     private String afbeelding;
+
+    public InstrumentResource(){
+        this.instrumentSoortResource = new InstrumentSoortResource();
+    }
 
     public int getInstrumentId() {
         return InstrumentId;
@@ -22,12 +26,12 @@ public class InstrumentResource implements Serializable {
         InstrumentId = instrumentId;
     }
 
-    public int getInstrumentSoortId() {
-        return InstrumentSoortId;
+    public InstrumentSoortResource getInstrumentSoortResource() {
+        return instrumentSoortResource;
     }
 
-    public void setInstrumentSoortId(int instrumentSoortId) {
-        InstrumentSoortId = instrumentSoortId;
+    public void setInstrumentSoortResource(InstrumentSoortResource instrumentSoortResource) {
+        this.instrumentSoortResource = instrumentSoortResource;
     }
 
     public String getNaam() {
