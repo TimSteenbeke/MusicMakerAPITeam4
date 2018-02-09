@@ -36,6 +36,7 @@ public class InstrumentController {
     }
 
     @GetMapping
+    @CrossOrigin(origins = "*")
     public ResponseEntity<List<InstrumentResource>> findAll(){
         List<Instrument> instruments = instrumentService.getAllInstruments();
         return new ResponseEntity<>(instrumentAssembler.toResources(instruments),HttpStatus.OK);
