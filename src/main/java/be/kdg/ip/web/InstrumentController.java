@@ -5,7 +5,6 @@ import be.kdg.ip.domain.LesType;
 import be.kdg.ip.services.api.InstrumentService;
 import be.kdg.ip.web.assemblers.InstrumentAssembler;
 import be.kdg.ip.web.resources.InstrumentResource;
-import javafx.geometry.Pos;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
