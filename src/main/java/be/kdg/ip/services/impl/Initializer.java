@@ -1,8 +1,11 @@
 package be.kdg.ip.services.impl;
 
+import be.kdg.ip.domain.Instrument;
+import be.kdg.ip.domain.InstrumentSoort;
 import be.kdg.ip.domain.Role;
 import be.kdg.ip.domain.User;
 import be.kdg.ip.domain.roles.Administrator;
+import be.kdg.ip.services.api.InstrumentService;
 import be.kdg.ip.services.api.UserService;
 import be.kdg.ip.services.exceptions.UserServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,21 @@ public class Initializer {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private InstrumentService instrumentService;
+
+    @PostConstruct
+    public void addDummyInstruments() {
+        Instrument instrument = new Instrument(new InstrumentSoort("Slag"),"Drum","drummen","Tim","Tim");
+        Instrument instrument2 = new Instrument(new InstrumentSoort("Blaas"),"Trompet","Tim","Tim","Tim");
+        Instrument instrument3 = new Instrument(new InstrumentSoort("Snaar"),"Tim","Tim","Tim","Tim");
+
+        instrumentService.addInstrument(instrument);
+        instrumentService.addInstrument(instrument2);
+        instrumentService.addInstrument(instrument3);
+    }
+
 
     @PostConstruct
     public void addDummyUser() throws UserServiceException {

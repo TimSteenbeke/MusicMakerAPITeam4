@@ -25,6 +25,7 @@ dependencies {
 	compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity4')
 	compile('net.sourceforge.nekohtml:nekohtml:1.9.22')
 	compile('org.webjars:webjars-locator-core:0.32')
+	compile('ma.glasnost.orika:orika-core:1.5.1')
 	compile('org.webjars:bootstrap:3.3.7')
 	compile('org.webjars:jquery:3.2.1')
 	runtime('org.springframework.boot:spring-boot-devtools')

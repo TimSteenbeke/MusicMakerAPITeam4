@@ -1,9 +1,6 @@
-package be.kdg.repaircafe.config.orika.custom.mappers;
+package be.kdg.ip.config.orika.custom.mappers;
 
 
-import be.kdg.repaircafe.dom.users.User;
-import be.kdg.repaircafe.dom.users.roles.Role;
-import be.kdg.repaircafe.web.resources.users.UserResource;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MappingContext;
 import org.springframework.stereotype.Component;
@@ -11,10 +8,10 @@ import org.springframework.stereotype.Component;
 import java.util.stream.Collectors;
 
 @Component
-public class UserMapper extends CustomMapper<User, UserResource> {
+public class UserMapper /*extends CustomMapper<User, UserResource>*/ {
     // https://programmeren3-repaircafe.rhcloud.com/repair-cafe-applicatie/repair-cafe-frontend/presentation-layer/orika/
 
-    @Override
+    /*@Override
     public void mapAtoB(User source, UserResource destination, MappingContext context) {
         if (source.getRoles() != null)
             destination.setRoleTypes(source.getRoles().stream().map(role -> role.getRoleType()).collect(Collectors.toList()));
@@ -31,6 +28,6 @@ public class UserMapper extends CustomMapper<User, UserResource> {
         if (source.getPassword() != null) destination.setEncryptedPassword(source.getPassword());
         mapperFacade.map(source.getPersonResource(), destination.getPerson());
         mapperFacade.map(source.getPersonResource().getAddressResource(), destination.getPerson().getAddress());
-    }
+    }*/
 
 }

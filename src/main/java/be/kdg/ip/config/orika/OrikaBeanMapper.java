@@ -1,4 +1,4 @@
-package be.kdg.repaircafe.config.orika;
+package be.kdg.ip.config.orika;
 
 import ma.glasnost.orika.Converter;
 import ma.glasnost.orika.Mapper;

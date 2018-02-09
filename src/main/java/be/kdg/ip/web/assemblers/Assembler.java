@@ -1,4 +1,4 @@
-package be.kdg.hardwareshop.web.assemblers;
+package be.kdg.ip.web.assemblers;
 
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;

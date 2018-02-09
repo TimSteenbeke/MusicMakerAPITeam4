@@ -26,9 +26,9 @@ public class MultiHttpSecurityConfig {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
-        auth.
+       /* auth.
                 userDetailsService(userService).
-                passwordEncoder(passwordEncoder());
+                passwordEncoder(passwordEncoder());*/
        // auth.inMemoryAuthentication().withUser("dummy@kdg.be").password("dummy").roles("Administrator");
     }
 
@@ -42,6 +42,7 @@ public class MultiHttpSecurityConfig {
                     .anyRequest().hasRole("Administrator")
                     .and()
                     .httpBasic(); */
+           http.csrf().disable();
         }
     }
 
@@ -56,6 +57,7 @@ public class MultiHttpSecurityConfig {
                     .and()
                     .formLogin();
                     */
+           http.csrf().disable();
         }
     }
 
