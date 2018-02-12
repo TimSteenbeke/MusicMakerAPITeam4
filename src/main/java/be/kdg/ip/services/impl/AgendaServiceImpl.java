@@ -21,7 +21,7 @@ public class AgendaServiceImpl implements AgendaService {
 
 
     @Override
-    public Object getAgenda(String username) {
+    public Agenda getAgenda(String username) {
 
         try {
             User user = userService.findUserByUsername(username);
@@ -31,5 +31,15 @@ public class AgendaServiceImpl implements AgendaService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void saveAgenda(Agenda agenda) {
+        agendaRepository.save(agenda);
+    }
+
+    @Override
+    public Agenda getAgendaById(int agendaId) {
+        return agendaRepository.findOne(agendaId);
     }
 }

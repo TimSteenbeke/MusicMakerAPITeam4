@@ -13,10 +13,12 @@ public class Agenda {
     @Column
     private int agendaId;
 
-    @Column
+    @ManyToMany()
+    //@JoinTable(name="Agenda_lessons", joinColumns=@JoinColumn(name="Agendas_agenda_id", referencedColumnName="agendaId"), inverseJoinColumns=@JoinColumn(name="lessons_lesson_id", referencedColumnName="lessonId"))
     private List<Lesson> lessons;
 
-    @Column
+    @ManyToMany
+    @JoinTable(name="agenda_performances") //, joinColumns=@JoinColumn(name="agenda_agenda_id"), inverseJoinColumns=@JoinColumn(name="performances_performance_id"))
     private List<Performance> performances;
 
     @OneToOne(mappedBy = "agenda")
