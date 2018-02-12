@@ -1,10 +1,10 @@
 package be.kdg.ip.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -14,6 +14,29 @@ public class Performance {
     @GeneratedValue
     private int performanceId;
 
+    @Column
+    private String beschrijving;
+
+    @Column
+    private Date datum;
+
+    public String getBeschrijving() {
+        return beschrijving;
+    }
+
+    public void setBeschrijving(String beschrijving) {
+        this.beschrijving = beschrijving;
+    }
+
+    public Date getDatum() {
+        return datum;
+    }
+
+    public void setDatum(Date datum) {
+        this.datum = datum;
+    }
+
+    @JsonIgnore
     @ManyToMany(mappedBy="lessons")
     private List<Agenda> agendas;
 

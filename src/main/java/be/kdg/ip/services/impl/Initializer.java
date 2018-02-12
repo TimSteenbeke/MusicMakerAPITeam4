@@ -2,10 +2,7 @@ package be.kdg.ip.services.impl;
 
 import be.kdg.ip.domain.*;
 import be.kdg.ip.domain.roles.Administrator;
-import be.kdg.ip.services.api.AgendaService;
-import be.kdg.ip.services.api.InstrumentService;
-import be.kdg.ip.services.api.LessonService;
-import be.kdg.ip.services.api.UserService;
+import be.kdg.ip.services.api.*;
 import be.kdg.ip.services.exceptions.UserServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,6 +30,9 @@ public class Initializer {
 
     @Autowired
     private AgendaService agendaService;
+
+    @Autowired
+    private PerformanceService performanceService;
 
     @PostConstruct
     public void addDummyInstruments() {
@@ -74,9 +75,27 @@ public class Initializer {
         lesson.setBeginUur("12");
         lesson.setEindUur("14");
 
+
+
         lessonService.addLesson(agenda,lesson);
 
+        Performance performance = new Performance();
+        performance.setBeschrijving("een beschrijving van een optreden");
+        performance.setDatum(new Date());
+
+        Performance performance2 = new Performance();
+        performance2.setBeschrijving("een beschrijving van ANDER OPTREDEN");
+        performance2.setDatum(new Date());
+
+        performanceService.addPerformance(performance);
+        performanceService.addPerformance(performance2);
+
+        agenda.getPerformances().add(performance);
+        agenda.getPerformances().add(performance2);
         agendaService.saveAgenda(agenda);
+
+
+
 
         System.out.println("agenda items toegevoegd");
         System.out.println("ok");
