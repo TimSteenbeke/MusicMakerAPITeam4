@@ -4,10 +4,12 @@ import be.kdg.ip.domain.*;
 import be.kdg.ip.domain.roles.Administrator;
 import be.kdg.ip.services.api.*;
 import be.kdg.ip.services.exceptions.UserServiceException;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -71,9 +73,12 @@ public class Initializer {
 
         Agenda agenda = jef.getAgenda();
 
+        LocalDateTime vandaag = LocalDateTime.now();
+
         Lesson lesson = new Lesson();
-        lesson.setBeginUur("12");
-        lesson.setEindUur("14");
+        lesson.setStartDateTime(vandaag.plusDays(3));
+        lesson.setEndDateTime(vandaag.plusDays(3).plusHours(5));
+
 
 
 
@@ -81,11 +86,17 @@ public class Initializer {
 
         Performance performance = new Performance();
         performance.setBeschrijving("een beschrijving van een optreden");
-        performance.setDatum(new Date());
+
+
+
+        performance.setStartDateTime(vandaag);
+        performance.setEndDateTime(vandaag.plusHours(2));
+
 
         Performance performance2 = new Performance();
         performance2.setBeschrijving("een beschrijving van ANDER OPTREDEN");
-        performance2.setDatum(new Date());
+        performance2.setStartDateTime(vandaag.plusDays(1));
+        performance2.setEndDateTime(vandaag.plusDays(1).plusHours(4));
 
         performanceService.addPerformance(performance);
         performanceService.addPerformance(performance2);

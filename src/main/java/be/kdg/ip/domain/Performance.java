@@ -1,8 +1,13 @@
 package be.kdg.ip.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,8 +22,17 @@ public class Performance {
     @Column
     private String beschrijving;
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    //@JsonFormat(pattern="yyyy-MM-dd")
+    //@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
     @Column
-    private Date datum;
+    private LocalDateTime startDateTime;
+
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+   // @JsonFormat(pattern="yyyy-MM-dd")
+   // @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    @Column
+    private LocalDateTime endDateTime;
 
     public String getBeschrijving() {
         return beschrijving;
@@ -28,12 +42,20 @@ public class Performance {
         this.beschrijving = beschrijving;
     }
 
-    public Date getDatum() {
-        return datum;
+    public LocalDateTime getStartDateTime() {
+        return startDateTime;
     }
 
-    public void setDatum(Date datum) {
-        this.datum = datum;
+    public void setStartDateTime(LocalDateTime startDateTime) {
+        this.startDateTime = startDateTime;
+    }
+
+    public LocalDateTime getEndDateTime() {
+        return endDateTime;
+    }
+
+    public void setEndDateTime(LocalDateTime endDateTime) {
+        this.endDateTime = endDateTime;
     }
 
     @JsonIgnore

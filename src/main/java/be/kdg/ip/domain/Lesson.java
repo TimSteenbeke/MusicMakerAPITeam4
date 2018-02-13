@@ -1,8 +1,11 @@
 package be.kdg.ip.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,14 +19,14 @@ public class Lesson {
     @Column
     private int lessonId;
 
-    @Column
-    private Date datum;
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @Column
-    private String beginUur;
+    private LocalDateTime startDateTime;
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @Column
-    private String eindUur;
+    private LocalDateTime endDateTime;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "lessons")
@@ -34,28 +37,20 @@ public class Lesson {
         this.agendas = new ArrayList<Agenda>();
     }
 
-    public Date getDatum() {
-        return datum;
+    public LocalDateTime getStartDateTime() {
+        return startDateTime;
     }
 
-    public void setDatum(Date datum) {
-        this.datum = datum;
+    public void setStartDateTime(LocalDateTime startDateTime) {
+        this.startDateTime = startDateTime;
     }
 
-    public String getBeginUur() {
-        return beginUur;
+    public LocalDateTime getEndDateTime() {
+        return endDateTime;
     }
 
-    public void setBeginUur(String beginUur) {
-        this.beginUur = beginUur;
-    }
-
-    public String getEindUur() {
-        return eindUur;
-    }
-
-    public void setEindUur(String eindUur) {
-        this.eindUur = eindUur;
+    public void setEndDateTime(LocalDateTime endDateTime) {
+        this.endDateTime = endDateTime;
     }
 
     public List<Agenda> getAgendas() {
