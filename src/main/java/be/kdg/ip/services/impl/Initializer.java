@@ -1,18 +1,18 @@
 package be.kdg.ip.services.impl;
 
-import be.kdg.ip.domain.Instrument;
-import be.kdg.ip.domain.InstrumentSoort;
-import be.kdg.ip.domain.Role;
-import be.kdg.ip.domain.User;
+import be.kdg.ip.domain.*;
 import be.kdg.ip.domain.roles.Administrator;
-import be.kdg.ip.services.api.InstrumentService;
-import be.kdg.ip.services.api.UserService;
+import be.kdg.ip.services.api.*;
 import be.kdg.ip.services.exceptions.UserServiceException;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,6 +26,15 @@ public class Initializer {
 
     @Autowired
     private InstrumentService instrumentService;
+
+    @Autowired
+    private LessonService lessonService;
+
+    @Autowired
+    private AgendaService agendaService;
+
+    @Autowired
+    private PerformanceService performanceService;
 
     @PostConstruct
     public void addDummyInstruments() {
@@ -54,5 +63,54 @@ public class Initializer {
             System.out.println(userService.findUserByUsername("dummy@kdg.be").getUsername());
 
         }
+    }
+
+
+    @PostConstruct void addAgendaItems() throws UserServiceException {
+        List<Role> roles = Arrays.asList(new Administrator());
+        User jef = new User("jef","jef","jefferson","jef@hotmail.com","jefiscool",roles);
+        userService.addUser(jef);
+
+        Agenda agenda = jef.getAgenda();
+
+        LocalDateTime vandaag = LocalDateTime.now();
+
+        Lesson lesson = new Lesson();
+        lesson.setStartDateTime(vandaag.plusDays(3));
+        lesson.setEndDateTime(vandaag.plusDays(3).plusHours(5));
+
+
+
+
+        lessonService.addLesson(agenda,lesson);
+
+        Performance performance = new Performance();
+        performance.setBeschrijving("een beschrijving van een optreden");
+
+
+
+        performance.setStartDateTime(vandaag);
+        performance.setEndDateTime(vandaag.plusHours(2));
+
+
+        Performance performance2 = new Performance();
+        performance2.setBeschrijving("een beschrijving van ANDER OPTREDEN");
+        performance2.setStartDateTime(vandaag.plusDays(1));
+        performance2.setEndDateTime(vandaag.plusDays(1).plusHours(4));
+
+        performanceService.addPerformance(performance);
+        performanceService.addPerformance(performance2);
+
+        agenda.getPerformances().add(performance);
+        agenda.getPerformances().add(performance2);
+        agendaService.saveAgenda(agenda);
+
+
+
+
+        System.out.println("agenda items toegevoegd");
+        System.out.println("ok");
+        System.out.println("test");
+
     }
 }
