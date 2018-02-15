@@ -1,6 +1,9 @@
 package be.kdg.ip.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "instrumentsoort")
@@ -13,6 +16,9 @@ public class InstrumentSoort {
 
     @Column
     private String soortNaam;
+    @JsonIgnore
+    @OneToMany( mappedBy="soort",cascade={CascadeType.MERGE})
+    private List<Instrument> instrumentList;
 
     public InstrumentSoort(){
 
@@ -36,5 +42,13 @@ public class InstrumentSoort {
 
     public void setSoortNaam(String soortNaam) {
         this.soortNaam = soortNaam;
+    }
+
+    public List<Instrument> getInstrumentList() {
+        return instrumentList;
+    }
+
+    public void setInstrumentList(List<Instrument> instrumentList) {
+        this.instrumentList = instrumentList;
     }
 }
