@@ -38,7 +38,7 @@ dependencies {
 	compile('ma.glasnost.orika:orika-core:1.5.1')
 
 	//Localdatetime (makkelijkere integratie met kalender) zie: https://stackoverflow.com/questions/29956175/json-java-8-localdatetime-format-in-spring-boot
-	compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.4.0")
+	compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.0")
 
 
 
