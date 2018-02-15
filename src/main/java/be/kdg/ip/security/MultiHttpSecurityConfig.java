@@ -43,8 +43,6 @@ public class MultiHttpSecurityConfig {
                     .and()
                     .httpBasic(); */
            http.csrf().disable();
-
-            http.headers().frameOptions().disable();
         }
     }
 
@@ -60,8 +58,6 @@ public class MultiHttpSecurityConfig {
                     .formLogin();
                     */
            http.csrf().disable();
-
-            http.headers().frameOptions().disable();
         }
     }
 
