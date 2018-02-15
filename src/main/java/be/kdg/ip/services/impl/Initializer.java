@@ -36,6 +36,9 @@ public class Initializer {
     @Autowired
     private PerformanceService performanceService;
 
+    @Autowired
+    private CourseService courseService;
+
     @PostConstruct
     public void addDummyInstruments() {
         Instrument instrument = new Instrument(new InstrumentSoort("Slag"),"Drum","drummen","Tim","Tim");
@@ -71,6 +74,12 @@ public class Initializer {
         User jef = new User("jef","jef","jefferson","jef@hotmail.com","jefiscool",roles);
         userService.addUser(jef);
 
+        Course course = new Course();
+        course.setBeschrijving("Een muziekCOURSE");
+        course.setPrijs(20);
+
+
+
         Agenda agenda = jef.getAgenda();
 
         LocalDateTime vandaag = LocalDateTime.now();
@@ -82,6 +91,12 @@ public class Initializer {
 
 
 
+
+
+
+        courseService.addCourse(course);
+
+        lesson.setCourse(course);
         lessonService.addLesson(agenda,lesson);
 
         Performance performance = new Performance();
@@ -104,7 +119,6 @@ public class Initializer {
         agenda.getPerformances().add(performance);
         agenda.getPerformances().add(performance2);
         agendaService.saveAgenda(agenda);
-
 
 
 

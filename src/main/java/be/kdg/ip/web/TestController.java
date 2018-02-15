@@ -1,6 +1,6 @@
 package be.kdg.ip.web;
 
-import be.kdg.ip.domain.LesType;
+import be.kdg.ip.domain.Course;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,12 +15,12 @@ public class TestController {
 
 
     @RequestMapping(method = RequestMethod.GET,value ="/api/lestype")
-    public LesType lesType() {
-        LesType lesType = new LesType();
-        lesType.setPrijs(20);
-        lesType.setBeschrijving("een beschrijving voor Lorenz");
-        lesType.setLesTypeId(1);
-        return lesType;
+    public Course lesType() {
+        Course course = new Course();
+        course.setPrijs(20);
+        course.setBeschrijving("een beschrijving voor Lorenz");
+        course.setCourseId(1);
+        return course;
     }
 
 }

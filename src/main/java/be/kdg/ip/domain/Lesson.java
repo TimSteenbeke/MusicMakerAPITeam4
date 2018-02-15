@@ -28,6 +28,9 @@ public class Lesson {
     @Column
     private LocalDateTime endDateTime;
 
+    @ManyToOne
+    private Course course;
+
     @JsonIgnore
     @ManyToMany(mappedBy = "lessons")
    // @JoinTable(name="Agenda_lessons", joinColumns=@JoinColumn(name="lessons_lesson_id", referencedColumnName="lessonId"), inverseJoinColumns=@JoinColumn(name="Agendas_agenda_id", referencedColumnName="agendaId"))
@@ -67,5 +70,14 @@ public class Lesson {
 
     public void setLessonId(int lessonId) {
         this.lessonId = lessonId;
+    }
+
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 }
