@@ -2,6 +2,9 @@ package be.kdg.ip.services.impl;
 
 import be.kdg.ip.domain.*;
 import be.kdg.ip.domain.roles.Administrator;
+import be.kdg.ip.services.api.InstrumentService;
+import be.kdg.ip.services.api.InstrumentSoortService;
+import be.kdg.ip.services.api.UserService;
 import be.kdg.ip.services.api.*;
 import be.kdg.ip.services.exceptions.UserServiceException;
 import org.apache.tomcat.jni.Local;
@@ -36,11 +39,23 @@ public class Initializer {
     @Autowired
     private PerformanceService performanceService;
 
+    @Autowired
+    private InstrumentSoortService instrumentSoortService;
+
     @PostConstruct
     public void addDummyInstruments() {
-        Instrument instrument = new Instrument(new InstrumentSoort("Slag"),"Drum","drummen","Tim","Tim");
-        Instrument instrument2 = new Instrument(new InstrumentSoort("Blaas"),"Trompet","Tim","Tim","Tim");
-        Instrument instrument3 = new Instrument(new InstrumentSoort("Snaar"),"Tim","Tim","Tim","Tim");
+
+        InstrumentSoort instrumentSoort = new InstrumentSoort("Slag");
+        InstrumentSoort instrumentSoort2 = new InstrumentSoort("Blaas");
+        InstrumentSoort instrumentSoort3 = new InstrumentSoort("Snaar");
+
+        instrumentSoortService.addInstrumentSoort(instrumentSoort);
+        instrumentSoortService.addInstrumentSoort(instrumentSoort2);
+        instrumentSoortService.addInstrumentSoort(instrumentSoort3);
+
+        Instrument instrument = new Instrument(instrumentSoort,"Drum","drummen","Tim","Tim");
+        Instrument instrument2 = new Instrument(instrumentSoort2,"Trompet","Tim","Tim","Tim");
+        Instrument instrument3 = new Instrument(instrumentSoort3,"Tim","Tim","Tim","Tim");
 
         instrumentService.addInstrument(instrument);
         instrumentService.addInstrument(instrument2);
