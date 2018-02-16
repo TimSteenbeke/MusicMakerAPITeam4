@@ -19,7 +19,6 @@ public class Lesson {
     @Column
     private int lessonId;
 
-
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @Column
     private LocalDateTime startDateTime;

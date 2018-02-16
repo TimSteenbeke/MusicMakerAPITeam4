@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class LesTypeController {
+public class CourseController {
     private CourseService courseService;
 
-    public LesTypeController(CourseService courseService) {
+    public CourseController(CourseService courseService) {
         this.courseService = courseService;
     }
 
-    @RequestMapping(method = RequestMethod.GET,value ="/lestypes")
-    public List<Course> getLesTypes() {
+    @RequestMapping(method = RequestMethod.GET,value ="/courses")
+    public List<Course> getCourses() {
         return courseService.getAllCourses();
     }
 }

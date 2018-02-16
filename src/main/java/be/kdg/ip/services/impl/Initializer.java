@@ -74,6 +74,10 @@ public class Initializer {
         User jef = new User("jef","jef","jefferson","jef@hotmail.com","jefiscool",roles);
         userService.addUser(jef);
 
+
+        User tim = new User("tim","tim","brouwers","tb@tb.com","brouwersiscool",roles);
+        userService.addUser(tim);
+
         Course course = new Course();
         course.setBeschrijving("Een muziekCOURSE");
         course.setPrijs(20);
@@ -88,13 +92,11 @@ public class Initializer {
         lesson.setStartDateTime(vandaag.plusDays(3));
         lesson.setEndDateTime(vandaag.plusDays(3).plusHours(5));
 
-
-
-
-
-
-
+        course.getStudents().add(jef);
+        course.getTeachers().add(tim);
         courseService.addCourse(course);
+
+
 
         lesson.setCourse(course);
         lessonService.addLesson(agenda,lesson);

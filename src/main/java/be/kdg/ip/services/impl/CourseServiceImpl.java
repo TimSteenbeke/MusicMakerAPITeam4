@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service("courseService")
 @Transactional
-public class CourseImpl implements CourseService {
+public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private CourseRepository repository;

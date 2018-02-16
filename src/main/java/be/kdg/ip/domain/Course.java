@@ -16,11 +16,36 @@ public class Course {
     @Column
     private int prijs;
 
+
+    @ManyToMany
+    private List<User> teachers;
+
+    @ManyToMany
+    private List<User> students;
+
+    public List<User> getTeachers() {
+        return teachers;
+    }
+
+    public void setTeachers(List<User> teachers) {
+        this.teachers = teachers;
+    }
+
+    public List<User> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<User> students) {
+        this.students = students;
+    }
+
     @OneToMany(mappedBy = "course")
     private List<Lesson> lessons;
 
     public Course() {
         this.lessons = new ArrayList<Lesson>();
+        this.students = new ArrayList<User>();
+        this.teachers = new ArrayList<User>();
     }
 
     public int getCourseId() {

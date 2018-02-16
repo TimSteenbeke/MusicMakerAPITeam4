@@ -7,4 +7,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface LessonService {
     void addLesson(Agenda agenda, Lesson lesson);
+    void addLesson(Lesson lesson);
 }
