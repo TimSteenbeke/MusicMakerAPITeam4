@@ -29,7 +29,7 @@ public class TestAgendaService {
     @Before
     public void setup(){
         List<Role> roles = Arrays.asList(new Administrator());
-         User jef = new User("jef","jef","jefferson","jef@hotmail.com","jefiscool",roles);
+         User jef = new User("jef","jef","jefferson","jefiscool",roles);
 
          // Add 2 lessons
 
