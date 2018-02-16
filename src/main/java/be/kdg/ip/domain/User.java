@@ -31,7 +31,7 @@ public class User implements Serializable, UserDetails {
     private String email;
     @Column(name = "Password", nullable = true, length = 255)
     private String encryptedPassword;
-    @OneToMany(targetEntity = Role.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(/*targetEntity = Role.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER,*/ mappedBy = "user")
     @Fetch(org.hibernate.annotations.FetchMode.SELECT)
     private List<Role> roles;
 
@@ -39,6 +39,13 @@ public class User implements Serializable, UserDetails {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "agenda_id")
     private Agenda agenda;
+
+
+    @ManyToMany(mappedBy = "teachers")
+    private List<Course> teachescourses;
+
+    @ManyToMany(mappedBy = "students")
+    private List<Course> courses;
 
 
 

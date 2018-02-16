@@ -18,4 +18,11 @@ public class LessonServiceImpl implements LessonService {
         agenda.getLessons().add(lesson);
         lessonRepository.save(lesson);
     }
+
+    @Override
+    public void addLesson(Lesson lesson) {
+        lessonRepository.save(lesson);
+    }
+
+
 }

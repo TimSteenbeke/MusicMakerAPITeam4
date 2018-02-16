@@ -21,7 +21,6 @@ public class Lesson {
     @Column
     private int lessonId;
 
-
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @Column
     private LocalDateTime startDateTime;
@@ -29,6 +28,9 @@ public class Lesson {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @Column
     private LocalDateTime endDateTime;
+
+    @ManyToOne
+    private Course course;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "lessons")
@@ -69,5 +71,14 @@ public class Lesson {
 
     public void setLessonId(int lessonId) {
         this.lessonId = lessonId;
+    }
+
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 }

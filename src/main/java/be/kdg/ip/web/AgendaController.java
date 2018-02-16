@@ -29,7 +29,8 @@ public class AgendaController {
         agendaResource.setPerformances(agenda.getPerformances());
 
         return  new ResponseEntity<>(agendaResource, HttpStatus.OK);
-
-
     }
+
+
+
 }
