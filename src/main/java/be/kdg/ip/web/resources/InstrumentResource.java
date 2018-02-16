@@ -7,29 +7,23 @@ import java.io.Serializable;
 
 public class InstrumentResource implements Serializable {
 
-    private int InstrumentId;
-    private int InstrumentSoortId;
+    //private int InstrumentId;
+    //private InstrumentSoortResource instrumentSoortResource;
+    private int instrumentsoortid;
     private String naam;
     private String type;
     private String uitvoering;
     private String afbeelding;
 
-    public int getInstrumentId() {
-        return InstrumentId;
+
+
+    public int getInstrumentsoortid() {
+        return instrumentsoortid;
     }
 
-    public void setInstrumentId(int instrumentId) {
-        InstrumentId = instrumentId;
+    public void setInstrumentsoortid(int instrumentsoortid) {
+        this.instrumentsoortid = instrumentsoortid;
     }
-
-    public int getInstrumentSoortId() {
-        return InstrumentSoortId;
-    }
-
-    public void setInstrumentSoortId(int instrumentSoortId) {
-        InstrumentSoortId = instrumentSoortId;
-    }
-
     public String getNaam() {
         return naam;
     }
@@ -61,4 +55,6 @@ public class InstrumentResource implements Serializable {
     public void setAfbeelding(String afbeelding) {
         this.afbeelding = afbeelding;
     }
+
+
 }

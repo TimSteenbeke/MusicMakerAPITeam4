@@ -25,7 +25,6 @@ dependencies {
 	compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity4')
 	compile('net.sourceforge.nekohtml:nekohtml:1.9.22')
 	compile('org.webjars:webjars-locator-core:0.32')
-	compile('ma.glasnost.orika:orika-core:1.5.1')
 	compile('org.webjars:bootstrap:3.3.7')
 	compile('org.webjars:jquery:3.2.1')
 	runtime('org.springframework.boot:spring-boot-devtools')
@@ -36,6 +35,11 @@ dependencies {
 	//zelf toegevoegd
 	compile("com.h2database:h2")
 	compile("org.springframework.boot:spring-boot-starter-data-jpa")
+	compile('ma.glasnost.orika:orika-core:1.5.1')
+
+	//Localdatetime (makkelijkere integratie met kalender) zie: https://stackoverflow.com/questions/29956175/json-java-8-localdatetime-format-in-spring-boot
+	compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.4.0")
+
 
 
 

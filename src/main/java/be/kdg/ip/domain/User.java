@@ -31,12 +31,26 @@ public class User implements Serializable, UserDetails {
     private String email;
     @Column(name = "Password", nullable = true, length = 255)
     private String encryptedPassword;
-    @OneToMany(targetEntity = Role.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(/*targetEntity = Role.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER,*/ mappedBy = "user")
     @Fetch(org.hibernate.annotations.FetchMode.SELECT)
     private List<Role> roles;
 
-    public User(){
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "agenda_id")
+    private Agenda agenda;
+
+
+    @ManyToMany(mappedBy = "teachers")
+    private List<Course> teachescourses;
+
+    @ManyToMany(mappedBy = "students")
+    private List<Course> courses;
+
+
+
+    public User(){
+        this.agenda = new Agenda();
     }
 
     public User(String username, String firstname, String lastname, String email, String encryptedPassword, List<Role> roles) {
@@ -46,6 +60,7 @@ public class User implements Serializable, UserDetails {
         this.email = email;
         this.encryptedPassword = encryptedPassword;
         this.roles = roles;
+        this.agenda = new Agenda();
     }
 
     public String getId() {
@@ -149,5 +164,13 @@ public class User implements Serializable, UserDetails {
     @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
+    }
+
+    public Agenda getAgenda() {
+        return agenda;
+    }
+
+    public void setAgenda(Agenda agenda) {
+        this.agenda = agenda;
     }
 }

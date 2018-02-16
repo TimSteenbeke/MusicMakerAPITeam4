@@ -1,5 +1,7 @@
 package be.kdg.ip.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,7 +12,8 @@ public class Instrument {
     @GeneratedValue
     @Column(name="InstrumentId",nullable = false)
     private int InstrumentId;
-    @OneToOne(cascade = CascadeType.ALL)
+
+    @ManyToOne(cascade = {CascadeType.MERGE},fetch= FetchType.EAGER)
     @JoinColumn(name = "InstrumentSoortId")
     private InstrumentSoort soort;
     @Column

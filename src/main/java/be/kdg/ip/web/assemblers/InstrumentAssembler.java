@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class InstrumentAssembler extends Assembler<Instrument, InstrumentResource> {
-
     public InstrumentAssembler() {
         super(Instrument.class, InstrumentResource.class);
     }

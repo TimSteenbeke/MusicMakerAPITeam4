@@ -20,8 +20,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class MultiHttpSecurityConfig {
 
-    @Autowired
-    private UserService userService;
+   // @Autowired
+   // private UserService userService;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -43,6 +43,9 @@ public class MultiHttpSecurityConfig {
                     .and()
                     .httpBasic(); */
            http.csrf().disable();
+
+           // Om H2 in memory databank te bekijken op url localhost:port/console
+            http.headers().frameOptions().disable();
         }
     }
 
@@ -58,6 +61,8 @@ public class MultiHttpSecurityConfig {
                     .formLogin();
                     */
            http.csrf().disable();
+            // Om H2 in memory databank te bekijken op url localhost:port/console
+            http.headers().frameOptions().disable();
         }
     }
 

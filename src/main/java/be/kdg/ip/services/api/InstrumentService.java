@@ -12,4 +12,7 @@ public interface InstrumentService {
     Instrument getInstrument(int instrumentId);
 
     List<Instrument> getAllInstruments();
+
+    void removeInstrument(int instrumentId);
+    Instrument updateInstrument(Instrument instrument);
 }
