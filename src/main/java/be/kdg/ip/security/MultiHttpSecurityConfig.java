@@ -26,10 +26,11 @@ public class MultiHttpSecurityConfig {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
-       /* auth.
+     /*   auth.
                 userDetailsService(userService).
-                passwordEncoder(passwordEncoder());*/
-       // auth.inMemoryAuthentication().withUser("dummy@kdg.be").password("dummy").roles("Administrator");
+                passwordEncoder(passwordEncoder());
+        auth.inMemoryAuthentication().withUser("dummy@kdg.be").password("dummy").roles("Administrator");
+        */
     }
 
     @Configuration

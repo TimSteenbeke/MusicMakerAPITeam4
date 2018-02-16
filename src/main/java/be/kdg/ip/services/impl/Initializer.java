@@ -1,7 +1,9 @@
 package be.kdg.ip.services.impl;
-
 import be.kdg.ip.domain.*;
 import be.kdg.ip.domain.roles.Administrator;
+import be.kdg.ip.services.api.GroupService;
+import be.kdg.ip.services.api.InstrumentService;
+import be.kdg.ip.services.api.UserService;
 import be.kdg.ip.services.api.*;
 import be.kdg.ip.services.exceptions.UserServiceException;
 import org.apache.tomcat.jni.Local;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -42,6 +45,10 @@ public class Initializer {
     @Autowired
     private CourseService courseService;
 
+    @Autowired
+    private GroupService groupService;
+
+
     @PostConstruct
     public void addDummyInstruments() {
 
@@ -65,29 +72,66 @@ public class Initializer {
 
     @PostConstruct
     public void addDummyUser() throws UserServiceException {
+        List<Role> roles = Arrays.asList(new Administrator());
+        User dummyUser = new User("lode.wouters@student.kdg.be", "password", "Lode", "Wouters", roles);
 
-        try {
+        userService.addUser(dummyUser);
+        /*try {
             userService.findUserByUsername("dummy@kdg.be");
             System.out.println(userService.findUserByUsername("dummy@kdg.be").getRoles().get(0).toString());
         } catch (UserServiceException use) {
             List<Role> roles = Arrays.asList(new Administrator());
-            User dummyUser = new User("dummy@kdg.be", "Dumb", "Dumber", "dummy@kdg.be", "dummy", roles);
+            User dummyUser = new User("lode.wouters@student.kdg.be", "password", "Lode", "Wouters", null);
 
             userService.addUser(dummyUser);
-            System.out.println("catch");
-            System.out.println(userService.findUserByUsername("dummy@kdg.be").getUsername());
 
+
+        }*/
+    }
+
+    @PostConstruct
+    public void addDummyGroups(){
+        List<User> users = new ArrayList<>();
+        //List<User> users2 = new ArrayList<>();
+        User u1 = new User("lode.wouters@student.kdg.be", "password", "Lode", "Wouters", null);
+        User u2 = new User("test.test@student.kdg.be", "test", "test", "test", null);
+        User supervisor = new User("supervisor.sup@student.kdg.be", "supervisor", "super", "visor", null);
+
+        users.add(u1);
+        users.add(u2);
+        //users2.add(u2);
+
+        List<Group> groups = new ArrayList<>();
+        Group group1 = new Group("testGroup", supervisor, users);
+        //Group group2 = new Group("testGroup2", supervisor, users);
+
+        groups.add(group1);
+        //groups.add(group2);
+        for(Group group: groups){
+            groupService.addGroup(group);
         }
+
+        /*for (User user: users) {
+            userService.addUser(user);
+        }
+
+        userService.addUser(supervisor);*/
+
+        //groupService.getGroup(1).setUsers(users);
+        //groupService.getGroup(1).setSupervisor(supervisor);
+        /*groupService.getGroup(2).setUsers(users2);
+        groupService.getGroup(2).setSupervisor(supervisor);*/
+
     }
 
 
     @PostConstruct void addAgendaItems() throws UserServiceException {
         List<Role> roles = Arrays.asList(new Administrator());
-        User jef = new User("jef","jef","jefferson","jef@hotmail.com","jefiscool",roles);
+        User jef = new User("jef","jefiscool","jef","jefferson",roles);
         userService.addUser(jef);
 
 
-        User tim = new User("tim","tim","brouwers","tb@tb.com","brouwersiscool",roles);
+        User tim = new User("tim","tim","brouwers","brouwersiscool",roles);
         userService.addUser(tim);
 
         Course course = new Course();
