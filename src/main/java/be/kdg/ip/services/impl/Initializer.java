@@ -2,9 +2,6 @@ package be.kdg.ip.services.impl;
 
 import be.kdg.ip.domain.*;
 import be.kdg.ip.domain.roles.Administrator;
-import be.kdg.ip.services.api.InstrumentService;
-import be.kdg.ip.services.api.InstrumentSoortService;
-import be.kdg.ip.services.api.UserService;
 import be.kdg.ip.services.api.*;
 import be.kdg.ip.services.exceptions.UserServiceException;
 import org.apache.tomcat.jni.Local;
