@@ -4,20 +4,26 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by wouter on 21.12.16.
  */
+
 @Entity
-@Table(name="role")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="RoleType", discriminatorType = DiscriminatorType.STRING)
 public abstract class Role {
 
-   @Id
-   @GeneratedValue
-    private Integer roleId;
+    @Id
+    @GeneratedValue
+    @Column
+    private String roleId;
 
-    @ManyToOne(targetEntity = User.class)
-   private User user;
+    //@ManyToOne(targetEntity = User.class)
+    //@JoinColumn(name = "id")
+    @ManyToMany()
+    private List<User> users;
 
     public abstract Collection<? extends GrantedAuthority> getAuthorities();
 }

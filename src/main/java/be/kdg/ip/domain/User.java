@@ -1,4 +1,5 @@
 package be.kdg.ip.domain;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +14,7 @@ import java.util.List;
  */
 
 @Entity
-@Table(name ="user")
+@Table
 public class User implements Serializable, UserDetails {
 
     @Id
@@ -27,12 +28,14 @@ public class User implements Serializable, UserDetails {
     private String firstname;
     @Column(name="LastName")
     private String lastname;
-    @Column(name="Email")
-    private String email;
-    @Column(name = "Password", nullable = true, length = 255)
-    private String encryptedPassword;
-    @OneToMany(/*targetEntity = Role.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER,*/ mappedBy = "user")
-    @Fetch(org.hibernate.annotations.FetchMode.SELECT)
+    @Column
+    private String password;
+
+    @ManyToMany
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private List<Group> groups;
+
+    @ManyToMany(/*targetEntity = Role.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER,*/ mappedBy = "users")
     private List<Role> roles;
 
 
@@ -53,12 +56,11 @@ public class User implements Serializable, UserDetails {
         this.agenda = new Agenda();
     }
 
-    public User(String username, String firstname, String lastname, String email, String encryptedPassword, List<Role> roles) {
+    public User(String username, String password, String firstname, String lastname, List<Role> roles) {
         this.username = username;
+        this.password = password;
         this.firstname = firstname;
         this.lastname = lastname;
-        this.email = email;
-        this.encryptedPassword = encryptedPassword;
         this.roles = roles;
         this.agenda = new Agenda();
     }
@@ -91,14 +93,6 @@ public class User implements Serializable, UserDetails {
         this.lastname = lastname;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public List<Role> getRoles() {
         return roles;
     }
@@ -107,13 +101,22 @@ public class User implements Serializable, UserDetails {
         this.roles = roles;
     }
 
-    public String getEncryptedPassword() {
-        return encryptedPassword;
+    public List<Group> getGroups() {
+        return groups;
     }
 
-    public void setEncryptedPassword(String encryptedPassword)
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password)
     {
-        this.encryptedPassword = encryptedPassword;
+        this.password = password;
     }
 
     @Override
@@ -121,10 +124,6 @@ public class User implements Serializable, UserDetails {
         return null;
     }
 
-    @Override
-    public String getPassword() {
-        return encryptedPassword;
-    }
 
     @Override
     public String getUsername() {

@@ -1,5 +1,6 @@
 package be.kdg.ip.services.impl;
 
+import be.kdg.ip.domain.Role;
 import be.kdg.ip.domain.User;
 import be.kdg.ip.repositories.api.UserRepository;
 import be.kdg.ip.services.api.UserService;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 
 /**
@@ -32,31 +34,38 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    public User addUser(String username, String password, String firstName, String lastName, List<Role> roles) {
+        return userRepository.save(new User(username,password,firstName,lastName,roles));
+    }
+
+
     @Override
     public User addUser(User user) {
 
-        user.setEncryptedPassword(passwordEncoder.encode(user.getEncryptedPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
     @Override
     public User findUserByUsername(String username) throws UserServiceException {
-        User user = userRepository.findUserByUsername(username);
+        User user = userRepository.findByUsername(username);
         if (user == null)
             throw new UserServiceException("User not found");
         return user;
     }
 
     @Override
-    public User findUserByEmail(String email) throws UserServiceException {
-        User user = userRepository.findUserByEmail(email);
-        if (user == null)
-            throw new UserServiceException("User not found");
-        return user;
+    public boolean checkLogin(String username, String password) {
+        return false;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return userRepository.findUserByUsername(s);
+    public User findUser(int userId) {
+        return userRepository.findUserById(userId);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username);
     }
 }
