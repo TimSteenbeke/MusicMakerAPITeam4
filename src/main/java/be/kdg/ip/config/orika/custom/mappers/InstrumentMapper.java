@@ -12,11 +12,11 @@ import java.util.stream.Collectors;
 public class InstrumentMapper extends CustomMapper<Instrument,InstrumentResource> {
     @Override
     public void mapAtoB(Instrument source, InstrumentResource destination, MappingContext context) {
-        mapperFacade.map(source.getSoort(), destination.getInstrumentSoortResource());
+       // mapperFacade.map(source.getSoort(), destination.getInstrumentSoortResource());
     }
 
     @Override
     public void mapBtoA(InstrumentResource source, Instrument destination, MappingContext context) {
-        mapperFacade.map(source.getInstrumentSoortResource(), destination.getSoort());
+       // mapperFacade.map(source.getInstrumentSoortResource(), destination.getSoort());
     }
 }

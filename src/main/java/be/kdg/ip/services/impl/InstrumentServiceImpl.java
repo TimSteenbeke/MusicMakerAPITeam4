@@ -6,6 +6,8 @@ import be.kdg.ip.services.api.InstrumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -13,31 +15,39 @@ import java.util.List;
 @Transactional
 public class InstrumentServiceImpl implements InstrumentService {
     @Autowired
-    private InstrumentRepository repository;
+    private InstrumentRepository instrumentRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public Instrument addInstrument(Instrument instrument) {
-        return repository.save(instrument);
+        return instrumentRepository.save(instrument);
     }
 
     @Override
     public Instrument getInstrument(int instrumentId) {
-        Instrument instrument = repository.findOne(instrumentId);
+        Instrument instrument = instrumentRepository.findOne(instrumentId);
         return instrument;
     }
 
 
     @Override
     public List<Instrument> getAllInstruments() {
-        return repository.findAll();
+        return instrumentRepository.findAll();
     }
 
     @Override
     public void removeInstrument(int instrumentId) {
-        Instrument instrument = repository.findOne(instrumentId);
+        Instrument instrument = instrumentRepository.findOne(instrumentId);
         //if (instrument == null)
             //throw new ProductServiceException("Instrument not found");
 
-        repository.delete(instrument);
+        instrumentRepository.delete(instrument);
+    }
+
+    @Override
+    public Instrument updateInstrument(Instrument instrument) {
+        return instrumentRepository.save(instrument);
     }
 }

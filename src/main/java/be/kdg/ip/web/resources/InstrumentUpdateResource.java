@@ -1,14 +1,6 @@
 package be.kdg.ip.web.resources;
 
-import be.kdg.ip.domain.InstrumentSoort;
-
-import javax.persistence.*;
-import java.io.Serializable;
-
-public class InstrumentResource implements Serializable {
-
-    //private int InstrumentId;
-    //private InstrumentSoortResource instrumentSoortResource;
+public class InstrumentUpdateResource {
     private int instrumentsoortid;
     private String naam;
     private String type;
@@ -55,6 +47,5 @@ public class InstrumentResource implements Serializable {
     public void setAfbeelding(String afbeelding) {
         this.afbeelding = afbeelding;
     }
-
 
 }
