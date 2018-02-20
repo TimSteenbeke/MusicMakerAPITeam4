@@ -1,5 +1,7 @@
 package be.kdg.ip.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +18,11 @@ public class Course {
     @Column
     private int prijs;
 
-
+    @JsonIgnore
     @ManyToMany
     private List<User> teachers;
 
+    @JsonIgnore
     @ManyToMany
     private List<User> students;
 
@@ -39,6 +42,7 @@ public class Course {
         this.students = students;
     }
 
+    @JsonIgnore
     @OneToMany(mappedBy = "course")
     private List<Lesson> lessons;
 

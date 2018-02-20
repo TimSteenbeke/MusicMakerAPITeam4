@@ -16,7 +16,7 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-    @RequestMapping(method = RequestMethod.GET,value ="/courses")
+    @RequestMapping(method = RequestMethod.GET,value ="api/courses")
     public List<Course> getCourses() {
         return courseService.getAllCourses();
     }

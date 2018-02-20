@@ -1,4 +1,5 @@
 package be.kdg.ip.domain;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.springframework.security.core.GrantedAuthority;
@@ -44,9 +45,11 @@ public class User implements Serializable, UserDetails {
     private Agenda agenda;
 
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "teachers")
     private List<Course> teachescourses;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "students")
     private List<Course> courses;
 
@@ -167,6 +170,22 @@ public class User implements Serializable, UserDetails {
 
     public Agenda getAgenda() {
         return agenda;
+    }
+
+    public List<Course> getTeachescourses() {
+        return teachescourses;
+    }
+
+    public void setTeachescourses(List<Course> teachescourses) {
+        this.teachescourses = teachescourses;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
     }
 
     public void setAgenda(Agenda agenda) {
