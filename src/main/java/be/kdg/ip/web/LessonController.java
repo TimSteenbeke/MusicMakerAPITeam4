@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.xml.ws.Response;
-
+@CrossOrigin(origins = "*")
 @RestController
 public class LessonController {
     @Autowired
