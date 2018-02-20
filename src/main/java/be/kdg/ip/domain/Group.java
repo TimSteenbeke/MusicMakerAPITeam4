@@ -4,6 +4,7 @@ import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,7 +24,6 @@ public class Group {
     private User supervisor;
 
     @ManyToMany(mappedBy = "groups")
-    @Cascade(org.hibernate.annotations.CascadeType.MERGE)
     private List<User> users;
 
     public Group(String name, User supervisor, List<User> users) {
@@ -33,6 +33,7 @@ public class Group {
     }
 
     public Group() {
+        this.users = new ArrayList<User>();
 
     }
 

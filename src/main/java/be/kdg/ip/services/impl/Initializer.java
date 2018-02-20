@@ -91,25 +91,19 @@ public class Initializer {
 
     @PostConstruct
     public void addDummyGroups(){
-        List<User> users = new ArrayList<>();
-        //List<User> users2 = new ArrayList<>();
         User u1 = new User("lode.wouters@student.kdg.be", "password", "Lode", "Wouters", null);
         User u2 = new User("test.test@student.kdg.be", "test", "test", "test", null);
-        User supervisor = new User("supervisor.sup@student.kdg.be", "supervisor", "super", "visor", null);
 
-        users.add(u1);
-        users.add(u2);
+
+
         //users2.add(u2);
 
-        List<Group> groups = new ArrayList<>();
-        Group group1 = new Group("testGroup", supervisor, users);
-        //Group group2 = new Group("testGroup2", supervisor, users);
+        Group group = new Group();
+        group.setName("testGroup");
+        group.getUsers().add(u1);
+        group.setSupervisor(u1);
+        groupService.addGroup(group);
 
-        groups.add(group1);
-        //groups.add(group2);
-        for(Group group: groups){
-            groupService.addGroup(group);
-        }
 
         /*for (User user: users) {
             userService.addUser(user);

@@ -33,7 +33,6 @@ public class User implements Serializable, UserDetails {
     private String password;
 
     @ManyToMany
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Group> groups;
 
     @ManyToMany(/*targetEntity = Role.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER,*/ mappedBy = "users")
