@@ -20,7 +20,7 @@ public class Group {
     private String name;
 
     @ManyToOne
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    //@Cascade(org.hibernate.annotations.CascadeType.ALL)
     private User supervisor;
 
     @ManyToMany(mappedBy = "groups")
