@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.xml.ws.Response;
+
 @CrossOrigin(origins = "*")
 @RestController
 public class LessonController {
@@ -24,16 +25,6 @@ public class LessonController {
 
     @Autowired
     AgendaService agendaService;
-
-    @CrossOrigin(origins = "*")
-    @RequestMapping(method = RequestMethod.GET, value = "api/lessons")
-    public String test() {
-        return "test";
-
-    }
-
-
-
 
     //@CrossOrigin(origins = "*")
     @RequestMapping(method = RequestMethod.POST,value ="/api/lesson")

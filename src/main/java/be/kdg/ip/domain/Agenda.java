@@ -20,7 +20,7 @@ public class Agenda {
     private List<Lesson> lessons;
 
     @ManyToMany
-    @JoinTable(name="agenda_performances") //, joinColumns=@JoinColumn(name="agenda_agenda_id"), inverseJoinColumns=@JoinColumn(name="performances_performance_id"))
+    //, joinColumns=@JoinColumn(name="agenda_agenda_id"), inverseJoinColumns=@JoinColumn(name="performances_performance_id"))
     private List<Performance> performances;
 
     @JsonIgnore

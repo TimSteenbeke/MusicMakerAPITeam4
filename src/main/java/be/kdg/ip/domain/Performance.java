@@ -25,16 +25,28 @@ public class Performance {
     private String beschrijving;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    //@JsonFormat(pattern="yyyy-MM-dd")
-    //@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
     @Column
     private LocalDateTime startDateTime;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-   // @JsonFormat(pattern="yyyy-MM-dd")
-   // @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
     @Column
     private LocalDateTime endDateTime;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy="performances")
+    private List<Agenda> agendas;
+
+    @JsonIgnore
+    @ManyToOne
+    private Group group;
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
 
     public String getBeschrijving() {
         return beschrijving;
@@ -59,10 +71,6 @@ public class Performance {
     public void setEndDateTime(LocalDateTime endDateTime) {
         this.endDateTime = endDateTime;
     }
-
-    @JsonIgnore
-    @ManyToMany(mappedBy="lessons")
-    private List<Agenda> agendas;
 
     public Performance() {
         this.agendas = new ArrayList<Agenda>();
