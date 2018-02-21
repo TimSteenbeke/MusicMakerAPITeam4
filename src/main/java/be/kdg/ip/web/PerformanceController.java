@@ -1,6 +1,9 @@
 package be.kdg.ip.web;
 
+import be.kdg.ip.domain.Group;
 import be.kdg.ip.domain.Performance;
+import be.kdg.ip.services.api.AgendaService;
+import be.kdg.ip.services.api.GroupService;
 import be.kdg.ip.services.api.PerformanceService;
 import be.kdg.ip.web.resources.PerformanceResource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,12 @@ public class PerformanceController {
     @Autowired
     PerformanceService performanceService;
 
+    @Autowired
+    AgendaService agendaService;
+
+    @Autowired
+    GroupService groupService;
+
     @RequestMapping(method = RequestMethod.POST,value ="/api/performance")
     public ResponseEntity<PerformanceResource> addLesson(@Valid @RequestBody PerformanceResource performanceResource) {
 
@@ -28,12 +37,17 @@ public class PerformanceController {
         performance.setEndDateTime(performanceResource.getEnddatetime());
         performance.setBeschrijving(performanceResource.getBeschrijving());
 
+        //Group object ophalen en koppelen aan performance
+        Group group = groupService.getGroup(performanceResource.getGroupId());
+        performance.setGroup(group);
 
 
         //performance toevoegen
         performanceService.addPerformance(performance);
 
-        //TODO: Via group de users ophalen en voor elke user performance koppelen met hun kalender.
+        //add Performance to every involved agenda
+        agendaService.addPerformanceToEveryAgenda(performance);
+
 
 
 

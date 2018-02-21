@@ -154,6 +154,7 @@ public class Initializer {
         performanceService.addPerformance(performance);
         performanceService.addPerformance(performance2);
 
+
         agenda.getPerformances().add(performance);
         agenda.getPerformances().add(performance2);
         agendaService.saveAgenda(agenda);

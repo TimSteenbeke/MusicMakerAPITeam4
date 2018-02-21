@@ -1,5 +1,6 @@
 package be.kdg.ip.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -25,6 +26,18 @@ public class Group {
 
     @ManyToMany(mappedBy = "groups")
     private List<User> users;
+
+    //@JsonIgnore
+    @OneToMany(mappedBy = "group")
+    private List<Performance> performances;
+
+    public List<Performance> getPerformances() {
+        return performances;
+    }
+
+    public void setPerformances(List<Performance> performances) {
+        this.performances = performances;
+    }
 
     public Group(String name, User supervisor, List<User> users) {
         this.name = name;

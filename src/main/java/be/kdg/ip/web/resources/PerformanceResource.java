@@ -8,6 +8,8 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import java.time.LocalDateTime;
 
 public class PerformanceResource {
+    private int GroupId;
+
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime startdatetime;
@@ -40,5 +42,13 @@ public class PerformanceResource {
 
     public void setBeschrijving(String beschrijving) {
         this.beschrijving = beschrijving;
+    }
+
+    public int getGroupId() {
+        return GroupId;
+    }
+
+    public void setGroupId(int groupId) {
+        GroupId = groupId;
     }
 }
