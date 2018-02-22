@@ -24,14 +24,14 @@ public class TestInstrumentService {
     @Before
     public void setup(){
         InstrumentSoort soort = new InstrumentSoort("piano");
-        Instrument instrument = new Instrument(soort,"naam","type","uitvoering","afbeelding");
+        Instrument instrument = new Instrument(soort,"naam","type","uitvoering");
         instrumentService.addInstrument(instrument);
     }
 
     @Test
     public void TestAddInstrument(){
         InstrumentSoort soort = new InstrumentSoort("gitaar");
-        Instrument instrument = new Instrument(soort,"naam2","type2","uitvoering2","afbeelding2");
+        Instrument instrument = new Instrument(soort,"naam2","type2","uitvoering2");
         instrumentService.addInstrument(instrument);
         Instrument opgehaaldInstrument = instrumentService.getInstrument(instrument.getInstrumentId());
         assertEquals(instrument.getNaam(),opgehaaldInstrument.getNaam());

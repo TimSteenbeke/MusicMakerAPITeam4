@@ -3,6 +3,7 @@ package be.kdg.ip.web.resources;
 import be.kdg.ip.domain.InstrumentSoort;
 
 import javax.persistence.*;
+import java.awt.*;
 import java.io.Serializable;
 
 public class InstrumentResource implements Serializable {
