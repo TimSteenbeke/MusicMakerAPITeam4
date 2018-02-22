@@ -4,6 +4,7 @@ import be.kdg.ip.domain.Instrument;
 import be.kdg.ip.services.api.InstrumentService;
 import be.kdg.ip.services.api.InstrumentSoortService;
 import be.kdg.ip.web.assemblers.InstrumentAssembler;
+import be.kdg.ip.web.assemblers.InstrumentUpdateAssembler;
 import be.kdg.ip.web.resources.InstrumentResource;
 import be.kdg.ip.web.resources.InstrumentUpdateResource;
 import ma.glasnost.orika.MapperFacade;
@@ -11,7 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.imageio.ImageIO;
 import javax.validation.Valid;
+import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -21,24 +26,39 @@ public class InstrumentController {
     private InstrumentService instrumentService;
     private final MapperFacade mapperFacade;
     private final InstrumentAssembler instrumentAssembler;
+    private final InstrumentUpdateAssembler instrumentUpdateAssembler;
     private InstrumentSoortService instrumentSoortService;
 
-    public InstrumentController(InstrumentService instrumentService, MapperFacade mapperFacade,InstrumentAssembler instrumentAssembler, InstrumentSoortService instrumentSoortService){
+    public InstrumentController(InstrumentService instrumentService, MapperFacade mapperFacade,InstrumentAssembler instrumentAssembler, InstrumentUpdateAssembler instrumentUpdateAssembler, InstrumentSoortService instrumentSoortService){
         this.instrumentService = instrumentService;
         this.mapperFacade = mapperFacade;
         this.instrumentAssembler = instrumentAssembler;
         this.instrumentSoortService = instrumentSoortService;
+        this.instrumentUpdateAssembler = instrumentUpdateAssembler;
     }
 
     //Nog beter bekijken
     //Aanmaken van een instrument
     @PostMapping
     public ResponseEntity<InstrumentResource> createInstrument(@Valid @RequestBody InstrumentResource instrumentResource) {
-        InstrumentResource binnenkomendeData = instrumentResource;
-        Instrument in = mapperFacade.map(instrumentResource,Instrument.class);
+        Instrument in = new Instrument();
         in.setSoort(instrumentSoortService.getInstrumentSoort(instrumentResource.getInstrumentsoortid()));
-        Instrument out = instrumentService.addInstrument(in);
+        in.setNaam(instrumentResource.getNaam());
+        in.setType(instrumentResource.getType());
+        in.setUitvoering(instrumentResource.getUitvoering());
 
+        //image omzetten
+        String imageString = instrumentResource.getAfbeelding();
+
+        try {
+           // byte[] name = Base64.getEncoder().encode("hello world".getBytes());
+            byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
+            in.setAfbeelding(decodedString);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        Instrument out = instrumentService.addInstrument(in);
 
         return  new ResponseEntity<>(instrumentAssembler.toResource(out), HttpStatus.OK);
     }
@@ -70,17 +90,30 @@ public class InstrumentController {
 
     //Een instrument updaten
     @RequestMapping(value = "/instrument/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Instrument> updateUser(@PathVariable("id") int id, @RequestBody InstrumentUpdateResource instrumentUpdateResource) {
+    public ResponseEntity<InstrumentUpdateResource> updateUser(@PathVariable("id") int id, @RequestBody InstrumentUpdateResource instrumentUpdateResource) {
 
 
-        Instrument opgehaaldInstrument = instrumentService.getInstrument(id);
-        Instrument in = mapperFacade.map(instrumentUpdateResource,Instrument.class);
+        //Instrument in = mapperFacade.map(instrumentUpdateResource,Instrument.class);
+        Instrument in = new Instrument();
         in.setSoort(instrumentSoortService.getInstrumentSoort(instrumentUpdateResource.getInstrumentsoortid()));
-        opgehaaldInstrument = in;
-        opgehaaldInstrument.setInstrumentId(id);
-        Instrument out = instrumentService.updateInstrument(opgehaaldInstrument);
+        in.setInstrumentId(id);
+        in.setNaam(instrumentUpdateResource.getNaam());
+        in.setUitvoering(instrumentUpdateResource.getUitvoering());
+        in.setType(instrumentUpdateResource.getType());
+
+        //image omzetten
+        String imageString = instrumentUpdateResource.getAfbeelding();
+
+        try {
+            byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
+            in.setAfbeelding(decodedString);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        Instrument out = instrumentService.updateInstrument(in);
 
 
-        return  new ResponseEntity<>(out, HttpStatus.OK);
+        return  new ResponseEntity<>(instrumentUpdateAssembler.toResource(out), HttpStatus.OK);
     }
 }

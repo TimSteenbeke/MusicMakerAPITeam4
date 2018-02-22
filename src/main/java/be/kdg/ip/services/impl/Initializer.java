@@ -60,9 +60,9 @@ public class Initializer {
         instrumentSoortService.addInstrumentSoort(instrumentSoort2);
         instrumentSoortService.addInstrumentSoort(instrumentSoort3);
 
-        Instrument instrument = new Instrument(instrumentSoort,"Drum","drummen","Tim","Tim");
-        Instrument instrument2 = new Instrument(instrumentSoort2,"Trompet","Tim","Tim","Tim");
-        Instrument instrument3 = new Instrument(instrumentSoort3,"Tim","Tim","Tim","Tim");
+        Instrument instrument = new Instrument(instrumentSoort,"Drum","drummen","Tim");
+        Instrument instrument2 = new Instrument(instrumentSoort2,"Trompet","Tim","Tim");
+        Instrument instrument3 = new Instrument(instrumentSoort3,"Tim","Tim","Tim");
 
         instrumentService.addInstrument(instrument);
         instrumentService.addInstrument(instrument2);

@@ -3,6 +3,7 @@ package be.kdg.ip.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.awt.*;
 
 @Entity
 @Table(name ="instrument")
@@ -22,14 +23,23 @@ public class Instrument {
     private String type;
     @Column
     private String uitvoering;
+    @Lob
     @Column
-    private String afbeelding;
+    private byte[] afbeelding;
 
     public Instrument(){
 
     }
 
-    public Instrument(InstrumentSoort soort, String naam, String type, String uitvoering, String afbeelding) {
+    public Instrument(InstrumentSoort soort, String naam, String type, String uitvoering) {
+        this.soort = soort;
+        this.naam = naam;
+        this.type = type;
+        this.uitvoering = uitvoering;
+    }
+
+
+    public Instrument(InstrumentSoort soort, String naam, String type, String uitvoering, byte[] afbeelding) {
         this.soort = soort;
         this.naam = naam;
         this.type = type;
@@ -77,11 +87,11 @@ public class Instrument {
         this.uitvoering = uitvoering;
     }
 
-    public String getAfbeelding() {
+    public byte[] getAfbeelding() {
         return afbeelding;
     }
 
-    public void setAfbeelding(String afbeelding) {
+    public void setAfbeelding(byte[] afbeelding) {
         this.afbeelding = afbeelding;
     }
 }
