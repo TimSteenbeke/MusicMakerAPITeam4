@@ -18,12 +18,14 @@ public abstract class Role {
     @Id
     @GeneratedValue
     @Column
-    private String roleId;
+    private int roleId;
 
-    //@ManyToOne(targetEntity = User.class)
-    //@JoinColumn(name = "id")
-    @ManyToMany()
-    private List<User> users;
+    @Column(name = "RoleName", nullable = true, length = 255)
+    private String roleName;
 
     public abstract Collection<? extends GrantedAuthority> getAuthorities();
+
+    public Role(String roleName) {
+        this.roleName = roleName;
+    }
 }

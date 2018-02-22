@@ -1,13 +1,13 @@
 buildscript {
-	ext {
-		springBootVersion = '1.5.10.RELEASE'
-	}
-	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-	}
+    ext {
+        springBootVersion = '1.5.10.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
 }
 apply plugin: 'java'
 apply plugin: 'eclipse'
@@ -16,39 +16,35 @@ group = 'be.kdg'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-security')
-	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
-	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity4')
-	compile('net.sourceforge.nekohtml:nekohtml:1.9.22')
-	compile('org.webjars:webjars-locator-core:0.32')
-	compile('org.webjars:bootstrap:3.3.7')
-	//compile('org.webjars:jquery:3.2.1')
-	runtime('org.springframework.boot:spring-boot-devtools')
-	testCompile('org.springframework.boot:spring-boot-starter-test')
-	testCompile('org.springframework.security:spring-security-test')
+    compile('org.springframework.boot:spring-boot-starter-security')
+    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity4')
+    compile('net.sourceforge.nekohtml:nekohtml:1.9.22')
+    compile('org.webjars:webjars-locator-core:0.32')
+    compile('org.webjars:bootstrap:3.3.7')
+    //compile('org.webjars:jquery:3.2.1')
+    runtime('org.springframework.boot:spring-boot-devtools')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.springframework.security:spring-security-test')
 
+    //zelf toegevoegd
+    compile("com.h2database:h2")
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile('ma.glasnost.orika:orika-core:1.5.1')
 
-	//zelf toegevoegd
-	compile("com.h2database:h2")
-	compile("org.springframework.boot:spring-boot-starter-data-jpa")
-	compile('ma.glasnost.orika:orika-core:1.5.1')
+    //Localdatetime (makkelijkere integratie met kalender) zie: https://stackoverflow.com/questions/29956175/json-java-8-localdatetime-format-in-spring-boot
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.4.0")
 
-	//Localdatetime (makkelijkere integratie met kalender) zie: https://stackoverflow.com/questions/29956175/json-java-8-localdatetime-format-in-spring-boot
-	compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.4.0")
+    //REST API automatisch documenteren
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.7.0'
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.7.0'
 
-	//REST API automatisch documenteren
-	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.7.0'
-	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.7.0'
-
-
-
-
-
-
-
+    //security Java Web Tokenizer
+    compile group: 'org.springframework.security', name: 'spring-security-jwt', version: '1.0.7.RELEASE'
+    compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.1.0.RELEASE'
 
 }
