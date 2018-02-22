@@ -89,50 +89,30 @@ public class Initializer {
         }*/
     }
 
-    @PostConstruct
-    public void addDummyGroups(){
-        List<User> users = new ArrayList<>();
-        //List<User> users2 = new ArrayList<>();
-        User u1 = new User("lode.wouters@student.kdg.be", "password", "Lode", "Wouters", null);
-        User u2 = new User("test.test@student.kdg.be", "test", "test", "test", null);
-        User supervisor = new User("supervisor.sup@student.kdg.be", "supervisor", "super", "visor", null);
-
-        users.add(u1);
-        users.add(u2);
-        //users2.add(u2);
-
-        List<Group> groups = new ArrayList<>();
-        Group group1 = new Group("testGroup", supervisor, users);
-        //Group group2 = new Group("testGroup2", supervisor, users);
-
-        groups.add(group1);
-        //groups.add(group2);
-        for(Group group: groups){
-            groupService.addGroup(group);
-        }
-
-        /*for (User user: users) {
-            userService.addUser(user);
-        }
-
-        userService.addUser(supervisor);*/
-
-        //groupService.getGroup(1).setUsers(users);
-        //groupService.getGroup(1).setSupervisor(supervisor);
-        /*groupService.getGroup(2).setUsers(users2);
-        groupService.getGroup(2).setSupervisor(supervisor);*/
-
-    }
-
 
     @PostConstruct void addAgendaItems() throws UserServiceException {
         List<Role> roles = Arrays.asList(new Administrator());
         User jef = new User("jef","jefiscool","jef","jefferson",roles);
-        userService.addUser(jef);
+
 
 
         User tim = new User("tim","tim","brouwers","brouwersiscool",roles);
         userService.addUser(tim);
+
+        Group group = new Group();
+        group.setName("testGroup");
+        group.getUsers().add(jef);
+        group.setSupervisor(tim);
+        groupService.addGroup(group);
+
+        jef.getGroups().add(group);
+
+        userService.addUser(jef);
+
+
+
+
+
 
         Course course = new Course();
         course.setBeschrijving("Een muziekCOURSE");
@@ -174,6 +154,7 @@ public class Initializer {
         performanceService.addPerformance(performance);
         performanceService.addPerformance(performance2);
 
+
         agenda.getPerformances().add(performance);
         agenda.getPerformances().add(performance2);
         agendaService.saveAgenda(agenda);
@@ -182,7 +163,15 @@ public class Initializer {
 
         System.out.println("agenda items toegevoegd");
         System.out.println("ok");
-        System.out.println("test");
+
+
+        //GROUPS TOEVOEGEN
+
+
+
+
+
+
 
     }
 }

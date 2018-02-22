@@ -1,9 +1,6 @@
 package be.kdg.ip.services.impl;
 
-import be.kdg.ip.domain.Agenda;
-import be.kdg.ip.domain.Course;
-import be.kdg.ip.domain.Lesson;
-import be.kdg.ip.domain.User;
+import be.kdg.ip.domain.*;
 import be.kdg.ip.repositories.api.AgendaRepository;
 import be.kdg.ip.services.api.AgendaService;
 import be.kdg.ip.services.api.UserService;
@@ -77,6 +74,35 @@ public class AgendaServiceImpl implements AgendaService {
                 agendaRepository.save(agenda);
         }
 }
+
+    @Override
+    public void addPerformanceToEveryAgenda(Performance performance) {
+        //Get group from performance
+        Group group = performance.getGroup();
+
+        //create collection of users (empty)
+        List<User> users = new ArrayList<User>();
+
+        for (User user : group.getUsers()) {
+            if (!users.contains(user)) {
+                users.add(user);
+            }
+        }
+
+        User supervisor = group.getSupervisor();
+        if (supervisor != null) {
+            if (!users.contains(supervisor)) {
+                users.add(supervisor);
+            }
+        }
+
+        for (User user: users) {
+            Agenda agenda = user.getAgenda();
+            agenda.getPerformances().add(performance);
+            agendaRepository.save(agenda);
+        }
+
+    }
 
 
 }

@@ -1,4 +1,5 @@
 package be.kdg.ip.domain;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.springframework.security.core.GrantedAuthority;
@@ -6,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -32,7 +34,6 @@ public class User implements Serializable, UserDetails {
     private String password;
 
     @ManyToMany
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Group> groups;
 
     @ManyToMany(/*targetEntity = Role.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER,*/ mappedBy = "users")
@@ -44,9 +45,11 @@ public class User implements Serializable, UserDetails {
     private Agenda agenda;
 
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "teachers")
     private List<Course> teachescourses;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "students")
     private List<Course> courses;
 
@@ -54,6 +57,7 @@ public class User implements Serializable, UserDetails {
 
     public User(){
         this.agenda = new Agenda();
+        this.groups = new ArrayList<Group>();
     }
 
     public User(String username, String password, String firstname, String lastname, List<Role> roles) {
@@ -63,6 +67,7 @@ public class User implements Serializable, UserDetails {
         this.lastname = lastname;
         this.roles = roles;
         this.agenda = new Agenda();
+        this.groups = new ArrayList<Group>();
     }
 
     public String getId() {
@@ -167,6 +172,22 @@ public class User implements Serializable, UserDetails {
 
     public Agenda getAgenda() {
         return agenda;
+    }
+
+    public List<Course> getTeachescourses() {
+        return teachescourses;
+    }
+
+    public void setTeachescourses(List<Course> teachescourses) {
+        this.teachescourses = teachescourses;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
     }
 
     public void setAgenda(Agenda agenda) {

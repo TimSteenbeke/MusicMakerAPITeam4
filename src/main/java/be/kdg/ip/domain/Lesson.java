@@ -34,7 +34,6 @@ public class Lesson {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "lessons")
-   // @JoinTable(name="Agenda_lessons", joinColumns=@JoinColumn(name="lessons_lesson_id", referencedColumnName="lessonId"), inverseJoinColumns=@JoinColumn(name="Agendas_agenda_id", referencedColumnName="agendaId"))
     List<Agenda> agendas;
 
     public Lesson() {

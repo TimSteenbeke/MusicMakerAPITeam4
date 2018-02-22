@@ -47,6 +47,8 @@ public class MultiHttpSecurityConfig {
 
            // Om H2 in memory databank te bekijken op url localhost:port/console
             http.headers().frameOptions().disable();
+
+
         }
     }
 

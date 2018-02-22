@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
+@CrossOrigin(origins = "*")
 @RestController
 public class GroupController {
     private final GroupService groupService;
