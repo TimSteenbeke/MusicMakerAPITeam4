@@ -36,7 +36,7 @@ public class User implements Serializable, UserDetails {
     @ManyToMany
     private List<Group> groups;
 
-    @ManyToMany/*(*//*targetEntity = Role.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER,*//* mappedBy = "users")*/
+    @ManyToMany(/*targetEntity = Role.class , cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "users"*/)
     private List<Role> roles;
 
 

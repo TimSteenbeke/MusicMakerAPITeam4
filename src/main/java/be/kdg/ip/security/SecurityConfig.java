@@ -1,3 +1,4 @@
+/*
 package be.kdg.ip.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,3 +85,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return defaultTokenServices;
     }
 }
+*/

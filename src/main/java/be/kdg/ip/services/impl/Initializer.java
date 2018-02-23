@@ -74,47 +74,44 @@ public class Initializer {
     }
 
 
-    @PostConstruct
-    public void addDummyUser() throws UserServiceException {
-        roleService.addRole(new Administrator());
-        List<Role> roles = Arrays.asList(new Administrator());
-        User dummyUser = new User("lode.wouters@student.kdg.be", "password", "Lode", "Wouters", roles);
-
-        userService.addUser(dummyUser);
-
-
-        /*try {
-            userService.findUserByUsername("dummy@kdg.be");
-            System.out.println(userService.findUserByUsername("dummy@kdg.be").getRoles().get(0).toString());
-        } catch (UserServiceException use) {
-            List<Role> roles = Arrays.asList(new Administrator());
-            User dummyUser = new User("lode.wouters@student.kdg.be", "password", "Lode", "Wouters", null);
-
-            userService.addUser(dummyUser);
-
-
-        }*/
-    }
-
-
     @PostConstruct void addAgendaItems() throws UserServiceException {
-        roleService.addRole(new Teacher());
-        roleService.addRole(new Student());
-        List<Role> roles = Arrays.asList(new Teacher());
-        User jef = new User("jef","jefiscool","jef","jefferson",roles);
-        roles = Arrays.asList(new Student());
-        User tim = new User("tim","tim","brouwers","brouwersiscool",roles);
+       Role administrator = new Administrator();
+       roleService.addRole(administrator);
+       Role teacher = new Teacher();
+       roleService.addRole(teacher);
+       Role student = new Student();
+       roleService.addRole(student);
+
+        List<Role> rolesAdmin = new ArrayList<Role>();
+        rolesAdmin.add(administrator);
+        List<Role> rolesTeacher = new ArrayList<Role>();
+        rolesTeacher.add(teacher);
+        List<Role> rolesStudent = new ArrayList<Role>();
+        rolesStudent.add(student);
+        List<Role> rolesAll = new ArrayList<Role>();
+        rolesAll.add(administrator);
+        rolesAll.add(teacher);
+        rolesAll.add(student);
+
+
+        User jef = new User("jef","jefiscool","jef","jefferson",rolesAdmin);
+        User jos = new User("jos","josiscooler","jos","josserson",rolesStudent);
+        User tim = new User("tim","tim","brouwers","brouwersiscool",rolesTeacher);
         userService.addUser(tim);
+        User timS = new User("timS","tims","Tim","Steenbeke",rolesAll);
+        userService.addUser(timS);
 
         Group group = new Group();
         group.setName("testGroup");
         group.getUsers().add(jef);
+        group.getUsers().add(jos);
         group.setSupervisor(tim);
         groupService.addGroup(group);
 
         jef.getGroups().add(group);
 
         userService.addUser(jef);
+        userService.addUser(jos);
 
 
         Course course = new Course();

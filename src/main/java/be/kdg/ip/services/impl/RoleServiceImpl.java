@@ -32,22 +32,15 @@ public class RoleServiceImpl implements RoleService {
     }
 
 
-/*    @Override
-    public Role addRole(String roleName) {
-        if(roleName.toUpperCase().contains("ADMIN")){
-            return roleRepository.save(new Administrator());
-        } else if( roleName.toUpperCase().contains("STUDENT")){
-            return roleRepository.save(new Student());
-        } else if(roleName.toUpperCase().contains("TEACHER")){
-            return roleRepository.save(new Teacher());
-        } else {
-           return null;
-        }
-    }*/
-
     @Override
     public Role addRole(Role role) {
         return roleRepository.save(role);
+    }
+
+    @Override
+    public Role getRole(int roleId) {
+        Role role = roleRepository.findOne(roleId);
+        return role;
     }
 
 }
