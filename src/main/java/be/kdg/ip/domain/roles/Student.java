@@ -11,16 +11,15 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-public class Administrator extends Role {
+public class Student extends Role {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ADMIN"));
+        authorities.add(new SimpleGrantedAuthority("STUDENT"));
         return authorities;
     }
 
-    private String roleName = "ADMIN";
-
+    private String roleName = "STUDENT";
 }

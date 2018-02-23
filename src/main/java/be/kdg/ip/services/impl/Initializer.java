@@ -1,6 +1,8 @@
 package be.kdg.ip.services.impl;
 import be.kdg.ip.domain.*;
 import be.kdg.ip.domain.roles.Administrator;
+import be.kdg.ip.domain.roles.Student;
+import be.kdg.ip.domain.roles.Teacher;
 import be.kdg.ip.services.api.GroupService;
 import be.kdg.ip.services.api.InstrumentService;
 import be.kdg.ip.services.api.UserService;
@@ -48,6 +50,8 @@ public class Initializer {
     @Autowired
     private GroupService groupService;
 
+    @Autowired
+    private RoleService roleService;
 
     @PostConstruct
     public void addDummyInstruments() {
@@ -72,10 +76,13 @@ public class Initializer {
 
     @PostConstruct
     public void addDummyUser() throws UserServiceException {
+        roleService.addRole(new Administrator());
         List<Role> roles = Arrays.asList(new Administrator());
         User dummyUser = new User("lode.wouters@student.kdg.be", "password", "Lode", "Wouters", roles);
 
         userService.addUser(dummyUser);
+
+
         /*try {
             userService.findUserByUsername("dummy@kdg.be");
             System.out.println(userService.findUserByUsername("dummy@kdg.be").getRoles().get(0).toString());
@@ -91,11 +98,11 @@ public class Initializer {
 
 
     @PostConstruct void addAgendaItems() throws UserServiceException {
-        List<Role> roles = Arrays.asList(new Administrator());
+        roleService.addRole(new Teacher());
+        roleService.addRole(new Student());
+        List<Role> roles = Arrays.asList(new Teacher());
         User jef = new User("jef","jefiscool","jef","jefferson",roles);
-
-
-
+        roles = Arrays.asList(new Student());
         User tim = new User("tim","tim","brouwers","brouwersiscool",roles);
         userService.addUser(tim);
 
@@ -108,10 +115,6 @@ public class Initializer {
         jef.getGroups().add(group);
 
         userService.addUser(jef);
-
-
-
-
 
 
         Course course = new Course();
@@ -166,12 +169,5 @@ public class Initializer {
 
 
         //GROUPS TOEVOEGEN
-
-
-
-
-
-
-
     }
 }

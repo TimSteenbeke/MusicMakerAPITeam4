@@ -6,10 +6,6 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Created by wouter on 21.12.16.
- */
-
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="RoleType", discriminatorType = DiscriminatorType.STRING)
@@ -24,8 +20,4 @@ public abstract class Role {
     private String roleName;
 
     public abstract Collection<? extends GrantedAuthority> getAuthorities();
-
-    public Role(String roleName) {
-        this.roleName = roleName;
-    }
 }

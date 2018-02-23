@@ -28,8 +28,6 @@ public class DatasourceConfig {
         EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
         EmbeddedDatabase dataSource = builder
                 .setType(EmbeddedDatabaseType.H2)
-                .addScript("sql-scripts/schema.sql")
-                .addScript("sql-scripts/data.sql")
                 .build();
 
         return dataSource;
@@ -39,7 +37,7 @@ public class DatasourceConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Qualifier("datasource") DataSource ds) throws PropertyVetoException{
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactory.setDataSource(ds);
-        entityManagerFactory.setPackagesToScan(new String[]{"com.nouhoun.springboot.jwt.integration.domain"});
+        entityManagerFactory.setPackagesToScan(new String[]{"be.kdg.ip.domain"});
         JpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
         entityManagerFactory.setJpaVendorAdapter(jpaVendorAdapter);
         return entityManagerFactory;
