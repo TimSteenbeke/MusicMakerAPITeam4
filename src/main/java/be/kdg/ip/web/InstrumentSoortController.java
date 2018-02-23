@@ -5,6 +5,7 @@ import be.kdg.ip.domain.InstrumentSoort;
 import be.kdg.ip.services.api.InstrumentSoortService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -33,6 +34,7 @@ public class InstrumentSoortController {
 
     //1 InstrumentSoort opvragen
     @GetMapping("/{instrumentSoortId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<InstrumentSoort> findInstrumentById(@PathVariable int instrumentSoortId){
         InstrumentSoort instrumentSoort = instrumentSoortService.getInstrumentSoort(instrumentSoortId);
         return  new ResponseEntity<InstrumentSoort>(instrumentSoort,HttpStatus.OK);
@@ -47,6 +49,7 @@ public class InstrumentSoortController {
 
     //Een instrumentSoort verwijderen
     @PostMapping("/{instrumentSoortId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<InstrumentSoort> deleteInstrumentById(@PathVariable("instrumentSoortId") Integer instrumentSoortId){
 
         InstrumentSoort instrumentSoort = instrumentSoortService.getInstrumentSoort(instrumentSoortId);
@@ -63,6 +66,7 @@ public class InstrumentSoortController {
 
     //Een instrumentSoort updaten
     @RequestMapping(value = "/instrumentsoort/{id}", method = RequestMethod.PUT)
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<InstrumentSoort> updateUser(@PathVariable("id") int id, @RequestBody InstrumentSoort instrumentSoort) {
 
         instrumentSoort.setInstrumentSoortId(id);

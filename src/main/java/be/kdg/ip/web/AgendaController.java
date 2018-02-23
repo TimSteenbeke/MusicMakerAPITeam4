@@ -6,6 +6,7 @@ import be.kdg.ip.web.resources.AgendaResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 @RestController
@@ -18,6 +19,7 @@ public class AgendaController {
 
     @CrossOrigin(origins = "*")
     @RequestMapping(method = RequestMethod.GET,value ="/api/agenda/{agendaId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<AgendaResource> getAgenda(@PathVariable("agendaId") int agendaId) {
 
        Agenda agenda=agendaService.getAgendaById(agendaId);

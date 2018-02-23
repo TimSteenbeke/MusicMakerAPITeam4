@@ -1,3 +1,4 @@
+/*
 package be.kdg.ip.security;
 
 
@@ -13,9 +14,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+*/
 /**
  * Created by wouter on 21.12.16.
- */
+ *//*
+
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class MultiHttpSecurityConfig {
@@ -26,23 +29,27 @@ public class MultiHttpSecurityConfig {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
-     /*   auth.
+     */
+/*   auth.
                 userDetailsService(userService).
                 passwordEncoder(passwordEncoder());
         auth.inMemoryAuthentication().withUser("dummy@kdg.be").password("dummy").roles("Administrator");
-        */
+        *//*
+
     }
 
     @Configuration
     @Order(1)
     public static class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
         protected void configure(HttpSecurity http) throws Exception {
-           /* http
+           */
+/* http
                     .antMatcher("/JOS/**")
                     .authorizeRequests()
                     .anyRequest().hasRole("Administrator")
                     .and()
-                    .httpBasic(); */
+                    .httpBasic(); *//*
+
            http.csrf().disable();
 
            // Om H2 in memory databank te bekijken op url localhost:port/console
@@ -57,12 +64,14 @@ public class MultiHttpSecurityConfig {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-           /* http
+           */
+/* http
                     .authorizeRequests()
                     .anyRequest().authenticated()
                     .and()
                     .formLogin();
-                    */
+                    *//*
+
            http.csrf().disable();
             // Om H2 in memory databank te bekijken op url localhost:port/console
             http.headers().frameOptions().disable();
@@ -71,7 +80,8 @@ public class MultiHttpSecurityConfig {
 
 
 
-    /*
+    */
+/*
 
     @Configuration
     public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
@@ -106,10 +116,12 @@ public class MultiHttpSecurityConfig {
         }
 
     }
-    */
+    *//*
+
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
+*/

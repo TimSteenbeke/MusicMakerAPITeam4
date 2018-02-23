@@ -1,4 +1,3 @@
-/*
 package be.kdg.ip.security;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -51,4 +50,3 @@ public class DatasourceConfig {
         return transactionManager;
     }
 }
-*/
