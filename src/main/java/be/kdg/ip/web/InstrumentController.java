@@ -80,7 +80,7 @@ public class InstrumentController {
     }
 
     //Een instrument verwijderen
-    @PostMapping("/{instrumentId}")
+    @DeleteMapping("/{instrumentId}")
     public ResponseEntity<Instrument> deleteInstrumentById(@PathVariable("instrumentId") Integer instrumentId){
         Instrument instrument = instrumentService.getInstrument(instrumentId);
         instrumentService.removeInstrument(instrument.getInstrumentId());
