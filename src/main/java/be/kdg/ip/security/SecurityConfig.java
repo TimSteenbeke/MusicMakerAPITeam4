@@ -1,4 +1,3 @@
-/*
 package be.kdg.ip.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
@@ -33,6 +33,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${security.security-realm}")
     private String securityRealm;
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -60,7 +65,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf()
                 .disable();
-
     }
 
     @Bean
@@ -85,4 +89,3 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return defaultTokenServices;
     }
 }
-*/

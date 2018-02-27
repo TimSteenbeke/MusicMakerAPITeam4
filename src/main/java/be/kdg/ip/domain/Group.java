@@ -24,6 +24,7 @@ public class Group {
     //@Cascade(org.hibernate.annotations.CascadeType.ALL)
     private User supervisor;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "groups")
     private List<User> users;
 

@@ -1,4 +1,3 @@
-/*
 package be.kdg.ip.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,4 +33,3 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/springjwt/**" ).authenticated();
     }
 }
-*/

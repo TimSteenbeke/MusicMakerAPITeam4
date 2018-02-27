@@ -21,5 +21,4 @@ public class Student extends Role {
         return authorities;
     }
 
-    private String roleName = "STUDENT";
 }

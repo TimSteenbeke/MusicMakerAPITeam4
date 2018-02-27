@@ -21,6 +21,5 @@ public class Administrator extends Role {
         return authorities;
     }
 
-    private String roleName = "ADMIN";
 
 }

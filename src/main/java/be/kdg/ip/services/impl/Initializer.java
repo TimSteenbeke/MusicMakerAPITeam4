@@ -1,4 +1,5 @@
 package be.kdg.ip.services.impl;
+
 import be.kdg.ip.domain.*;
 import be.kdg.ip.domain.roles.Administrator;
 import be.kdg.ip.domain.roles.Student;
@@ -8,21 +9,14 @@ import be.kdg.ip.services.api.InstrumentService;
 import be.kdg.ip.services.api.UserService;
 import be.kdg.ip.services.api.*;
 import be.kdg.ip.services.exceptions.UserServiceException;
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
-/**
- * Created by wouter on 31.01.17.
- */
 @Service
 public class Initializer {
 
@@ -64,23 +58,23 @@ public class Initializer {
         instrumentSoortService.addInstrumentSoort(instrumentSoort2);
         instrumentSoortService.addInstrumentSoort(instrumentSoort3);
 
-        Instrument instrument = new Instrument(instrumentSoort,"Drum","drummen","Tim");
-        Instrument instrument2 = new Instrument(instrumentSoort2,"Trompet","Tim","Tim");
-        Instrument instrument3 = new Instrument(instrumentSoort3,"Tim","Tim","Tim");
+        Instrument instrument = new Instrument(instrumentSoort, "Drum", "drummen", "Tim");
+        Instrument instrument2 = new Instrument(instrumentSoort2, "Trompet", "Tim", "Tim");
+        Instrument instrument3 = new Instrument(instrumentSoort3, "Tim", "Tim", "Tim");
 
         instrumentService.addInstrument(instrument);
         instrumentService.addInstrument(instrument2);
         instrumentService.addInstrument(instrument3);
     }
 
-
-    @PostConstruct void addAgendaItems() throws UserServiceException {
-       Role administrator = new Administrator();
-       roleService.addRole(administrator);
-       Role teacher = new Teacher();
-       roleService.addRole(teacher);
-       Role student = new Student();
-       roleService.addRole(student);
+    @PostConstruct
+    void addAgendaItems() throws UserServiceException {
+        Role administrator = new Administrator();
+        roleService.addRole(administrator);
+        Role teacher = new Teacher();
+        roleService.addRole(teacher);
+        Role student = new Student();
+        roleService.addRole(student);
 
         List<Role> rolesAdmin = new ArrayList<Role>();
         rolesAdmin.add(administrator);
@@ -94,11 +88,11 @@ public class Initializer {
         rolesAll.add(student);
 
 
-        User jef = new User("jef","jefiscool","jef","jefferson",rolesAdmin);
-        User jos = new User("jos","josiscooler","jos","josserson",rolesStudent);
-        User tim = new User("tim","tim","brouwers","brouwersiscool",rolesTeacher);
+        User jef = new User("jef", "jefiscool", "jef", "jefferson", rolesAdmin);
+        User jos = new User("jos", "josiscooler", "jos", "josserson", rolesStudent);
+        User tim = new User("tim", "tim", "brouwers", "brouwersiscool", rolesTeacher);
         userService.addUser(tim);
-        User timS = new User("timS","tims","Tim","Steenbeke",rolesAll);
+        User timS = new User("timS", "tims", "Tim", "Steenbeke", rolesAll);
         userService.addUser(timS);
 
         Group group = new Group();
@@ -119,7 +113,6 @@ public class Initializer {
         course.setPrijs(20);
 
 
-
         Agenda agenda = jef.getAgenda();
 
         LocalDateTime vandaag = LocalDateTime.now();
@@ -133,13 +126,11 @@ public class Initializer {
         courseService.addCourse(course);
 
 
-
         lesson.setCourse(course);
-        lessonService.addLesson(agenda,lesson);
+        lessonService.addLesson(agenda, lesson);
 
         Performance performance = new Performance();
         performance.setBeschrijving("een beschrijving van een optreden");
-
 
 
         performance.setStartDateTime(vandaag);
@@ -158,7 +149,6 @@ public class Initializer {
         agenda.getPerformances().add(performance);
         agenda.getPerformances().add(performance2);
         agendaService.saveAgenda(agenda);
-
 
 
         System.out.println("agenda items toegevoegd");

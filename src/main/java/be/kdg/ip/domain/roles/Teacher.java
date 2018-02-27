@@ -20,6 +20,4 @@ public class Teacher extends Role {
         authorities.add(new SimpleGrantedAuthority("TEACHER"));
         return authorities;
     }
-
-    private String roleName = "TEACHER";
 }
