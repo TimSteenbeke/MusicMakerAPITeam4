@@ -46,7 +46,7 @@ public class InstrumentController {
 
     //1 Instrument opvragen
     @GetMapping("/{instrumentId}")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<Instrument> findInstrumentById(@PathVariable int instrumentId){
         Instrument instrument = instrumentService.getInstrument(instrumentId);
         //InstrumentResource instrumentResource = instrumentAssembler.toResource(instrument);
@@ -63,7 +63,7 @@ public class InstrumentController {
 
     //Een instrument verwijderen
     @PostMapping("/{instrumentId}")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<Instrument> deleteInstrumentById(@PathVariable("instrumentId") Integer instrumentId){
         Instrument instrument = instrumentService.getInstrument(instrumentId);
         instrumentService.removeInstrument(instrument.getInstrumentId());
@@ -73,7 +73,7 @@ public class InstrumentController {
 
     //Een instrument updaten
     @RequestMapping(value = "/instrument/{id}", method = RequestMethod.PUT)
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<Instrument> updateUser(@PathVariable("id") int id, @RequestBody InstrumentUpdateResource instrumentUpdateResource) {
 
 
