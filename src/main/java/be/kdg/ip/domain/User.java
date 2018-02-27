@@ -22,7 +22,7 @@ public class User implements Serializable, UserDetails {
     @Id
     @GeneratedValue
     @Column(name="UserId",nullable = false)
-    private String id;
+    private int id;
 
     @Column(name = "Username", nullable = true, length = 255)
     private String username;
@@ -70,11 +70,11 @@ public class User implements Serializable, UserDetails {
         this.groups = new ArrayList<Group>();
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -155,19 +155,15 @@ public class User implements Serializable, UserDetails {
         return true;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        User user = (User) o;
-
-        return id != null ? id.equals(user.id) : user.id == null;
-    }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
 
     public Agenda getAgenda() {
