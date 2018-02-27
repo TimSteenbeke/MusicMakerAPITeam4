@@ -30,7 +30,7 @@ public class InstrumentController {
     private final InstrumentUpdateAssembler instrumentUpdateAssembler;
     private InstrumentSoortService instrumentSoortService;
 
-    public InstrumentController(InstrumentService instrumentService, MapperFacade mapperFacade,InstrumentAssembler instrumentAssembler, InstrumentUpdateAssembler instrumentUpdateAssembler, InstrumentSoortService instrumentSoortService){
+    public InstrumentController(InstrumentService instrumentService, MapperFacade mapperFacade, InstrumentAssembler instrumentAssembler, InstrumentUpdateAssembler instrumentUpdateAssembler, InstrumentSoortService instrumentSoortService) {
         this.instrumentService = instrumentService;
         this.mapperFacade = mapperFacade;
         this.instrumentAssembler = instrumentAssembler;
@@ -52,7 +52,7 @@ public class InstrumentController {
         String imageString = instrumentResource.getAfbeelding();
 
         try {
-           // byte[] name = Base64.getEncoder().encode("hello world".getBytes());
+            // byte[] name = Base64.getEncoder().encode("hello world".getBytes());
             byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
             in.setAfbeelding(decodedString);
         } catch (UnsupportedEncodingException e) {
@@ -61,34 +61,30 @@ public class InstrumentController {
 
         Instrument out = instrumentService.addInstrument(in);
 
-        return  new ResponseEntity<>(instrumentAssembler.toResource(out), HttpStatus.OK);
+        return new ResponseEntity<>(instrumentAssembler.toResource(out), HttpStatus.OK);
     }
 
     //1 Instrument opvragen
     @GetMapping("/{instrumentId}")
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<Instrument> findInstrumentById(@PathVariable int instrumentId){
+    public ResponseEntity<Instrument> findInstrumentById(@PathVariable int instrumentId) {
         Instrument instrument = instrumentService.getInstrument(instrumentId);
         //InstrumentResource instrumentResource = instrumentAssembler.toResource(instrument);
-        return  new ResponseEntity<Instrument>(instrument,HttpStatus.OK);
+        return new ResponseEntity<Instrument>(instrument, HttpStatus.OK);
     }
 
     //Alle instrumenten opvragen
     @GetMapping
     @CrossOrigin(origins = "*")
-    public ResponseEntity<List<Instrument>> findAll(){
+    public ResponseEntity<List<Instrument>> findAll() {
         List<Instrument> instruments = instrumentService.getAllInstruments();
-        return new ResponseEntity<>(instruments,HttpStatus.OK);
+        return new ResponseEntity<>(instruments, HttpStatus.OK);
     }
 
     //Een instrument verwijderen
-<<<<<<< HEAD
-    @PostMapping("/{instrumentId}")
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-=======
     @DeleteMapping("/{instrumentId}")
->>>>>>> master
-    public ResponseEntity<Instrument> deleteInstrumentById(@PathVariable("instrumentId") Integer instrumentId){
+    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    public ResponseEntity<Instrument> deleteInstrumentById(@PathVariable("instrumentId") Integer instrumentId) {
         Instrument instrument = instrumentService.getInstrument(instrumentId);
         instrumentService.removeInstrument(instrument.getInstrumentId());
 
@@ -97,14 +93,8 @@ public class InstrumentController {
 
     //Een instrument updaten
     @RequestMapping(value = "/instrument/{id}", method = RequestMethod.PUT)
-<<<<<<< HEAD
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<Instrument> updateUser(@PathVariable("id") int id, @RequestBody InstrumentUpdateResource instrumentUpdateResource) {
-=======
     public ResponseEntity<InstrumentUpdateResource> updateUser(@PathVariable("id") int id, @RequestBody InstrumentUpdateResource instrumentUpdateResource) {
->>>>>>> master
-
-
         //Instrument in = mapperFacade.map(instrumentUpdateResource,Instrument.class);
         Instrument in = new Instrument();
         in.setSoort(instrumentSoortService.getInstrumentSoort(instrumentUpdateResource.getInstrumentsoortid()));
@@ -126,6 +116,6 @@ public class InstrumentController {
         Instrument out = instrumentService.updateInstrument(in);
 
 
-        return  new ResponseEntity<>(instrumentUpdateAssembler.toResource(out), HttpStatus.OK);
+        return new ResponseEntity<>(instrumentUpdateAssembler.toResource(out), HttpStatus.OK);
     }
 }
