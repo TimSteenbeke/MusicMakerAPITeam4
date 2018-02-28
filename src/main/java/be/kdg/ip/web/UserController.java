@@ -5,6 +5,7 @@ import be.kdg.ip.services.api.UserService;
 import be.kdg.ip.services.exceptions.UserServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,7 +20,7 @@ public class UserController {
 
     //1 User opvragen
     @GetMapping("/{userName}")
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<User> findUserByUserId(@PathVariable String userName) throws UserServiceException {
         User user= userService.findUserByUsername(userName);
         return new ResponseEntity<User>(user, HttpStatus.OK);
