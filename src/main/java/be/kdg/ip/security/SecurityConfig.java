@@ -1,5 +1,6 @@
 package be.kdg.ip.security;
 
+import be.kdg.ip.services.api.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -40,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UserService userDetailsService;
 
     @Bean
     @Override
