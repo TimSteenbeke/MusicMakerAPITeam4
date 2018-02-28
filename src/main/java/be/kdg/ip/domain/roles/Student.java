@@ -20,5 +20,4 @@ public class Student extends Role {
         authorities.add(new SimpleGrantedAuthority("STUDENT"));
         return authorities;
     }
-
 }
