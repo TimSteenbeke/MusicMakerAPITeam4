@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.xml.ws.Response;
+import java.security.Principal;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -49,9 +50,10 @@ public class LessonController {
 
 
     @RequestMapping(method = RequestMethod.POST, value="/api/absentlesson/{lessonid}")
-    public ResponseEntity registerUserAbsent(@PathVariable("lessonid")  int lessonId) {
+    public ResponseEntity registerUserAbsent(@PathVariable("lessonid")  int lessonId, Principal principal) {
         //Get user object from authentication token
        //User student = generiekegetuserfromtokenfunctieenshizzle(tokenkomthier);
+        principal.getName();
         //Get the reffered lesson
       //  Lesson lesson = lessonService.getLesson(lessonId);
 
