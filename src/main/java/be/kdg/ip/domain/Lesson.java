@@ -32,12 +32,36 @@ public class Lesson {
     @ManyToOne
     private Course course;
 
+    @ManyToMany
+    private List<User> absentStudents;
+
+    @ManyToMany
+    private List<User> presentStudents;
+
     @JsonIgnore
     @ManyToMany(mappedBy = "lessons")
     List<Agenda> agendas;
 
+    public List<User> getAbsentStudents() {
+        return absentStudents;
+    }
+
+    public void setAbsentStudents(List<User> absentStudents) {
+        this.absentStudents = absentStudents;
+    }
+
+    public List<User> getPresentStudents() {
+        return presentStudents;
+    }
+
+    public void setPresentStudents(List<User> presentStudents) {
+        this.presentStudents = presentStudents;
+    }
+
     public Lesson() {
         this.agendas = new ArrayList<Agenda>();
+        this.absentStudents = new ArrayList<User>();
+        this.presentStudents = new ArrayList<User>();
     }
 
     public LocalDateTime getStartDateTime() {

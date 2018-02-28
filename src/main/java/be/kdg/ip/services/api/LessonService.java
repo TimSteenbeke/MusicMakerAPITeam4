@@ -8,4 +8,5 @@ import org.springframework.stereotype.Service;
 public interface LessonService {
     void addLesson(Agenda agenda, Lesson lesson);
     void addLesson(Lesson lesson);
+    Lesson getLesson(int lessonId);
 }
