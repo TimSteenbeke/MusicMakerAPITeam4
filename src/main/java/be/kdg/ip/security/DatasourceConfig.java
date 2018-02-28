@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -23,15 +24,23 @@ import java.beans.PropertyVetoException;
 @EnableJpaRepositories(basePackages = "be.kdg.ip.repositories.api")
 public class DatasourceConfig {
 
-/*    @Bean
-    public DataSource datasource() throws PropertyVetoException {
-        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-        EmbeddedDatabase dataSource = builder
-                .setType(EmbeddedDatabaseType.H2)
-                .build();
-
+    /*    @Bean
+        public DataSource datasource() throws PropertyVetoException {
+            EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
+            EmbeddedDatabase dataSource = builder
+                    .setType(EmbeddedDatabaseType.H2)
+                    .build();
+            return dataSource;
+        }*/
+    @Bean
+    public DataSource datasource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("org.h2.Driver");
+        dataSource.setUrl("jdbc:h2:mem:team4;DB_CLOSE_DELAY=-1");
+        dataSource.setUsername("sa");
+        dataSource.setPassword("");
         return dataSource;
-    }*/
+    }
 
 /*    @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Qualifier("datasource") DataSource ds) throws PropertyVetoException {

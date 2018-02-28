@@ -25,13 +25,13 @@ public class GroupController {
     }
 
     @GetMapping("/api/groups/{groupId}")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public Group getGroup(@PathVariable int groupId){
         return this.groupService.getGroup(groupId);
     }
 
     @GetMapping("/api/groups/{userId}/user}")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public Collection<Group> getGroupsByUser(@PathVariable int userId) {
         User user = this.userService.findUser(userId);
 
@@ -39,7 +39,7 @@ public class GroupController {
     }
 
     @PostMapping("/groups")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public void postNewGroup(@RequestBody Group group){
         if(group != null){
             groupService.addGroup(group);
@@ -47,7 +47,7 @@ public class GroupController {
     }
 
     @PostMapping("/groups/user")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public void postNewUserToGroup(@RequestBody GroupUserDto groupUserDto){
         List<User> users = groupUserDto.getUsers();
         groupService.addUsersToGroup(groupUserDto.getGroup(), users);
