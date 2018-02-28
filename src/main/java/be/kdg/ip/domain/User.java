@@ -1,7 +1,5 @@
 package be.kdg.ip.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.Fetch;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -11,9 +9,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Created by wouter on 30.01.17.
- */
 
 @Entity
 @Table
@@ -36,7 +31,7 @@ public class User implements Serializable, UserDetails {
     @ManyToMany
     private List<Group> groups;
 
-    @ManyToMany(/*targetEntity = Role.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER,*/ mappedBy = "users")
+    @ManyToMany(/*targetEntity = Role.class , cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "users"*/)
     private List<Role> roles;
 
 
