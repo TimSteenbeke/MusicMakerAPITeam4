@@ -19,7 +19,8 @@ public class CourseController {
     }
 
     @RequestMapping(method = RequestMethod.GET,value ="api/courses")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    //ToDo: Authorization fix: courses
+    // @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public List<Course> getCourses() {
         return courseService.getAllCourses();
     }

@@ -29,7 +29,8 @@ public class LessonController {
 
     //@CrossOrigin(origins = "*")
     @RequestMapping(method = RequestMethod.POST,value ="/api/lesson")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    //ToDo: Authorization fix: lesson post
+    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<LessonResource> addLesson(@Valid @RequestBody LessonResource lessonResource) {
 
         //Lesson aanmaken based op lessonResource
