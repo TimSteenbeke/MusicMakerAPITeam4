@@ -11,9 +11,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Created by wouter on 30.01.17.
- */
 
 @Entity
 @Table
