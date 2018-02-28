@@ -53,19 +53,25 @@ public class AgendaServiceImpl implements AgendaService {
         List<User> users = new ArrayList<User>();
 
         //loop over group,teachers, students and add UNIQUE Users
-            // TODO: implement group feature
-            //loop teachers
+        // TODO: implement group feature
+        //loop teachers
+        if (course.getTeachers() != null) {
             for (User teacher : course.getTeachers()) {
                 if (!users.contains(teacher)) {
                     users.add(teacher);
                 }
             }
+        }
             //loop students
-            for (User student : course.getStudents()) {
-                if (!users.contains(student)) {
-                    users.add(student);
+            if (course.getStudents() != null) {
+                for (User student : course.getStudents()) {
+                    if (!users.contains(student)) {
+                        users.add(student);
+                    }
                 }
             }
+
+
 
         //Loop over collection of users and add lesson to their agenda
         for (User user : users) {
