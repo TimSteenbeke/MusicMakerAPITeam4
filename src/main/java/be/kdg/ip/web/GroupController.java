@@ -25,12 +25,8 @@ public class GroupController {
     }
 
     @GetMapping("/api/groups/{groupId}")
-<<<<<<< HEAD
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-=======
     //ToDo: Authorization fix: group get by id
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
->>>>>>> 47f213e4c1860aff1664f5910820f7f2aaf32c48
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public Group getGroup(@PathVariable int groupId){
         return this.groupService.getGroup(groupId);
     }
