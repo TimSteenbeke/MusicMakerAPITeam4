@@ -32,15 +32,12 @@ public class UserController {
     //returned voorlopig nog User maar dit moet jwt token worden (denk ik?) dat terug doorgegeven wordt naar browser
     @PostMapping("/login")
     public ResponseEntity<User> checkUser(@Valid @RequestBody UserResource userResource) throws UserServiceException {
-        User in = new User();
-        in.setUsername(userResource.getUsername());
-        in.setPassword(userResource.getPassword());
-        User checkedUser = userService.findUserByUsername(in.getUsername());
+        User checkedUser = userService.findUserByUsername(userResource.getUsername());
         if (checkedUser != null) {
             if(checkedUser.getPassword().equals(userResource.getPassword())) {
-                return new ResponseEntity<User>(in, HttpStatus.OK);
+                return new ResponseEntity<User>(checkedUser, HttpStatus.OK);
             }
         }
-        return new ResponseEntity<User>(in, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<User>(checkedUser, HttpStatus.FORBIDDEN);
     }
 }
