@@ -6,6 +6,8 @@ import be.kdg.ip.services.api.GroupService;
 import be.kdg.ip.services.api.UserService;
 import be.kdg.ip.web.dto.GroupUserDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +40,12 @@ public class GroupController {
         User user = this.userService.findUser(userId);
 
         return user.getGroups();
+    }
+
+    @GetMapping("/api/groups")
+    public ResponseEntity<List<Group>> findAll(){
+        List<Group> groups = groupService.getAllGroups();
+        return new ResponseEntity<List<Group>>(groups, HttpStatus.OK);
     }
 
     @PostMapping("/groups")

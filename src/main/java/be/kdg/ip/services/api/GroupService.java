@@ -15,4 +15,6 @@ public interface GroupService {
     Group getGroup(int groupId);
 
     List<User> getAllUsers(int groupId);
+
+    List<Group> getAllGroups();
 }
