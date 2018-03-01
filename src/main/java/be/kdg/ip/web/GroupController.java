@@ -30,6 +30,12 @@ public class GroupController {
         this.userService = userService;
     }
 
+    @GetMapping("/allgroups")
+    public ResponseEntity<List<Group>> findAll(){
+        List<Group> groups = groupService.getAllGroups();
+        return new ResponseEntity<List<Group>>(groups, HttpStatus.OK);
+    }
+
     @PostMapping
     //ToDo: Authorization fix: group post
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")

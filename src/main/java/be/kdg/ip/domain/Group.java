@@ -24,6 +24,7 @@ public class Group {
     //@Cascade(org.hibernate.annotations.CascadeType.ALL)
     private User supervisor;
 
+    //voor jsonignore moet nog andere oplossing gezocht worden? users worden niet opgeslagen nu...
     @JsonIgnore
     @ManyToMany(mappedBy = "groups")
     private List<User> users;

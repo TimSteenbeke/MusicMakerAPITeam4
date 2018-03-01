@@ -19,4 +19,6 @@ public interface GroupService {
     Group updateGroup(Group group);
 
     void removeGroup(int groupId);
+
+    List<Group> getAllGroups();
 }

@@ -107,6 +107,15 @@ public class Initializer {
         userService.addUser(jef);
         userService.addUser(jos);
 
+        Group group2 = new Group();
+        group2.setName("testGroup2");
+        group2.setSupervisor(jef);
+        List<User> users = new ArrayList<>();
+        users.add(tim);
+        users.add(jos);
+        group2.setUsers(users);
+        groupService.addGroup(group2);
+
 
         Course course = new Course();
         course.setBeschrijving("Een muziekCOURSE");
