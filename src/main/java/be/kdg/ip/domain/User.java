@@ -1,7 +1,5 @@
 package be.kdg.ip.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.Fetch;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -11,9 +9,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Created by wouter on 30.01.17.
- */
 
 @Entity
 @Table
@@ -22,7 +17,7 @@ public class User implements Serializable, UserDetails {
     @Id
     @GeneratedValue
     @Column(name="UserId",nullable = false)
-    private String id;
+    private int id;
 
     @Column(name = "Username", nullable = true, length = 255)
     private String username;
@@ -36,7 +31,7 @@ public class User implements Serializable, UserDetails {
     @ManyToMany
     private List<Group> groups;
 
-    @ManyToMany(/*targetEntity = Role.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER,*/ mappedBy = "users")
+    @ManyToMany(/*targetEntity = Role.class , cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "users"*/)
     private List<Role> roles;
 
 
@@ -70,11 +65,11 @@ public class User implements Serializable, UserDetails {
         this.groups = new ArrayList<Group>();
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -155,19 +150,15 @@ public class User implements Serializable, UserDetails {
         return true;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        User user = (User) o;
-
-        return id != null ? id.equals(user.id) : user.id == null;
-    }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
 
     public Agenda getAgenda() {

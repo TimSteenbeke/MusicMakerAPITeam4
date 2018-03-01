@@ -9,6 +9,7 @@ import be.kdg.ip.web.resources.PerformanceResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,6 +27,8 @@ public class PerformanceController {
     GroupService groupService;
 
     @RequestMapping(method = RequestMethod.POST,value ="/api/performance")
+    //ToDo: Authorization fix: performance post
+    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<PerformanceResource> addLesson(@Valid @RequestBody PerformanceResource performanceResource) {
 
         //performance aanmaken based op perforamnceresource

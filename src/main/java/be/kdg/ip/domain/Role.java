@@ -4,11 +4,6 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.List;
-
-/**
- * Created by wouter on 21.12.16.
- */
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -18,12 +13,17 @@ public abstract class Role {
     @Id
     @GeneratedValue
     @Column
-    private String roleId;
+    private int roleId;
 
-    //@ManyToOne(targetEntity = User.class)
-    //@JoinColumn(name = "id")
-    @ManyToMany()
-    private List<User> users;
 
     public abstract Collection<? extends GrantedAuthority> getAuthorities();
+
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
+
 }
