@@ -18,9 +18,17 @@ public interface UserService extends UserDetailsService {
 
     User addUser(User user);
 
+    List<User> getUsers();
+
+    User findUser(int userId);
+
     User findUserByUsername(String username) throws UserServiceException;
+
+    User updateUser(User user);
+
+    void deleteUser(int userId);
 
     boolean checkLogin(String username, String password);
 
-    User findUser(int userId);
+
 }

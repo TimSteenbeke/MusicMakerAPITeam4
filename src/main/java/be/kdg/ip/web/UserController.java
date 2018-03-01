@@ -26,4 +26,5 @@ public class UserController {
         User user= userService.findUserByUsername(userName);
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
+
 }
