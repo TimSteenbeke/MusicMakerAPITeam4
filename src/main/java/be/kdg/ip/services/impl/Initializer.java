@@ -48,7 +48,6 @@ public class Initializer {
     @Autowired
     private GroupService groupService;
 
-
     @PostConstruct
     public void addDummyInstruments() {
 
@@ -68,7 +67,6 @@ public class Initializer {
         instrumentService.addInstrument(instrument2);
         instrumentService.addInstrument(instrument3);
     }
-
 
     @PostConstruct
     public void addDummyUser() throws UserServiceException {
