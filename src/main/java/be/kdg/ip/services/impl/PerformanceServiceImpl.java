@@ -15,4 +15,10 @@ public class PerformanceServiceImpl implements PerformanceService {
     public void addPerformance(Performance performance) {
         performanceRepository.save(performance);
     }
+
+    @Override
+    public Performance getPerformance(int performanceId) {
+        return performanceRepository.findOne(performanceId);
+    }
+
 }

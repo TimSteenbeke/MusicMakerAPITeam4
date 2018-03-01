@@ -38,4 +38,16 @@ public class GroupServiceImpl implements GroupService {
     public List<User> getAllUsers(int groupId) {
         return groupRepository.findOne(groupId).getUsers();
     }
+
+    @Override
+    public Group updateGroup(Group group) {
+        return groupRepository.save(group);
+    }
+
+    @Override
+    public void removeGroup(int groupId) {
+        Group group = groupRepository.findOne(groupId);
+
+        groupRepository.delete(group);
+    }
 }

@@ -15,4 +15,8 @@ public interface GroupService {
     Group getGroup(int groupId);
 
     List<User> getAllUsers(int groupId);
+
+    Group updateGroup(Group group);
+
+    void removeGroup(int groupId);
 }

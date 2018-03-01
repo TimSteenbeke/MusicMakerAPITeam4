@@ -4,4 +4,5 @@ import be.kdg.ip.domain.Performance;
 
 public interface PerformanceService {
     void addPerformance(Performance performance);
+    Performance getPerformance(int performanceId);
 }
