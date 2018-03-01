@@ -27,7 +27,8 @@ public class PerformanceController {
     GroupService groupService;
 
     @RequestMapping(method = RequestMethod.POST,value ="/api/performance")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    //ToDo: Authorization fix: performance post
+    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<PerformanceResource> addLesson(@Valid @RequestBody PerformanceResource performanceResource) {
 
         //performance aanmaken based op perforamnceresource

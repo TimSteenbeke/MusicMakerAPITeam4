@@ -19,7 +19,8 @@ public class AgendaController {
 
     @CrossOrigin(origins = "*")
     @RequestMapping(method = RequestMethod.GET,value ="/api/agenda/{agendaId}")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    //ToDo: Authorization fix: Agenda
+    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<AgendaResource> getAgenda(@PathVariable("agendaId") int agendaId) {
 
        Agenda agenda=agendaService.getAgendaById(agendaId);

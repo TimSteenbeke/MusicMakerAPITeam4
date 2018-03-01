@@ -6,6 +6,7 @@ import be.kdg.ip.services.exceptions.UserServiceException;
 import be.kdg.ip.web.resources.UserResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -22,6 +23,7 @@ public class UserController {
 
     //1 User opvragen
     @GetMapping("/{userName}")
+    //ToDo: Authorization fix: user get
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<User> findUserByUserId(@PathVariable String userName) throws UserServiceException {
         User user = userService.findUserByUsername(userName);
