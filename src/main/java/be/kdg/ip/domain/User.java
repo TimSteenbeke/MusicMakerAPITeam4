@@ -52,7 +52,8 @@ public class User implements Serializable, UserDetails {
 
     public User(){
         this.agenda = new Agenda();
-        this.groups = new ArrayList<Group>();
+        this.groups = new ArrayList<>();
+        this.courses= new ArrayList<>();
     }
 
     public User(String username, String password, String firstname, String lastname, List<Role> roles) {
