@@ -1,18 +1,11 @@
 package be.kdg.ip.services.api;
 
-
-import be.kdg.ip.domain.Group;
 import be.kdg.ip.domain.Role;
 import be.kdg.ip.domain.User;
-import be.kdg.ip.repositories.api.UserRepository;
 import be.kdg.ip.services.exceptions.UserServiceException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 
 /**

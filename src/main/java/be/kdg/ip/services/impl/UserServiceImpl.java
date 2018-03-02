@@ -28,12 +28,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoderdEncoder) {
-        this.userRepository = userRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoderdEncoder;
 
-    }
 
     public User addUser(String username, String password, String firstName, String lastName, List<Role> roles) {
         return userRepository.save(new User(username,password,firstName,lastName,roles));
