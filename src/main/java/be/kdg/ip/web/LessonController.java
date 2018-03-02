@@ -47,6 +47,8 @@ public class LessonController {
         //Voor iedere User in Course van les ( les toevoegen aan agenda van user) = Best aparte service voor maken
         agendaService.addLessonToEveryAgenda(lesson);
 
+        //Heroku rebuild
+
 
         return  new ResponseEntity<>(lessonResource, HttpStatus.OK);
     }
