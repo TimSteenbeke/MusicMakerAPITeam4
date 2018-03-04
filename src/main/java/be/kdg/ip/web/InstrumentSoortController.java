@@ -25,7 +25,7 @@ public class InstrumentSoortController {
     //Aanmaken van een instrument
     @PostMapping
     //ToDo: Authorization fix: instrumentsoort create
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<InstrumentSoort> createInstrument(@Valid @RequestBody InstrumentSoort instrumentSoort) {
 
         InstrumentSoort out = instrumentSoortService.addInstrumentSoort(instrumentSoort);
@@ -37,7 +37,7 @@ public class InstrumentSoortController {
     //1 InstrumentSoort opvragen
     @GetMapping("/{instrumentSoortId}")
     //ToDo: Authorization fix: instrumentsoort get
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<InstrumentSoort> findInstrumentById(@PathVariable int instrumentSoortId){
         InstrumentSoort instrumentSoort = instrumentSoortService.getInstrumentSoort(instrumentSoortId);
         return  new ResponseEntity<InstrumentSoort>(instrumentSoort,HttpStatus.OK);
@@ -46,7 +46,7 @@ public class InstrumentSoortController {
     @GetMapping
     @CrossOrigin(origins = "*")
     //ToDo: Authorization fix: instrumentsoort get all
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<List<InstrumentSoort>> findAll(){
         List<InstrumentSoort> instrumentSoortList = instrumentSoortService.getAllInstrumentSoorten();
         return new ResponseEntity<>(instrumentSoortList, HttpStatus.OK);
@@ -55,7 +55,7 @@ public class InstrumentSoortController {
     //Een instrumentSoort verwijderen
     @PostMapping("/{instrumentSoortId}")
     //ToDo: Authorization fix: instrumentsoort delete
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<InstrumentSoort> deleteInstrumentById(@PathVariable("instrumentSoortId") Integer instrumentSoortId){
 
         InstrumentSoort instrumentSoort = instrumentSoortService.getInstrumentSoort(instrumentSoortId);
@@ -73,7 +73,7 @@ public class InstrumentSoortController {
     //Een instrumentSoort updaten
     @RequestMapping(value = "/instrumentsoort/{id}", method = RequestMethod.PUT)
     //ToDo: Authorization fix: instrumentsoort update
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<InstrumentSoort> updateUser(@PathVariable("id") int id, @RequestBody InstrumentSoort instrumentSoort) {
 
         instrumentSoort.setInstrumentSoortId(id);
