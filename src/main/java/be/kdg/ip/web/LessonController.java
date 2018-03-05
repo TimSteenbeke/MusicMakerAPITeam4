@@ -6,6 +6,9 @@ import be.kdg.ip.domain.User;
 import be.kdg.ip.services.api.AgendaService;
 import be.kdg.ip.services.api.CourseService;
 import be.kdg.ip.services.api.LessonService;
+import be.kdg.ip.services.api.UserService;
+import be.kdg.ip.services.exceptions.UserServiceException;
+import be.kdg.ip.web.dto.StatusDTO;
 import be.kdg.ip.web.resources.LessonResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +31,9 @@ public class LessonController {
 
     @Autowired
     AgendaService agendaService;
+
+    @Autowired
+    UserService userService;
 
     //@CrossOrigin(origins = "*")
     @RequestMapping(method = RequestMethod.POST,value ="/api/lesson")
@@ -52,18 +58,67 @@ public class LessonController {
     }
 
 
-    @RequestMapping(method = RequestMethod.POST, value="/api/absentlesson/{lessonid}")
+    @RequestMapping(method = RequestMethod.POST, value="/api/lesson/absent/{lessonid}")
     public ResponseEntity registerUserAbsent(@PathVariable("lessonid")  int lessonId, Principal principal) {
-        //Get user object from authentication token
-       //User student = generiekegetuserfromtokenfunctieenshizzle(tokenkomthier);
-        principal.getName();
-        //Get the reffered lesson
-      //  Lesson lesson = lessonService.getLesson(lessonId);
-
-        //lesson.getAbsentStudents().add(student);
-
-        return new ResponseEntity( HttpStatus.OK);
+        //TODO: persistence problem
+        try {
+            User user = userService.findUserByUsername(principal.getName());
+            lessonService.setUserAbsent(lessonId,user);
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (UserServiceException e) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
+
+
+    @RequestMapping(method = RequestMethod.POST, value="/api/lesson/present/{lessonid}")
+    public ResponseEntity registerUserPresent(@PathVariable("lessonid")  int lessonId, Principal principal) {
+        //TODO: persistence problem
+        try {
+            User user = userService.findUserByUsername(principal.getName());
+            Lesson lesson = lessonService.getLesson(lessonId);
+
+            if (!lesson.getPresentStudents().contains(user)) {
+                lesson.getPresentStudents().add(user);
+
+                if (lesson.getAbsentStudents().contains(user)) {
+                    lesson.getAbsentStudents().remove(user);
+                }
+            }
+
+            return new ResponseEntity(HttpStatus.OK);
+
+        } catch (UserServiceException e) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value="/api/lesson/attendancestatus/{lessonid}")
+    public ResponseEntity<StatusDTO> getAttendanceStatus(@PathVariable("lessonid")  int lessonId, Principal principal) {
+        try {
+            User user = userService.findUserByUsername(principal.getName());
+            Lesson lesson = lessonService.getLesson(lessonId);
+
+            if (lesson.getAbsentStudents().contains(user)) {
+                // ABSENT
+                return new ResponseEntity<StatusDTO>(new StatusDTO("absent"),HttpStatus.OK);
+            }
+                else {
+                    if (lesson.getPresentStudents().contains(user)) {
+                        //PRESENT
+                        return new ResponseEntity<StatusDTO>(new StatusDTO("present"),HttpStatus.OK);
+                    } else {
+                        // NOT SET
+                        return new ResponseEntity<StatusDTO>(new StatusDTO("nostatus"),HttpStatus.OK);
+                    }
+                }
+
+        } catch (UserServiceException e) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+
 
 
 }
