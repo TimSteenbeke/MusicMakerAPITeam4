@@ -1,6 +1,8 @@
 package be.kdg.ip.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.*;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
@@ -33,9 +35,12 @@ public class Lesson {
     private Course course;
 
     @ManyToMany
+    @JsonIgnoreProperties({"groups","agenda","password","roles"})
+    @JsonManagedReference
     private List<User> absentStudents;
 
     @ManyToMany
+    @JsonIgnoreProperties({"groups","agenda","password","roles"})
     private List<User> presentStudents;
 
     @JsonIgnore
