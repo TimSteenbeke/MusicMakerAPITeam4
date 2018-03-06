@@ -1,7 +1,6 @@
 package be.kdg.ip.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -9,16 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "tgroup") //name can't be group because it is a reserved keyword within the h2 database
+@Table(name = "tgroup") //groupName can't be group because it is a reserved keyword within the h2 database
 public class Group {
     @Id
     @GeneratedValue
     @Column(nullable = false)
-    private int id;
+    private int groupId;
 
     @Column
     @Size(min = 4)
-    private String name;
+    private String groupName;
 
     @ManyToOne
     //@Cascade(org.hibernate.annotations.CascadeType.ALL)
@@ -41,7 +40,7 @@ public class Group {
     }
 
     public Group(String name, User supervisor, List<User> users) {
-        this.name = name;
+        this.groupName = name;
         this.supervisor = supervisor;
         this.users = users;
     }
@@ -59,20 +58,20 @@ public class Group {
         this.supervisor = supervisor;
     }
 
-    public int getId() {
-        return id;
+    public int getGroupId() {
+        return groupId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
     }
 
-    public String getName() {
-        return name;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     public List<User> getUsers() {

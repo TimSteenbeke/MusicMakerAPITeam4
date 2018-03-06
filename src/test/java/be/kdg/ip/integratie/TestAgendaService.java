@@ -5,7 +5,6 @@ import be.kdg.ip.domain.*;
 import be.kdg.ip.domain.roles.Administrator;
 import be.kdg.ip.services.api.*;
 import be.kdg.ip.services.exceptions.UserServiceException;
-import org.assertj.core.api.Assertions;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -16,11 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = IP2Application.class)
@@ -60,15 +56,15 @@ public class TestAgendaService {
         User tim = new User("timcopy","tim","brouwers","brouwersiscool",roles);
         userService.addUser(tim);
         Group group = new Group();
-        group.setName("testagendaservicegroup");
+        group.setGroupName("testagendaservicegroup");
         group.getUsers().add(jef);
         group.setSupervisor(tim);
         groupService.addGroup(group);
         jef.getGroups().add(group);
         userService.addUser(jef);
         Course course = new Course();
-        course.setBeschrijving("Een muziekCOURSE");
-        course.setPrijs(20);
+        course.setDescription("Een muziekCOURSE");
+        course.setPrice(20);
         course.getStudents().add(jef);
         course.getTeachers().add(tim);
         courseService.addCourse(course);

@@ -1,7 +1,5 @@
 package be.kdg.ip.domain;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import javax.persistence.*;
 
 @Entity
@@ -9,11 +7,11 @@ import javax.persistence.*;
 public class Composition {
         @Id
         @GeneratedValue
-        @Column(name="MuziekstukId",nullable = false)
-        private int MuziekstukId;
+        @Column(name="compositionId",nullable = false)
+        private int compositionId;
 
         @Column
-        private String titel;
+        private String title;
         @Column
         private String artist;
         @Column
@@ -36,8 +34,8 @@ public class Composition {
 
         }
 
-        public Composition(String titel, String artist, String language, String genre, String subject, String instrumentType,String link, String fileFormat, byte[] content) {
-            this.titel = titel;
+        public Composition(String title, String artist, String language, String genre, String subject, String instrumentType, String link, String fileFormat, byte[] content) {
+            this.title = title;
             this.artist = artist;
             this.language = language;
             this.genre = genre;
@@ -48,20 +46,20 @@ public class Composition {
             this.content = content;
         }
 
-        public int getMuziekstukId() {
-            return MuziekstukId;
+        public int getCompositionId() {
+            return compositionId;
         }
 
-        public void setMuziekstukId(int muziekstukId) {
-            MuziekstukId = muziekstukId;
+        public void setCompositionId(int compositionId) {
+            this.compositionId = compositionId;
         }
 
-        public String getTitel() {
-            return titel;
+        public String getTitle() {
+            return title;
         }
 
-        public void setTitel(String titel) {
-            this.titel = titel;
+        public void setTitle(String title) {
+            this.title = title;
         }
 
         public String getArtist() {

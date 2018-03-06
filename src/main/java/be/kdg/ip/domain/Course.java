@@ -14,9 +14,9 @@ public class Course {
     @GeneratedValue
     private int courseId;
     @Column
-    private String Beschrijving;
+    private String description;
     @Column
-    private int prijs;
+    private int price;
 
     @JsonIgnore
     @ManyToMany
@@ -60,20 +60,20 @@ public class Course {
         this.courseId = courseId;
     }
 
-    public String getBeschrijving() {
-        return Beschrijving;
+    public String getDescription() {
+        return description;
     }
 
-    public void setBeschrijving(String beschrijving) {
-        Beschrijving = beschrijving;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public int getPrijs() {
-        return prijs;
+    public int getPrice() {
+        return price;
     }
 
-    public void setPrijs(int prijs) {
-        this.prijs = prijs;
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public List<Lesson> getLessons() {

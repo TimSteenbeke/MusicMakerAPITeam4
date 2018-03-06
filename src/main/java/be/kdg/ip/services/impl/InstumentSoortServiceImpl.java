@@ -1,6 +1,6 @@
 package be.kdg.ip.services.impl;
 
-import be.kdg.ip.domain.InstrumentSoort;
+import be.kdg.ip.domain.InstrumentCategory;
 import be.kdg.ip.repositories.api.InstrumentSoortRepository;
 import be.kdg.ip.services.api.InstrumentSoortService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,28 +17,28 @@ public class InstumentSoortServiceImpl implements InstrumentSoortService {
 
 
     @Override
-    public InstrumentSoort getInstrumentSoort(int instrumentSoortId) {
+    public InstrumentCategory getInstrumentSoort(int instrumentSoortId) {
         return instrumentSoortRepository.findOne(instrumentSoortId);
     }
 
     @Override
-    public InstrumentSoort addInstrumentSoort(InstrumentSoort instrumentSoort) {
-        return instrumentSoortRepository.save(instrumentSoort);
+    public InstrumentCategory addInstrumentSoort(InstrumentCategory instrumentCategory) {
+        return instrumentSoortRepository.save(instrumentCategory);
     }
 
     @Override
-    public List<InstrumentSoort> getAllInstrumentSoorten() {
+    public List<InstrumentCategory> getAllInstrumentSoorten() {
         return instrumentSoortRepository.findAll();
     }
 
     @Override
-    public InstrumentSoort updateInstrumentSoort(InstrumentSoort instrumentSoort) {
-        return instrumentSoortRepository.save(instrumentSoort);
+    public InstrumentCategory updateInstrumentSoort(InstrumentCategory instrumentCategory) {
+        return instrumentSoortRepository.save(instrumentCategory);
     }
 
     @Override
     public void removeInstrumentSoort(int instrumentsoortId) {
-        InstrumentSoort instrumentSoort = instrumentSoortRepository.findOne(instrumentsoortId);
-        instrumentSoortRepository.delete(instrumentSoort);
+        InstrumentCategory instrumentCategory = instrumentSoortRepository.findOne(instrumentsoortId);
+        instrumentSoortRepository.delete(instrumentCategory);
     }
 }

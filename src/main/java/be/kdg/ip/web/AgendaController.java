@@ -23,7 +23,7 @@ public class AgendaController {
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<AgendaResource> getAgenda(@PathVariable("agendaId") int agendaId) {
 
-       Agenda agenda=agendaService.getAgendaById(agendaId);
+        Agenda agenda=agendaService.getAgendaById(agendaId);
         AgendaResource agendaResource = new AgendaResource();
 
         agendaResource.setAgendaEigenaar(agenda.getUser().getUsername());

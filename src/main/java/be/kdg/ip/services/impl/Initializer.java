@@ -50,17 +50,17 @@ public class Initializer {
     @PostConstruct
     public void addDummyInstruments() {
 
-        InstrumentSoort instrumentSoort = new InstrumentSoort("Slag");
-        InstrumentSoort instrumentSoort2 = new InstrumentSoort("Blaas");
-        InstrumentSoort instrumentSoort3 = new InstrumentSoort("Snaar");
+        InstrumentCategory instrumentCategory = new InstrumentCategory("Slag");
+        InstrumentCategory instrumentCategory2 = new InstrumentCategory("Blaas");
+        InstrumentCategory instrumentCategory3 = new InstrumentCategory("Snaar");
 
-        instrumentSoortService.addInstrumentSoort(instrumentSoort);
-        instrumentSoortService.addInstrumentSoort(instrumentSoort2);
-        instrumentSoortService.addInstrumentSoort(instrumentSoort3);
+        instrumentSoortService.addInstrumentSoort(instrumentCategory);
+        instrumentSoortService.addInstrumentSoort(instrumentCategory2);
+        instrumentSoortService.addInstrumentSoort(instrumentCategory3);
 
-        Instrument instrument = new Instrument(instrumentSoort, "Drum", "drummen", "Tim");
-        Instrument instrument2 = new Instrument(instrumentSoort2, "Trompet", "Tim", "Tim");
-        Instrument instrument3 = new Instrument(instrumentSoort3, "Tim", "Tim", "Tim");
+        Instrument instrument = new Instrument(instrumentCategory, "Drum", "drummen", "Tim");
+        Instrument instrument2 = new Instrument(instrumentCategory2, "Trompet", "Tim", "Tim");
+        Instrument instrument3 = new Instrument(instrumentCategory3, "Tim", "Tim", "Tim");
 
         instrumentService.addInstrument(instrument);
         instrumentService.addInstrument(instrument2);
@@ -96,7 +96,7 @@ public class Initializer {
         userService.addUser(timS);
 
         Group group = new Group();
-        group.setName("testGroup");
+        group.setGroupName("testGroup");
         group.getUsers().add(jef);
         group.getUsers().add(jos);
         group.setSupervisor(tim);
@@ -109,8 +109,8 @@ public class Initializer {
 
 
         Course course = new Course();
-        course.setBeschrijving("Een muziekCOURSE");
-        course.setPrijs(20);
+        course.setDescription("Een muziekCOURSE");
+        course.setPrice(20);
 
 
         Agenda agenda = jef.getAgenda();

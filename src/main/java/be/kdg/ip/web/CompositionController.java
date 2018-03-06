@@ -1,28 +1,21 @@
 package be.kdg.ip.web;
 
 import be.kdg.ip.domain.Composition;
-import be.kdg.ip.domain.Instrument;
 import be.kdg.ip.services.api.CompositionService;
 import be.kdg.ip.web.assemblers.CompositionAssembler;
 import be.kdg.ip.web.resources.CompositionResource;
-import be.kdg.ip.web.resources.InstrumentResource;
 import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -41,7 +34,7 @@ public class CompositionController {
     public @ResponseBody ResponseEntity<?> upload(@Valid @RequestBody CompositionResource compositionResource) throws Exception
     {
         Composition composition = new Composition();
-        composition.setTitel(compositionResource.getTitel());
+        composition.setTitle(compositionResource.getTitel());
         composition.setArtist(compositionResource.getArtist());
         composition.setLanguage(compositionResource.getLanguage());
         composition.setGenre(compositionResource.getGenre());
@@ -87,7 +80,7 @@ public class CompositionController {
     public ResponseEntity<CompositionResource> updateComposition(@PathVariable("compositionId") int compositionId,@Valid @RequestBody CompositionResource compositionResource) {
         Composition composition = compositionService.getComposition(compositionId);
 
-        composition.setTitel(compositionResource.getTitel());
+        composition.setTitle(compositionResource.getTitel());
         composition.setArtist(compositionResource.getArtist());
         composition.setLanguage(compositionResource.getLanguage());
         composition.setGenre(compositionResource.getGenre());

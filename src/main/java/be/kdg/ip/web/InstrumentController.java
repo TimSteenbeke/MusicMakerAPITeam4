@@ -10,12 +10,9 @@ import be.kdg.ip.web.resources.InstrumentUpdateResource;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.imageio.ImageIO;
 import javax.validation.Valid;
-import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 import java.util.List;
@@ -45,8 +42,8 @@ public class InstrumentController {
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<InstrumentResource> createInstrument(@Valid @RequestBody InstrumentResource instrumentResource) {
         Instrument in = new Instrument();
-        in.setSoort(instrumentSoortService.getInstrumentSoort(instrumentResource.getInstrumentsoortid()));
-        in.setNaam(instrumentResource.getNaam());
+        in.setInstrumentCategory(instrumentSoortService.getInstrumentSoort(instrumentResource.getInstrumentsoortid()));
+        in.setInstrumentName(instrumentResource.getNaam());
         in.setType(instrumentResource.getType());
         in.setUitvoering(instrumentResource.getUitvoering());
 
@@ -103,9 +100,9 @@ public class InstrumentController {
     public ResponseEntity<InstrumentUpdateResource> updateUser(@PathVariable("id") int id, @RequestBody InstrumentUpdateResource instrumentUpdateResource) {
         //Instrument in = mapperFacade.map(instrumentUpdateResource,Instrument.class);
         Instrument in = new Instrument();
-        in.setSoort(instrumentSoortService.getInstrumentSoort(instrumentUpdateResource.getInstrumentsoortid()));
+        in.setInstrumentCategory(instrumentSoortService.getInstrumentSoort(instrumentUpdateResource.getInstrumentsoortid()));
         in.setInstrumentId(id);
-        in.setNaam(instrumentUpdateResource.getNaam());
+        in.setInstrumentName(instrumentUpdateResource.getNaam());
         in.setUitvoering(instrumentUpdateResource.getUitvoering());
         in.setType(instrumentUpdateResource.getType());
 
