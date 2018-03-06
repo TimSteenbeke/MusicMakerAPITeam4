@@ -48,4 +48,9 @@ dependencies {
     compile group: 'org.springframework.security', name: 'spring-security-jwt', version: '1.0.7.RELEASE'
     compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.1.0.RELEASE'
 
+    //Chat Dependencies
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.6.1'
+    compile group: 'com.j2html', name: 'j2html', version: '1.2.2'
+    compile group: 'org.json', name: 'json', version: '20090211'
+    compile group: 'io.javalin', name: 'javalin', version: '1.4.1'
 }
