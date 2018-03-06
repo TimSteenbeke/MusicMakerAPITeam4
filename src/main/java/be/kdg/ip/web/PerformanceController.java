@@ -37,7 +37,7 @@ public class PerformanceController {
 
     @RequestMapping(method = RequestMethod.POST,value ="/api/performance")
     //ToDo: Authorization fix: performance post
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<PerformanceResource> addLesson(@Valid @RequestBody PerformanceResource performanceResource) {
 
         //performance aanmaken based op perforamnceresource

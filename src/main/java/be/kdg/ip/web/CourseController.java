@@ -32,13 +32,15 @@ public class CourseController {
     }
 
     @RequestMapping(method = RequestMethod.GET,value ="api/courses")
-    //ToDo: Authorization fix: courses
-    // @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    //ToDo: Authorization fix: courses get
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public List<Course> getCourses() {
         return courseService.getAllCourses();
     }
 
     @RequestMapping(method = RequestMethod.POST, value="api/courses")
+    //ToDo: Authorization fix: courses post
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<CourseResource> addCourse(@Valid @RequestBody CourseResource courseResource) {
         Course course = new Course();
 
@@ -65,6 +67,8 @@ public class CourseController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value="api/courses/{courseId}")
+    //ToDo: Authorization fix: courses put
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<CourseResource> updateCourse(@PathVariable("courseId") int courseId,@Valid @RequestBody CourseResource courseResource) {
         Course course = courseService.getCourse(courseId);
 
@@ -91,6 +95,8 @@ public class CourseController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value="api/courses/{courseId}")
+    //ToDo: Authorization fix: courses delete
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<CourseResource> updateCourse(@PathVariable("courseId") int courseId) {
         courseService.removeCourse(courseId);
         return new ResponseEntity<>(HttpStatus.OK);

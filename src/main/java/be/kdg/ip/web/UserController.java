@@ -24,7 +24,7 @@ public class UserController {
     //1 User opvragen
     @GetMapping("/{userName}")
     //ToDo: Authorization fix: user get
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<User> findUserByUserId(@PathVariable String userName) throws UserServiceException {
         User user = userService.findUserByUsername(userName);
         return new ResponseEntity<User>(user, HttpStatus.OK);
@@ -33,6 +33,7 @@ public class UserController {
 
     //returned voorlopig nog User maar dit moet jwt token worden (denk ik?) dat terug doorgegeven wordt naar browser
     @PostMapping("/login")
+    //ToDo: Delete this method ?
     public ResponseEntity<User> checkUser(@Valid @RequestBody UserResource userResource) throws UserServiceException {
         User checkedUser = userService.findUserByUsername(userResource.getUsername());
         if (checkedUser != null) {
