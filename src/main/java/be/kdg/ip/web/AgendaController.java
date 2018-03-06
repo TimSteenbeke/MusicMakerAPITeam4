@@ -39,7 +39,7 @@ public class AgendaController {
             Agenda agenda= user.getAgenda();
             AgendaResource agendaResource = new AgendaResource();
 
-            agendaResource.setAgendaEigenaar(agenda.getUser().getUsername());
+            agendaResource.setAgendaOwner(agenda.getUser().getUsername());
             agendaResource.setAgendaId(agenda.getAgendaId());
             agendaResource.setLessons(agenda.getLessons());
             agendaResource.setPerformances(agenda.getPerformances());

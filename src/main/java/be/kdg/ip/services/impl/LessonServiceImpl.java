@@ -31,9 +31,19 @@ public class LessonServiceImpl implements LessonService {
         return lessonRepository.findOne(lessonId);
     }
 
+    //TODO: error handling
     @Override
     public void setUserPresent(int lessonId, User user) {
+        Lesson lesson = lessonRepository.findOne(lessonId);
 
+        if (!lesson.getPresentStudents().contains(user)) {
+            lesson.getPresentStudents().add(user);
+
+            if (lesson.getAbsentStudents().contains(user)) {
+                lesson.getAbsentStudents().remove(user);
+            }
+        }
+        lessonRepository.save(lesson);
     }
 
 

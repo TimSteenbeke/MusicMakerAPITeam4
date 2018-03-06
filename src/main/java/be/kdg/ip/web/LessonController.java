@@ -60,7 +60,6 @@ public class LessonController {
 
     @RequestMapping(method = RequestMethod.POST, value="/api/lesson/absent/{lessonid}")
     public ResponseEntity registerUserAbsent(@PathVariable("lessonid")  int lessonId, Principal principal) {
-        //TODO: persistence problem
         try {
             User user = userService.findUserByUsername(principal.getName());
             lessonService.setUserAbsent(lessonId,user);
@@ -73,21 +72,10 @@ public class LessonController {
 
     @RequestMapping(method = RequestMethod.POST, value="/api/lesson/present/{lessonid}")
     public ResponseEntity registerUserPresent(@PathVariable("lessonid")  int lessonId, Principal principal) {
-        //TODO: persistence problem
         try {
             User user = userService.findUserByUsername(principal.getName());
-            Lesson lesson = lessonService.getLesson(lessonId);
-
-            if (!lesson.getPresentStudents().contains(user)) {
-                lesson.getPresentStudents().add(user);
-
-                if (lesson.getAbsentStudents().contains(user)) {
-                    lesson.getAbsentStudents().remove(user);
-                }
-            }
-
+            lessonService.setUserPresent(lessonId,user);
             return new ResponseEntity(HttpStatus.OK);
-
         } catch (UserServiceException e) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
@@ -112,7 +100,6 @@ public class LessonController {
                         return new ResponseEntity<StatusDTO>(new StatusDTO("nostatus"),HttpStatus.OK);
                     }
                 }
-
         } catch (UserServiceException e) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
