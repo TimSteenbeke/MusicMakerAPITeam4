@@ -2,7 +2,7 @@ package be.kdg.ip.web;
 
 import be.kdg.ip.domain.Instrument;
 import be.kdg.ip.domain.InstrumentCategory;
-import be.kdg.ip.services.api.InstrumentSoortService;
+import be.kdg.ip.services.api.InstrumentCategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,34 +11,34 @@ import javax.validation.Valid;
 import java.util.List;
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/instrumentsoorten")
-public class InstrumentSoortController {
+@RequestMapping("/api/instrumentCategories")
+public class InstrumentCategoryController {
 
-    private InstrumentSoortService instrumentSoortService;
+    private InstrumentCategoryService instrumentCategoryService;
 
-    public InstrumentSoortController(InstrumentSoortService instrumentSoortService){
+    public InstrumentCategoryController(InstrumentCategoryService instrumentCategoryService){
 
-        this.instrumentSoortService = instrumentSoortService;
+        this.instrumentCategoryService = instrumentCategoryService;
     }
 
-    //Aanmaken van een instrument
+    //creation of an instrument
     @PostMapping
     //ToDo: Authorization fix: instrumentsoort create
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<InstrumentCategory> createInstrument(@Valid @RequestBody InstrumentCategory instrumentCategory) {
 
-        InstrumentCategory out = instrumentSoortService.addInstrumentSoort(instrumentCategory);
+        InstrumentCategory out = instrumentCategoryService.addInstrumentCategory(instrumentCategory);
 
 
         return  new ResponseEntity<>(out, HttpStatus.OK);
     }
 
-    //1 InstrumentCategory opvragen
-    @GetMapping("/{instrumentSoortId}")
+    //Request 1 InstrumentCategory
+    @GetMapping("/{instrumentCategoryId}")
     //ToDo: Authorization fix: instrumentsoort get
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<InstrumentCategory> findInstrumentById(@PathVariable int instrumentSoortId){
-        InstrumentCategory instrumentCategory = instrumentSoortService.getInstrumentSoort(instrumentSoortId);
+        InstrumentCategory instrumentCategory = instrumentCategoryService.getInstrumentCategory(instrumentSoortId);
         return  new ResponseEntity<InstrumentCategory>(instrumentCategory,HttpStatus.OK);
     }
 
@@ -47,23 +47,23 @@ public class InstrumentSoortController {
     //ToDo: Authorization fix: instrumentsoort get all
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<List<InstrumentCategory>> findAll(){
-        List<InstrumentCategory> instrumentCategoryList = instrumentSoortService.getAllInstrumentSoorten();
+        List<InstrumentCategory> instrumentCategoryList = instrumentCategoryService.getAllInstrumentCategories();
         return new ResponseEntity<>(instrumentCategoryList, HttpStatus.OK);
     }
 
-    //Een instrumentSoort verwijderen
-    @PostMapping("/{instrumentSoortId}")
+    //Delete instrument category
+    @PostMapping("/{instrumentCategoryId}")
     //ToDo: Authorization fix: instrumentsoort delete
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<InstrumentCategory> deleteInstrumentById(@PathVariable("instrumentSoortId") Integer instrumentSoortId){
 
-        InstrumentCategory instrumentCategory = instrumentSoortService.getInstrumentSoort(instrumentSoortId);
+        InstrumentCategory instrumentCategory = instrumentCategoryService.getInstrumentCategory(instrumentSoortId);
 
         for (Instrument i : instrumentCategory.getInstrumentList()){
             i.setInstrumentCategory(null);
         }
 
-        instrumentSoortService.removeInstrumentSoort(instrumentSoortId);
+        instrumentCategoryService.removeInstrumentCategory(instrumentSoortId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -76,7 +76,7 @@ public class InstrumentSoortController {
     public ResponseEntity<InstrumentCategory> updateUser(@PathVariable("id") int id, @RequestBody InstrumentCategory instrumentCategory) {
 
         instrumentCategory.setInstrumentCategoryId(id);
-        instrumentSoortService.updateInstrumentSoort(instrumentCategory);
+        instrumentCategoryService.updateInstrumentCategory(instrumentCategory);
         return  new ResponseEntity<>(instrumentCategory, HttpStatus.OK);
     }
 }

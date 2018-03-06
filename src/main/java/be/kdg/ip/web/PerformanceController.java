@@ -9,7 +9,6 @@ import be.kdg.ip.web.resources.PerformanceResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,25 +30,21 @@ public class PerformanceController {
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<PerformanceResource> addLesson(@Valid @RequestBody PerformanceResource performanceResource) {
 
-        //performance aanmaken based op perforamnceresource
+        //create performance based on performanceresource
         Performance performance = new Performance();
         performance.setStartDateTime(performanceResource.getStartdatetime());
         performance.setEndDateTime(performanceResource.getEnddatetime());
-        performance.setBeschrijving(performanceResource.getBeschrijving());
+        performance.setDescription(performanceResource.getDescription());
 
-        //Group object ophalen en koppelen aan performance
-        Group group = groupService.getGroup(performanceResource.getGroupId());
+        //Fetch group object and link it to a performance
+        Group group = groupService.getGroup(performanceResource.getGroupid());
         performance.setGroup(group);
 
-
-        //performance toevoegen
+        //Add performance
         performanceService.addPerformance(performance);
 
         //add Performance to every involved agenda
         agendaService.addPerformanceToEveryAgenda(performance);
-
-
-
 
         return  new ResponseEntity<>(performanceResource, HttpStatus.OK);
     }

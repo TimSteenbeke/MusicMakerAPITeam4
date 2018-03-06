@@ -14,10 +14,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
-
-/**
- * Created by wouter on 30.01.17.
- */
 @Service("userService")
 @Transactional
 public class UserServiceImpl implements UserService {

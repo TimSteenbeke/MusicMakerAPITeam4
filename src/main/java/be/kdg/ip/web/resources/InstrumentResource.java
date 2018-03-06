@@ -5,28 +5,28 @@ import java.io.Serializable;
 public class InstrumentResource implements Serializable {
 
     //private int InstrumentId;
-    //private InstrumentSoortResource instrumentSoortResource;
-    private int instrumentsoortid;
-    private String naam;
+    //private InstrumentCategoryResource instrumentSoortResource;
+    private int instrumentcategoryid;
+    private String instrumentname;
     private String type;
-    private String uitvoering;
-    private String afbeelding;
+    private String details;
+    private String image;
 
 
 
-    public int getInstrumentsoortid() {
-        return instrumentsoortid;
+    public int getInstrumentcategoryid() {
+        return instrumentcategoryid;
     }
 
-    public void setInstrumentsoortid(int instrumentsoortid) {
-        this.instrumentsoortid = instrumentsoortid;
+    public void setInstrumentcategoryid(int instrumentcategoryid) {
+        this.instrumentcategoryid = instrumentcategoryid;
     }
-    public String getNaam() {
-        return naam;
+    public String getInstrumentname() {
+        return instrumentname;
     }
 
-    public void setNaam(String naam) {
-        this.naam = naam;
+    public void setInstrumentname(String instrumentname) {
+        this.instrumentname = instrumentname;
     }
 
     public String getType() {
@@ -37,20 +37,20 @@ public class InstrumentResource implements Serializable {
         this.type = type;
     }
 
-    public String getUitvoering() {
-        return uitvoering;
+    public String getDetails() {
+        return details;
     }
 
-    public void setUitvoering(String uitvoering) {
-        this.uitvoering = uitvoering;
+    public void setDetails(String details) {
+        this.details = details;
     }
 
-    public String getAfbeelding() {
-        return afbeelding;
+    public String getImage() {
+        return image;
     }
 
-    public void setAfbeelding(String afbeelding) {
-        this.afbeelding = afbeelding;
+    public void setImage(String image) {
+        this.image = image;
     }
 
 

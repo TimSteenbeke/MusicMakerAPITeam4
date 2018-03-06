@@ -3,10 +3,8 @@ package be.kdg.ip.web;
 import be.kdg.ip.domain.Agenda;
 import be.kdg.ip.services.api.AgendaService;
 import be.kdg.ip.web.resources.AgendaResource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 @RestController
@@ -26,7 +24,7 @@ public class AgendaController {
         Agenda agenda=agendaService.getAgendaById(agendaId);
         AgendaResource agendaResource = new AgendaResource();
 
-        agendaResource.setAgendaEigenaar(agenda.getUser().getUsername());
+        agendaResource.setAgendaowner(agenda.getUser().getUsername());
         agendaResource.setAgendaId(agenda.getAgendaId());
         agendaResource.setLessons(agenda.getLessons());
         agendaResource.setPerformances(agenda.getPerformances());

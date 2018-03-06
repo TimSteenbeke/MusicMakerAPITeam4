@@ -9,5 +9,5 @@ public interface CompositionService {
     List<Composition> getAllCompositions();
     Composition getComposition(int compositionId);
     void removeComposition(int compositionId);
-    Composition updateComposition(Composition instrument);
+    Composition updateComposition(Composition composition);
 }

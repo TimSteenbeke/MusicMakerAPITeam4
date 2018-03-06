@@ -34,7 +34,7 @@
                                 </ul>
 
                                 <div class="tab-content">
-                                    <div id="setup" class="tab-pane fade in active">
+                                    <div groupid="setup" class="tab-pane fade in active">
                                         <h3>Heroku Free Plan</h3>
                                         <p>
                                             Ga naar <a href="https://signup.heroku.com/">Heroku's Free Plan</a>
@@ -81,7 +81,7 @@
                                         </p>
                                         <p>Ga naar de volgende stap</p>
                                     </div>
-                                    <div id="git" class="tab-pane fade">
+                                    <div groupid="git" class="tab-pane fade">
                                         <h3>Folder .git verwijderen</h3>
                                         <p>
                                             Clone dit project vanaf GitHub <code>git clone <a>https://github.com/DekwoKybon/IntegratieProject.git</a> IntegratieProject</code>
@@ -92,14 +92,14 @@
                                         </p>
                                         <p>Ga naar de volgende stap</p>
                                     </div>
-                                    <div id="procfile" class="tab-pane fade">
+                                    <div groupid="procfile" class="tab-pane fade">
                                         <h3>Procfile</h3>
                                         <p>
-                                            Voeg onder je projectfolder een file toe met name <em>Procfile</em> en
+                                            Voeg onder je projectfolder een file toe met groupName <em>Procfile</em> en
                                             inhoud: <code>web: java -Dserver.port=$PORT -jar target/app.jar</code>
                                         </p>
                                         <p>
-                                            Let op: de name app.jar is gedefinieerd in de pom-file van je Maven-project.
+                                            Let op: de groupName app.jar is gedefinieerd in de pom-file van je Maven-project.
                                             Zoek dit nu op. Je mag dit gerust wijzigen.
                                         </p>
                                         <p>
@@ -112,7 +112,7 @@
                                         </p>
                                         <p>Ga naar de volgende stap</p>
                                     </div>
-                                    <div id="git2" class="tab-pane fade">
+                                    <div groupid="git2" class="tab-pane fade">
                                         <h3>Git repository aanmaken</h3>
                                         <p>
                                             Je kan dit het makkelijkst vanuit de console doen, maar je mag het ook via
@@ -123,14 +123,14 @@
                                             Open een terminal in je project folder en tik:
                                         </p>
                                         <p><code>git config user.email "voornaam.familienaam@student.kdg.be"</code></p>
-                                        <p><code>git config user.name "Voornaam Familienaam"</code></p>
+                                        <p><code>git config user.groupName "Voornaam Familienaam"</code></p>
                                         <p><code>git init</code></p>
                                         <p><code>git add .</code></p>
                                         <p><code>git commit -m "Initial commit"</code></p>
 
                                         <p>Ga naar de volgende stap</p>
                                     </div>
-                                    <div id="heroku" class="tab-pane fade">
+                                    <div groupid="heroku" class="tab-pane fade">
                                         <h3>Heroku applicatie</h3>
                                         <p>
                                             Je kan dit ook weer het makkelijkst vanuit de console doen. Een andere
@@ -154,7 +154,7 @@
                                         </p>
                                         <p>Ga naar de volgende stap</p>
                                     </div>
-                                    <div id="lokaal" class="tab-pane fade">
+                                    <div groupid="lokaal" class="tab-pane fade">
                                         <h3>Lokale Deploy</h3>
                                         <p>
                                             Je kan volgende stap ook weer het makkelijkst vanuit de console doen. Een
@@ -184,7 +184,7 @@
                                         </p>
                                         </p>
                                     </div>
-                                    <div id="remote" class="tab-pane fade">
+                                    <div groupid="remote" class="tab-pane fade">
                                         <h3>Remote Deploy</h3>
                                         <p>
                                             Nu gaan we de app <strong>remote laten draaien</strong> bij Heroku. We
@@ -206,7 +206,7 @@
                                         </p>
                                         <p><code>heroku logs</code> of <code>heroku logs --tail</code></p>
                                     </div>
-                                    <div id="meer" class="tab-pane fade">
+                                    <div groupid="meer" class="tab-pane fade">
                                         <h3>Meer informatie</h3>
                                         <p>
                                             Meer tutorials vind je op <a href="https://devcenter.heroku.com/start">Heroku's

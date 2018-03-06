@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class Composition {
         @Id
         @GeneratedValue
-        @Column(name="compositionId",nullable = false)
+        @Column(nullable = false)
         private int compositionId;
 
         @Column

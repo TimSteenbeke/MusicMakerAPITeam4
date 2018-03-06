@@ -29,19 +29,19 @@ public class CompositionController {
         this.compositionAssembler = compositionAssembler;
     }
 
-    //Muziekstuk uploaden
+    //uploading of a composition
     @PostMapping
     public @ResponseBody ResponseEntity<?> upload(@Valid @RequestBody CompositionResource compositionResource) throws Exception
     {
         Composition composition = new Composition();
-        composition.setTitle(compositionResource.getTitel());
+        composition.setTitle(compositionResource.getTitle());
         composition.setArtist(compositionResource.getArtist());
         composition.setLanguage(compositionResource.getLanguage());
         composition.setGenre(compositionResource.getGenre());
         composition.setSubject(compositionResource.getSubject());
         composition.setLink(compositionResource.getLink());
         composition.setFileFormat(compositionResource.getFileFormat());
-        composition.setInstrumentType(compositionResource.getInstrumentType());
+        composition.setInstrumentType(compositionResource.getInstrumentcategory());
 
         try {
             byte[] byteArr = Base64.getDecoder().decode(compositionResource.getContent().getBytes("UTF-8"));
@@ -60,7 +60,7 @@ public class CompositionController {
     }
 
 
-    //Alle muziekstukken opvragen
+    //Request all compositions
     @GetMapping
     @CrossOrigin(origins = "*")
     public ResponseEntity<List<Composition>> findAll(){
@@ -68,7 +68,7 @@ public class CompositionController {
         return new ResponseEntity<>(compositions,HttpStatus.OK);
     }
 
-    //Muziekstukken opvragen
+    //Request single composition
     @GetMapping("/{compositionId}")
     public ResponseEntity<Composition> findCompositionById(@PathVariable int compositionId){
         Composition composition = compositionService.getComposition(compositionId);
@@ -80,14 +80,14 @@ public class CompositionController {
     public ResponseEntity<CompositionResource> updateComposition(@PathVariable("compositionId") int compositionId,@Valid @RequestBody CompositionResource compositionResource) {
         Composition composition = compositionService.getComposition(compositionId);
 
-        composition.setTitle(compositionResource.getTitel());
+        composition.setTitle(compositionResource.getTitle());
         composition.setArtist(compositionResource.getArtist());
         composition.setLanguage(compositionResource.getLanguage());
         composition.setGenre(compositionResource.getGenre());
         composition.setSubject(compositionResource.getSubject());
         composition.setLink(compositionResource.getLink());
         composition.setFileFormat(compositionResource.getFileFormat());
-        composition.setInstrumentType(compositionResource.getInstrumentType());
+        composition.setInstrumentType(compositionResource.getInstrumentcategory());
 
 
         try {

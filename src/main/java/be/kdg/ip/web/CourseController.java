@@ -41,8 +41,8 @@ public class CourseController {
     public ResponseEntity<CourseResource> addCourse(@Valid @RequestBody CourseResource courseResource) {
         Course course = new Course();
 
-        course.setPrice(courseResource.getPrijs());
-        course.setDescription(courseResource.getCoursebeschrijving());
+        course.setPrice(courseResource.getPrice());
+        course.setDescription(courseResource.getCoursedescription());
 
         //Add all students to the course
         List<User> students = new ArrayList<User>();
@@ -67,8 +67,8 @@ public class CourseController {
     public ResponseEntity<CourseResource> updateCourse(@PathVariable("courseId") int courseId,@Valid @RequestBody CourseResource courseResource) {
         Course course = courseService.getCourse(courseId);
 
-        course.setPrice(courseResource.getPrijs());
-        course.setDescription(courseResource.getCoursebeschrijving());
+        course.setPrice(courseResource.getPrice());
+        course.setDescription(courseResource.getCoursedescription());
 
         //Add all students to the course
         List<User> students = new ArrayList<User>();

@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "instrumentType")
+@Table(name = "instrumentCategory")
 public class InstrumentCategory {
 
     @Id
@@ -15,17 +15,18 @@ public class InstrumentCategory {
     private int instrumentCategoryId;
 
     @Column
-    private String typeName;
+    private String categoryName;
+
     @JsonIgnore
-    @OneToMany( mappedBy="type",cascade={CascadeType.MERGE})
+    @OneToMany( mappedBy="instrumentCategory",cascade={CascadeType.MERGE})
     private List<Instrument> instrumentList;
 
     public InstrumentCategory(){
 
     }
 
-    public InstrumentCategory(String typeName) {
-        this.typeName = typeName;
+    public InstrumentCategory(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public int getInstrumentCategoryId() {
@@ -36,12 +37,12 @@ public class InstrumentCategory {
         this.instrumentCategoryId = instrumentCategoryId;
     }
 
-    public String getTypeName() {
-        return typeName;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public List<Instrument> getInstrumentList() {

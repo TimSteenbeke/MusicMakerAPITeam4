@@ -4,14 +4,11 @@ import be.kdg.ip.domain.Group;
 import be.kdg.ip.domain.User;
 import be.kdg.ip.services.api.GroupService;
 import be.kdg.ip.services.api.UserService;
-import be.kdg.ip.web.dto.GroupUserDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+
 @CrossOrigin(origins = "*")
 @RestController
 public class GroupController {
@@ -27,7 +24,7 @@ public class GroupController {
     @GetMapping("/api/groups/{groupId}")
     //ToDo: Authorization fix: group get by id
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public Group getGroup(@PathVariable int groupId){
+    public Group getGroup(@PathVariable int groupId) {
         return this.groupService.getGroup(groupId);
     }
 
@@ -43,17 +40,9 @@ public class GroupController {
     @PostMapping("/groups")
     //ToDo: Authorization fix: group post
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public void postNewGroup(@RequestBody Group group){
-        if(group != null){
+    public void postNewGroup(@RequestBody Group group) {
+        if (group != null) {
             groupService.addGroup(group);
         }
-    }
-
-    @PostMapping("/groups/user")
-    //ToDo: Authorization fix: users in group post
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public void postNewUserToGroup(@RequestBody GroupUserDto groupUserDto){
-        List<User> users = groupUserDto.getUsers();
-        groupService.addUsersToGroup(groupUserDto.getGroup(), users);
     }
 }

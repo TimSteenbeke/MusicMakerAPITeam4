@@ -36,7 +36,7 @@ public class Initializer {
     private PerformanceService performanceService;
 
     @Autowired
-    private InstrumentSoortService instrumentSoortService;
+    private InstrumentCategoryService instrumentCategoryService;
 
     @Autowired
     private CourseService courseService;
@@ -54,9 +54,9 @@ public class Initializer {
         InstrumentCategory instrumentCategory2 = new InstrumentCategory("Blaas");
         InstrumentCategory instrumentCategory3 = new InstrumentCategory("Snaar");
 
-        instrumentSoortService.addInstrumentSoort(instrumentCategory);
-        instrumentSoortService.addInstrumentSoort(instrumentCategory2);
-        instrumentSoortService.addInstrumentSoort(instrumentCategory3);
+        instrumentCategoryService.addInstrumentCategory(instrumentCategory);
+        instrumentCategoryService.addInstrumentCategory(instrumentCategory2);
+        instrumentCategoryService.addInstrumentCategory(instrumentCategory3);
 
         Instrument instrument = new Instrument(instrumentCategory, "Drum", "drummen", "Tim");
         Instrument instrument2 = new Instrument(instrumentCategory2, "Trompet", "Tim", "Tim");
@@ -130,7 +130,7 @@ public class Initializer {
         lessonService.addLesson(agenda, lesson);
 
         Performance performance = new Performance();
-        performance.setBeschrijving("een beschrijving van een optreden");
+        performance.setDescription("een beschrijving van een optreden");
 
 
         performance.setStartDateTime(vandaag);
@@ -138,7 +138,7 @@ public class Initializer {
 
 
         Performance performance2 = new Performance();
-        performance2.setBeschrijving("een beschrijving van ANDER OPTREDEN");
+        performance2.setDescription("een beschrijving van ANDER OPTREDEN");
         performance2.setStartDateTime(vandaag.plusDays(1));
         performance2.setEndDateTime(vandaag.plusDays(1).plusHours(4));
 

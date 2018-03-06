@@ -9,7 +9,7 @@ public class AgendaResource {
     private int agendaId;
     private List<Performance> performances;
     private List<Lesson> lessons;
-    private String agendaEigenaar;
+    private String agendaowner;
 
     public int getAgendaId() {
         return agendaId;
@@ -35,11 +35,11 @@ public class AgendaResource {
         this.lessons = lessons;
     }
 
-    public String getAgendaEigenaar() {
-        return agendaEigenaar;
+    public String getAgendaowner() {
+        return agendaowner;
     }
 
-    public void setAgendaEigenaar(String agendaEigenaar) {
-        this.agendaEigenaar = agendaEigenaar;
+    public void setAgendaowner(String agendaowner) {
+        this.agendaowner = agendaowner;
     }
 }

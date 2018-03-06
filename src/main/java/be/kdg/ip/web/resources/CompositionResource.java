@@ -3,22 +3,22 @@ package be.kdg.ip.web.resources;
 import java.io.Serializable;
 
 public class CompositionResource implements Serializable {
-    private String titel;
+    private String title;
     private String artist;
     private String language;
     private String genre;
     private String subject;
-    private String instrumentType;
+    private String instrumentcategory;
     private String link;
     private String fileFormat;
     private String content;
 
-    public String getTitel() {
-        return titel;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTitel(String titel) {
-        this.titel = titel;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getArtist() {
@@ -53,12 +53,12 @@ public class CompositionResource implements Serializable {
         this.subject = subject;
     }
 
-    public String getInstrumentType() {
-        return instrumentType;
+    public String getInstrumentcategory() {
+        return instrumentcategory;
     }
 
-    public void setInstrumentType(String instrumentType) {
-        this.instrumentType = instrumentType;
+    public void setInstrumentcategory(String instrumentcategory) {
+        this.instrumentcategory = instrumentcategory;
     }
 
     public String getContent() {

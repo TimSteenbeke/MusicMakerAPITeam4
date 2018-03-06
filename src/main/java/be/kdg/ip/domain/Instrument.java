@@ -19,29 +19,29 @@ public class Instrument {
     @Column
     private String type;
     @Column
-    private String uitvoering;
+    private String details;
     @Lob
     @Column
-    private byte[] afbeelding;
+    private byte[] image;
 
     public Instrument(){
 
     }
 
-    public Instrument(InstrumentCategory instrumentCategory, String instrumentName, String type, String uitvoering) {
+    public Instrument(InstrumentCategory instrumentCategory, String instrumentName, String type, String details) {
         this.instrumentCategory = instrumentCategory;
         this.instrumentName = instrumentName;
         this.type = type;
-        this.uitvoering = uitvoering;
+        this.details = details;
     }
 
 
-    public Instrument(InstrumentCategory instrumentCategory, String instrumentName, String type, String uitvoering, byte[] afbeelding) {
+    public Instrument(InstrumentCategory instrumentCategory, String instrumentName, String type, String details, byte[] image) {
         this.instrumentCategory = instrumentCategory;
         this.instrumentName = instrumentName;
         this.type = type;
-        this.uitvoering = uitvoering;
-        this.afbeelding = afbeelding;
+        this.details = details;
+        this.image = image;
     }
 
     public int getInstrumentId() {
@@ -76,19 +76,19 @@ public class Instrument {
         this.type = type;
     }
 
-    public String getUitvoering() {
-        return uitvoering;
+    public String getDetails() {
+        return details;
     }
 
-    public void setUitvoering(String uitvoering) {
-        this.uitvoering = uitvoering;
+    public void setDetails(String details) {
+        this.details = details;
     }
 
-    public byte[] getAfbeelding() {
-        return afbeelding;
+    public byte[] getImage() {
+        return image;
     }
 
-    public void setAfbeelding(byte[] afbeelding) {
-        this.afbeelding = afbeelding;
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }

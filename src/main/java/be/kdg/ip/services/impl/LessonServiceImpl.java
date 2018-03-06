@@ -12,7 +12,6 @@ public class LessonServiceImpl implements LessonService {
     @Autowired
     LessonRepository lessonRepository;
 
-
     @Override
     public void addLesson(Agenda agenda, Lesson lesson) {
         agenda.getLessons().add(lesson);

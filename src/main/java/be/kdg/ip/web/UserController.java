@@ -18,7 +18,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    //1 User opvragen
+    //Request 1 User
     @GetMapping("/{userName}")
     //ToDo: Authorization fix: user get
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
