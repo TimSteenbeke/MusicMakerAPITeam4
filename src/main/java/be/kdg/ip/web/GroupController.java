@@ -81,26 +81,18 @@ public class GroupController {
         return new ResponseEntity<>(user.getGroups(),HttpStatus.OK);
     }
 
-
-
-    @PostMapping("/users")
-    //ToDo: Authorization fix: users in group post
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public void postNewUserToGroup(@RequestBody GroupUserDto groupUserDto){
-        List<User> users = groupUserDto.getUsers();
-        groupService.addUsersToGroup(groupUserDto.getGroup(), users);
-    }
-
     @DeleteMapping("/{groupId}")
-    public ResponseEntity<Group> deleteInstrumentById(@PathVariable("groupId") Integer groupId) {
+    public ResponseEntity<Group> deleteGroupById(@PathVariable("groupId") Integer groupId) {
 
         Group group = groupService.getGroup(groupId);
         groupService.removeGroup(groupId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+
     @RequestMapping(value = "/group/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Group> updateUser(@PathVariable("id") int id, @RequestBody GroupResource groupResource) {
+    public ResponseEntity<Group> updateGroup(@PathVariable("id") int id, @RequestBody GroupResource groupResource) {
         Group group = new Group();
         group.setId(id);
         group.setName(groupResource.getName());
