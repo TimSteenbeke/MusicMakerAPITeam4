@@ -81,7 +81,7 @@ public class PerformanceController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value="/api/lesson/attendancestatus/{performanceid}")
+    @RequestMapping(method = RequestMethod.GET, value="/api/performance/attendancestatus/{performanceid}")
     public ResponseEntity<StatusDTO> getAttendanceStatus(@PathVariable("performanceid")  int performanceId, Principal principal) {
         try {
             User user = userService.findUserByUsername(principal.getName());

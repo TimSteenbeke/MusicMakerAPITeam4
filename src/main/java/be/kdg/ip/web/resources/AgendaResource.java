@@ -9,6 +9,7 @@ import java.util.List;
 
 public class AgendaResource {
     private int agendaId;
+    @JsonIgnoreProperties({"absentMembers","presentMembers"})
     private List<Performance> performances;
     @JsonIgnoreProperties({"absentStudents","presentStudents"})
     private List<Lesson> lessons;
