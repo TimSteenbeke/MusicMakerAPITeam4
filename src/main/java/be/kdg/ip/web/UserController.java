@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+import javax.validation.Valid;
+
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/users")
@@ -27,7 +29,7 @@ public class UserController {
     //Aanmaken van een instrument
     @PostMapping
     //ToDo: Authorization fix: instrument post
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<User> createUser(@Valid @RequestBody UserResource userResource) {
 
         User user = new User();
@@ -44,6 +46,10 @@ public class UserController {
  /*   //1 User opvragen met username
     @GetMapping("/{userName}")
     //ToDo: Authorization fix: user get
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    public ResponseEntity<User> findUserByUserId(@PathVariable String userName) throws UserServiceException {
+        User user = userService.findUserByUsername(userName);
+        return new ResponseEntity<User>(user, HttpStatus.OK);
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<User> findUserByUserName(@PathVariable String userName) throws UserServiceException {
         User user = userService.findUserByUsername(userName);
@@ -81,7 +87,7 @@ public class UserController {
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
     //ToDo: Authorization fix: instrument updaten
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<User> updateUser(@PathVariable("id") int id, @RequestBody UserResource userResource) {
 
         User user = userService.findUser(id);
@@ -93,5 +99,19 @@ public class UserController {
         User out = userService.addUser(user);
 
         return new ResponseEntity<>(out, HttpStatus.OK);
+    }
+
+
+    //returned voorlopig nog User maar dit moet jwt token worden (denk ik?) dat terug doorgegeven wordt naar browser
+    @PostMapping("/login")
+    //ToDo: Delete this method ?
+    public ResponseEntity<User> checkUser(@Valid @RequestBody UserResource userResource) throws UserServiceException {
+        User checkedUser = userService.findUserByUsername(userResource.getUsername());
+        if (checkedUser != null) {
+            if(checkedUser.getPassword().equals(userResource.getPassword())) {
+                return new ResponseEntity<User>(checkedUser, HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<User>(checkedUser, HttpStatus.FORBIDDEN);
     }
 }

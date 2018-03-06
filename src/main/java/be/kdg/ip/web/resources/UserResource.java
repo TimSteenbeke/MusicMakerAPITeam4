@@ -8,6 +8,7 @@ public class UserResource {
     private String lastname;
     private String password;
 
+
     public String getUsername() {
         return username;
     }

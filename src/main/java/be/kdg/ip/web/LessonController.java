@@ -30,7 +30,7 @@ public class LessonController {
     //@CrossOrigin(origins = "*")
     @RequestMapping(method = RequestMethod.POST,value ="/api/lesson")
     //ToDo: Authorization fix: lesson post
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<LessonResource> addLesson(@Valid @RequestBody LessonResource lessonResource) {
 
         //Lesson aanmaken based op lessonResource
@@ -46,6 +46,8 @@ public class LessonController {
 
         //Voor iedere User in Course van les ( les toevoegen aan agenda van user) = Best aparte service voor maken
         agendaService.addLessonToEveryAgenda(lesson);
+
+        //Heroku rebuild
 
 
         return  new ResponseEntity<>(lessonResource, HttpStatus.OK);

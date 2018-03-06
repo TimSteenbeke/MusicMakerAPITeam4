@@ -80,6 +80,7 @@ public class InstrumentController {
     @GetMapping
     @CrossOrigin(origins = "*")
     //ToDo: Authorization fix: get all instrument
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<List<Instrument>> findAll() {
         List<Instrument> instruments = instrumentService.getAllInstruments();
         return new ResponseEntity<>(instruments, HttpStatus.OK);
@@ -88,7 +89,7 @@ public class InstrumentController {
     //Een instrument verwijderen
     @DeleteMapping("/{instrumentId}")
     //ToDo: Authorization fix: delete instrument
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<Instrument> deleteInstrumentById(@PathVariable("instrumentId") Integer instrumentId) {
         Instrument instrument = instrumentService.getInstrument(instrumentId);
         instrumentService.removeInstrument(instrument.getInstrumentId());
@@ -99,8 +100,8 @@ public class InstrumentController {
     //Een instrument updaten
     @RequestMapping(value = "/instrument/{id}", method = RequestMethod.PUT)
     //ToDo: Authorization fix: instrument updaten
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<InstrumentUpdateResource> updateInstrument(@PathVariable("id") int id, @RequestBody InstrumentUpdateResource instrumentUpdateResource) {
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    public ResponseEntity<InstrumentUpdateResource> updateUser(@PathVariable("id") int id, @RequestBody InstrumentUpdateResource instrumentUpdateResource) {
         //Instrument in = mapperFacade.map(instrumentUpdateResource,Instrument.class);
         Instrument in = new Instrument();
         in.setSoort(instrumentSoortService.getInstrumentSoort(instrumentUpdateResource.getInstrumentsoortid()));
