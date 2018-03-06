@@ -19,7 +19,7 @@ import java.util.List;
 public class UserController {
     private UserService userService;
 
-    public UserController(UserService userService ) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -36,26 +36,26 @@ public class UserController {
         user.setPassword(userResource.getPassword());
         user.setUsername(userResource.getUsername());
 
-        User out =  userService.addUser(user);
+        User out = userService.addUser(user);
 
         return new ResponseEntity<>(out, HttpStatus.OK);
     }
 
-    //1 User opvragen met username
+ /*   //1 User opvragen met username
     @GetMapping("/{userName}")
     //ToDo: Authorization fix: user get
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<User> findUserByUserName(@PathVariable String userName) throws UserServiceException {
-        User user= userService.findUserByUsername(userName);
+        User user = userService.findUserByUsername(userName);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
-
+*/
     //1 User opvragen userId
     @GetMapping("/{userId}")
     //ToDo: Authorization fix: user get
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<User> findUserByUserId(@PathVariable int  userId) throws UserServiceException {
-        User user= userService.findUser(userId);
+    public ResponseEntity<User> findUserByUserId(@PathVariable int userId) throws UserServiceException {
+        User user = userService.findUser(userId);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
@@ -64,9 +64,9 @@ public class UserController {
     @CrossOrigin(origins = "*")
     //ToDo: Authorization fix: get all Group
     public ResponseEntity<List<User>> findAll() {
-       List<User> users = userService.getUsers();
+        List<User> users = userService.getUsers();
 
-       return new ResponseEntity<>(users, HttpStatus.OK);
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     //Een user verwijderen
@@ -79,5 +79,19 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
+    //ToDo: Authorization fix: instrument updaten
+    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    public ResponseEntity<User> updateUser(@PathVariable("id") int id, @RequestBody UserResource userResource) {
 
+        User user = userService.findUser(id);
+
+        user.setFirstname(userResource.getFirstname());
+        user.setLastname(userResource.getLastname());
+        user.setPassword(userResource.getPassword());
+        user.setUsername(userResource.getUsername());
+        User out = userService.addUser(user);
+
+        return new ResponseEntity<>(out, HttpStatus.OK);
+    }
 }
