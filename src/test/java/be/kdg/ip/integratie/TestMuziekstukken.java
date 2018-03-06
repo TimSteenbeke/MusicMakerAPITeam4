@@ -24,6 +24,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDateTime;
 
@@ -33,6 +34,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -44,8 +46,34 @@ public class TestMuziekstukken {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private WebApplicationContext wac;
+
     @Mock
     private CompositionService compositionService;
+
+    @Before
+    public void setup() throws Exception {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+    }
+
+    @Test
+    public void givenGreetURIWithPostAndFormData_whenMockMVC_thenResponseOK() throws Exception {
+        this.mockMvc.perform(post("/api/compositions/")
+                .param("titel", "Tim")
+                .param("artist", "Tim")
+                .param("language", "Tim")
+                .param("genre", "Tim")
+                .param("subject", "Tim")
+                .param("instrumentType", "Tim")
+                .param("link", "Tim")
+                .param("fileFormat", "Tim")
+                .param("content", "Tim")).andDo(print()).andExpect(status().isOk())
+
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("$.titel").value("Tim"))
+                .andExpect(jsonPath("$.MuziekstukId").value(1));
+    }
 
     @Test
     public void getRepairByRepairId() throws Exception {
@@ -55,12 +83,10 @@ public class TestMuziekstukken {
 
         given(compositionService.getComposition(compId)).willReturn(composition);
 
-        mockMvc.perform(get("https://musicmaker-api-team4.herokuapp.com/api/compositions/" + 1))
+        mockMvc.perform(get("http://localhost:8080/api/compositions/" + 1))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("muziekstukId", is(composition.getMuziekstukId())));
-
-
     }
 
     /*@Test
