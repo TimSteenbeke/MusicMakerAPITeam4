@@ -10,4 +10,9 @@ public interface CompositionService {
     Composition getComposition(int compositionId);
     void removeComposition(int compositionId);
     Composition updateComposition(Composition instrument);
+    List<Composition> getCompositionsByTitle(String title);
+    List<Composition> getCompositionsByGenre(String genre);
+    List<Composition> getCompositionsBySubject(String subject);
+    List<Composition> getCompositionsByType(String instrumentType);
+    List<Composition> getCompositionsByFormat(String format);
 }
