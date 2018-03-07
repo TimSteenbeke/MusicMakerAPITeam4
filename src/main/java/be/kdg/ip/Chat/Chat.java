@@ -22,7 +22,7 @@ public class Chat {
     public static void main(String[] args) {
         Javalin.create()
                 .port(7070)
-                .enableStaticFiles("/public")
+                .enableStaticFiles("static")
                 .ws("/chat", ws -> {
                     ws.onConnect(session -> {
                         String username = "User" + nextUserNumber++;
