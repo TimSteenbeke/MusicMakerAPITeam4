@@ -102,6 +102,14 @@ public class CourseController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.GET,value ="api/courses/{courseId}")
+    //ToDo: Authorization fix: courses get
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    public Course getCourse(@PathVariable("courseId") int courseId) {
+        return courseService.getCourse(courseId);
+    }
+
+
 
 
 }
