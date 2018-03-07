@@ -8,7 +8,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import java.time.LocalDateTime;
 
 public class PerformanceResource {
-    private int groupid;
+    private int GroupId;
 
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -18,7 +18,7 @@ public class PerformanceResource {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime enddatetime;
 
-    private String description;
+    private String beschrijving;
 
     public LocalDateTime getStartdatetime() {
         return startdatetime;
@@ -36,19 +36,19 @@ public class PerformanceResource {
         this.enddatetime = enddatetime;
     }
 
-    public String getDescription() {
-        return description;
+    public String getBeschrijving() {
+        return beschrijving;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setBeschrijving(String beschrijving) {
+        this.beschrijving = beschrijving;
     }
 
-    public int getGroupid() {
-        return groupid;
+    public int getGroupId() {
+        return GroupId;
     }
 
-    public void setGroupid(int groupid) {
-        this.groupid = groupid;
+    public void setGroupId(int groupId) {
+        GroupId = groupId;
     }
 }

@@ -3,17 +3,17 @@ package be.kdg.ip.web.resources;
 import java.util.List;
 
 public class CourseResource {
-    private String coursedescription;
+    private String coursebeschrijving;
     private List<Integer> teacherids;
-    private int price;
+    private int prijs;
     private List<Integer> studentids;
 
-    public String getCoursedescription() {
-        return coursedescription;
+    public String getCoursebeschrijving() {
+        return coursebeschrijving;
     }
 
-    public void setCoursedescription(String coursedescription) {
-        this.coursedescription = coursedescription;
+    public void setCoursebeschrijving(String coursebeschrijving) {
+        this.coursebeschrijving = coursebeschrijving;
     }
 
     public List<Integer> getTeacherids() {
@@ -24,12 +24,12 @@ public class CourseResource {
         this.teacherids = teacherids;
     }
 
-    public int getPrice() {
-        return price;
+    public int getPrijs() {
+        return prijs;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setPrijs(int prijs) {
+        this.prijs = prijs;
     }
 
     public List<Integer> getStudentids() {
