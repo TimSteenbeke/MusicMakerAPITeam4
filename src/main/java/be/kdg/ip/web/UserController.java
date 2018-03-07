@@ -10,6 +10,8 @@ import be.kdg.ip.services.api.RoleService;
 import be.kdg.ip.services.api.UserService;
 import be.kdg.ip.services.exceptions.UserServiceException;
 import be.kdg.ip.web.resources.RoleUpdateUserResource;
+import be.kdg.ip.web.resources.UserDetailsResource;
+import be.kdg.ip.web.resources.UserGetResource;
 import be.kdg.ip.web.resources.UserResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,36 +82,66 @@ public class UserController {
     @GetMapping
     @CrossOrigin(origins = "*")
     //ToDo: Authorization fix: get all users
-    public ResponseEntity<List<User>> findAll() {
+    public ResponseEntity<UserGetResource> findAll() {
         List<User> users = userService.getUsers();
 
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        UserGetResource userGetResource = new UserGetResource();
+        userGetResource.setUsers(new ArrayList<>());
+        for (User user : users){
+            UserDetailsResource userDetailsResource = new UserDetailsResource();
+            userDetailsResource.setUserid(user.getId());
+            userDetailsResource.setFirstname(user.getFirstname());
+            userDetailsResource.setLastname(user.getLastname());
+            userGetResource.getUsers().add(userDetailsResource);
+        }
+        return new ResponseEntity<>(userGetResource, HttpStatus.OK);
     }
 
     @GetMapping("/students")
-    public ResponseEntity<List<User>> getStudents(){
+    public ResponseEntity<UserGetResource> getStudents(){
         Role role = roleService.getRoleByName("Student");
 
         List<User> users =  userService.getUserWithRole(role);
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        UserGetResource userGetResource = new UserGetResource();
+        userGetResource.setUsers(new ArrayList<>());
+        for (User user : users){
+            UserDetailsResource userDetailsResource = new UserDetailsResource();
+            userDetailsResource.setUserid(user.getId());
+            userDetailsResource.setFirstname(user.getFirstname());
+            userDetailsResource.setLastname(user.getLastname());
+            userGetResource.getUsers().add(userDetailsResource);
+        }
+        return new ResponseEntity<>(userGetResource, HttpStatus.OK);
     }
 
     @GetMapping("/teacherAdmin")
-    public ResponseEntity<List<User>> getTeacherAdmins(){
+    public ResponseEntity<UserGetResource> getTeacherAdmins(){
         Role teacher = roleService.getRoleByName("Teacher");
         Role admin = roleService.getRoleByName("Admin");
         List<User> teachers =  userService.getUserWithRole(teacher);
         List<User> admins = userService.getUserWithRole(admin);
 
-        List<User> users = new ArrayList<>();
+        UserGetResource userGetResource = new UserGetResource();
+        userGetResource.setUsers(new ArrayList<>());
 
-        for (User u : admins){
-            if (!teachers.contains(u)){
-                users.add(u);
+        for (User user : admins){
+            if (!teachers.contains(user)){
+                UserDetailsResource userDetailsResource = new UserDetailsResource();
+                userDetailsResource.setUserid(user.getId());
+                userDetailsResource.setFirstname(user.getFirstname());
+                userDetailsResource.setLastname(user.getLastname());
+                userGetResource.getUsers().add(userDetailsResource);
             }
         }
-        users.addAll(teachers);
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        for (User user : teachers){
+            UserDetailsResource userDetailsResource = new UserDetailsResource();
+            userDetailsResource.setUserid(user.getId());
+            userDetailsResource.setFirstname(user.getFirstname());
+            userDetailsResource.setLastname(user.getLastname());
+            userGetResource.getUsers().add(userDetailsResource);
+        }
+
+        return new ResponseEntity<>(userGetResource, HttpStatus.OK);
     }
 
     //Een user verwijderen
@@ -134,7 +166,7 @@ public class UserController {
         user.setPassword(userResource.getPassword());
         user.setUsername(userResource.getUsername());
         User out = userService.addUser(user);
-        //    
+        //
         return new ResponseEntity<>(out, HttpStatus.OK);
     }
 
