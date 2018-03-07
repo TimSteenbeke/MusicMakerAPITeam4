@@ -70,7 +70,6 @@ public class CompositionController {
         return new ResponseEntity<>(compositionAssembler.toResource(out), HttpStatus.OK);
     }
 
-
     //Alle muziekstukken opvragen
     @GetMapping
     @CrossOrigin(origins = "*")
@@ -83,7 +82,6 @@ public class CompositionController {
     @GetMapping("/{compositionId}")
     public ResponseEntity<Composition> findCompositionById(@PathVariable int compositionId){
         Composition composition = compositionService.getComposition(compositionId);
-        //InstrumentResource instrumentResource = instrumentAssembler.toResource(instrument);
 
         return  new ResponseEntity<Composition>(composition,HttpStatus.OK);
     }
