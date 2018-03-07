@@ -88,6 +88,36 @@ public class CompositionController {
         return  new ResponseEntity<Composition>(composition,HttpStatus.OK);
     }
 
+    @GetMapping("/title/{title}")
+    public ResponseEntity<List<Composition>> findCompositionByTitle(@PathVariable("title") String title){
+        List<Composition> compositions = compositionService.getCompositionsByTitle(title);
+        return new ResponseEntity<>(compositions,HttpStatus.OK);
+    }
+
+    @GetMapping("/genre/{genre}")
+    public ResponseEntity<List<Composition>> findCompositionByGenre(@PathVariable("genre") String genre){
+        List<Composition> compositions = compositionService.getCompositionsByGenre(genre);
+        return new ResponseEntity<>(compositions,HttpStatus.OK);
+    }
+
+    @GetMapping("/subject/{subject}")
+    public ResponseEntity<List<Composition>> findCompositionBySubject(@PathVariable("subject") String subject){
+        List<Composition> compositions = compositionService.getCompositionsBySubject(subject);
+        return new ResponseEntity<>(compositions,HttpStatus.OK);
+    }
+
+    @GetMapping("/type/{type}")
+    public ResponseEntity<List<Composition>> findCompositionByType(@PathVariable("type") String type){
+        List<Composition> compositions = compositionService.getCompositionsByType(type);
+        return new ResponseEntity<>(compositions,HttpStatus.OK);
+    }
+
+    @GetMapping("/fileformat/{fileformat}")
+    public ResponseEntity<List<Composition>> findCompositionByFileFormat(@PathVariable("fileformat") String fileformat){
+        List<Composition> compositions = compositionService.getCompositionsByFormat(fileformat);
+        return new ResponseEntity<>(compositions,HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.PUT, value="/composition/{compositionId}")
     public ResponseEntity<CompositionResource> updateComposition(@PathVariable("compositionId") int compositionId,@Valid @RequestBody CompositionResource compositionResource) {
         Composition composition = compositionService.getComposition(compositionId);
