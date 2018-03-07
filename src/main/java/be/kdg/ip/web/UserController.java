@@ -1,9 +1,15 @@
 package be.kdg.ip.web;
 
 import be.kdg.ip.domain.Group;
+import be.kdg.ip.domain.Role;
 import be.kdg.ip.domain.User;
+import be.kdg.ip.domain.roles.Administrator;
+import be.kdg.ip.domain.roles.Student;
+import be.kdg.ip.domain.roles.Teacher;
+import be.kdg.ip.services.api.RoleService;
 import be.kdg.ip.services.api.UserService;
 import be.kdg.ip.services.exceptions.UserServiceException;
+import be.kdg.ip.web.resources.RoleUpdateUserResource;
 import be.kdg.ip.web.resources.UserResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -20,9 +27,11 @@ import javax.validation.Valid;
 @RequestMapping("/api/users")
 public class UserController {
     private UserService userService;
+    private RoleService roleService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
 
@@ -37,7 +46,9 @@ public class UserController {
         user.setLastname(userResource.getLastname());
         user.setPassword(userResource.getPassword());
         user.setUsername(userResource.getUsername());
-
+        List<Role> roles = user.getRoles();
+        roles.add(roleService.getRole(3));
+        user.setRoles(roles);
         User out = userService.addUser(user);
 
         return new ResponseEntity<>(out, HttpStatus.OK);
@@ -68,16 +79,42 @@ public class UserController {
     //Alle groepen opvragen
     @GetMapping
     @CrossOrigin(origins = "*")
-    //ToDo: Authorization fix: get all Group
+    //ToDo: Authorization fix: get all users
     public ResponseEntity<List<User>> findAll() {
         List<User> users = userService.getUsers();
 
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+    @GetMapping("/students")
+    public ResponseEntity<List<User>> getStudents(){
+        Role role = roleService.getRoleByName("Student");
+
+        List<User> users =  userService.getUserWithRole(role);
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @GetMapping("/teacherAdmin")
+    public ResponseEntity<List<User>> getTeacherAdmins(){
+        Role teacher = roleService.getRoleByName("Teacher");
+        Role admin = roleService.getRoleByName("Admin");
+        List<User> teachers =  userService.getUserWithRole(teacher);
+        List<User> admins = userService.getUserWithRole(admin);
+
+        List<User> users = new ArrayList<>();
+
+        for (User u : admins){
+            if (!teachers.contains(u)){
+                users.add(u);
+            }
+        }
+        users.addAll(teachers);
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
     //Een user verwijderen
     @DeleteMapping("/{userId}")
-    //ToDo: Authorization fix: delete instrument
+    //ToDo: Authorization fix: delete user
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<User> deleteUser(@PathVariable("userId") Integer userId) {
         User user = userService.findUser(userId);
@@ -99,6 +136,24 @@ public class UserController {
         User out = userService.addUser(user);
 
         return new ResponseEntity<>(out, HttpStatus.OK);
+    }
+
+    @GetMapping("/roles")
+    public ResponseEntity<List<Role>> getRoles(){
+        List<Role> roles = roleService.getRoles();
+        return new ResponseEntity<>(roles, HttpStatus.OK);
+    }
+    @RequestMapping(value = "/user/role/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<User> updateRoles(@PathVariable("id") int id, @RequestBody RoleUpdateUserResource roleUpdateUserResource){
+
+        User user = userService.findUser(id);
+        List<Role> roles = user.getRoles();
+        for (int i : roleUpdateUserResource.getRoleids()){
+            roles.add(roleService.getRole(i));
+        }
+        user.setRoles(roles);
+        User out = userService.updateUser(user);
+        return new  ResponseEntity<>(out , HttpStatus.OK);
     }
 
 

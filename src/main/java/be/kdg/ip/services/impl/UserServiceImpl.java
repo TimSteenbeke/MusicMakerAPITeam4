@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -46,6 +47,12 @@ public class UserServiceImpl implements UserService {
     public List<User> getUsers() {
         return userRepository.findAll();
     }
+
+    @Override
+    public List<User> getUserWithRole(Role role) {
+        return userRepository.findAll().stream().filter(x -> x.getRoles().contains(role)).collect(Collectors.toList());
+    }
+
 
     @Override
     public User findUserByUsername(String username) throws UserServiceException {
