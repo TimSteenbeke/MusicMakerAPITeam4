@@ -5,6 +5,7 @@ import be.kdg.ip.domain.User;
 import be.kdg.ip.services.exceptions.UserServiceException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import sun.nio.cs.US_ASCII;
 
 import java.util.List;
 
@@ -18,9 +19,20 @@ public interface UserService extends UserDetailsService {
 
     User addUser(User user);
 
+    List<User> getUsers();
+
+    List<User> getUserWithRole(Role role);
+
+    User findUser(int userId);
+
     User findUserByUsername(String username) throws UserServiceException;
+
+
+    User updateUser(User user);
+
+    void deleteUser(int userId);
 
     boolean checkLogin(String username, String password);
 
-    User findUser(int userId);
+
 }
