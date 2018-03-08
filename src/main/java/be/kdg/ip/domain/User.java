@@ -1,6 +1,7 @@
 package be.kdg.ip.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -32,7 +33,7 @@ public class User implements Serializable, UserDetails {
     @ManyToMany
     private List<Group> groups;
 
-    @ManyToMany(/*targetEntity = Role.class , cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "users"*/)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
 
 
@@ -53,7 +54,17 @@ public class User implements Serializable, UserDetails {
 
     public User(){
         this.agenda = new Agenda();
-        this.groups = new ArrayList<Group>();
+        this.groups = new ArrayList<>();
+        this.courses= new ArrayList<>();
+        this.roles = new ArrayList<>();
+    }
+
+    public User(String firstname) {
+        this.firstname = firstname;
+        this.agenda = new Agenda();
+        this.groups = new ArrayList<>();
+        this.courses= new ArrayList<>();
+        this.roles = new ArrayList<>();
     }
 
     public User(String username, String password, String firstname, String lastname, List<Role> roles) {
@@ -122,7 +133,17 @@ public class User implements Serializable, UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        for(Role role : roles){
+            if(role.getRoleId() == 1) {
+                authorities.add(new SimpleGrantedAuthority("ADMIN"));
+            }else if(role.getRoleId()==2){
+                authorities.add(new SimpleGrantedAuthority("TEACHER"));
+            }else if(role.getRoleId()==3){
+                authorities.add(new SimpleGrantedAuthority("STUDENT"));
+            }
+        }
+        return authorities;
     }
 
 

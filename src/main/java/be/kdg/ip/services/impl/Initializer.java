@@ -47,6 +47,9 @@ public class Initializer {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private CompositionService compositionService;
+
     @PostConstruct
     public void addDummyInstruments() {
 
@@ -65,6 +68,11 @@ public class Initializer {
         instrumentService.addInstrument(instrument);
         instrumentService.addInstrument(instrument2);
         instrumentService.addInstrument(instrument3);
+
+
+        Composition composition = new Composition("Test", "Test", "Test","Test","Test","Test","Test","Test",new byte[5]);
+        compositionService.addComposition(composition);
+
     }
 
     @PostConstruct

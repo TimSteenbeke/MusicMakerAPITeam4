@@ -1,6 +1,8 @@
 package be.kdg.ip.services.impl;
 
 import be.kdg.ip.domain.Performance;
+import be.kdg.ip.domain.User;
+import be.kdg.ip.domain.User;
 import be.kdg.ip.repositories.api.PerformanceRepository;
 import be.kdg.ip.services.api.PerformanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,4 +23,32 @@ public class PerformanceServiceImpl implements PerformanceService {
         return performanceRepository.findOne(performanceId);
     }
 
+    @Override
+    public void setUserPresent(int performanceId, User user) {
+        Performance performance = performanceRepository.findOne(performanceId);
+
+        if (!performance.getPresentMembers().contains(user)) {
+            performance.getPresentMembers().add(user);
+
+            if(performance.getAbsentMembers().contains(user)) {
+                performance.getAbsentMembers().remove(user);
+            }
+        }
+
+        performanceRepository.save(performance);
+    }
+
+    @Override
+    public void setUserAbsent(int performanceId, User user) {
+        Performance performance = performanceRepository.findOne(performanceId);
+
+        if (!performance.getAbsentMembers().contains(user)) {
+            performance.getAbsentMembers().add(user);
+
+            if (performance.getPresentMembers().contains(user)) {
+                performance.getPresentMembers().remove(user);
+            }
+        }
+        performanceRepository.save(performance);
+    }
 }

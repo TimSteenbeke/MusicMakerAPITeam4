@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 
 /**
@@ -41,6 +43,18 @@ public class RoleServiceImpl implements RoleService {
     public Role getRole(int roleId) {
         Role role = roleRepository.findOne(roleId);
         return role;
+    }
+
+    @Override
+    public Role getRoleByName(String roleName) {
+        return roleRepository.findAll().stream().filter(x->x.getRoleName().equals(roleName)).findFirst().get();
+
+    }
+
+
+    @Override
+    public List<Role> getRoles() {
+        return roleRepository.findAll();
     }
 
 }
