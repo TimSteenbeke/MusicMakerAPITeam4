@@ -70,9 +70,11 @@ public class Initializer {
         instrumentService.addInstrument(instrument3);
 
 
-        Composition composition = new Composition("Test", "Test", "Test","Test","Test","Test","Test","Test",new byte[5]);
-        compositionService.addComposition(composition);
+        Composition composition = new Composition("Test", "Test", "Test","Test","Test","Test","Test","Test.pdf",new byte[5]);
+        Composition composition2 = new Composition("Tim", "Tim Brouwers", "Engels","Rock","Tim ziet het niet meer zitten","Blaas","www.youtube.com/timbrouwers","Timbrouwers.xml",new byte[5]);
 
+        compositionService.addComposition(composition);
+        compositionService.addComposition(composition2);
     }
 
     @PostConstruct

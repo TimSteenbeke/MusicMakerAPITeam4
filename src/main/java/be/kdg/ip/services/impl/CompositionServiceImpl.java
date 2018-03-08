@@ -40,6 +40,8 @@ public class CompositionServiceImpl implements CompositionService {
         return compositionRepository.save(composition);
     }
 
+
+
     @Override
     public List<Composition> getCompositionsByTitle(String title) {
         return compositionRepository.findAllByTitel(title);
@@ -62,6 +64,6 @@ public class CompositionServiceImpl implements CompositionService {
 
     @Override
     public List<Composition> getCompositionsByFormat(String format) {
-        return compositionRepository.findAllByFileFormat(format);
+        return compositionRepository.findAllByFileFormatContains(format);
     }
 }

@@ -11,10 +11,12 @@ import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.NamedStoredProcedureQueries;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.*;
@@ -73,6 +75,7 @@ public class CompositionController {
     //Alle muziekstukken opvragen
     @GetMapping
     @CrossOrigin(origins = "*")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<List<Composition>> findAll(){
         List<Composition> compositions = compositionService.getAllCompositions();
         return new ResponseEntity<>(compositions,HttpStatus.OK);
@@ -117,6 +120,7 @@ public class CompositionController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value="/composition/{compositionId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<CompositionResource> updateComposition(@PathVariable("compositionId") int compositionId,@Valid @RequestBody CompositionResource compositionResource) {
         Composition composition = compositionService.getComposition(compositionId);
 
@@ -148,6 +152,7 @@ public class CompositionController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value="/{compositionId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<CompositionResource> deleteComposition(@PathVariable("compositionId") int compositionId) {
         compositionService.removeComposition(compositionId);
         return new ResponseEntity<>(HttpStatus.OK);
