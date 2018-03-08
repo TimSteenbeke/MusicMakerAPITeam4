@@ -9,6 +9,7 @@ import be.kdg.ip.web.resources.AgendaResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -48,6 +49,29 @@ public class AgendaController {
 
         } catch (UserServiceException e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @CrossOrigin(origins = "*")
+    @RequestMapping(method = RequestMethod.GET,value ="/api/agenda/{username}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
+    public ResponseEntity<AgendaResource> getOtherAgenda(@PathVariable("username") String username) {
+
+        try {
+            User user =  userService.findUserByUsername(username);
+
+            Agenda agenda= user.getAgenda();
+            AgendaResource agendaResource = new AgendaResource();
+
+            agendaResource.setAgendaOwner(agenda.getUser().getUsername());
+            agendaResource.setAgendaId(agenda.getAgendaId());
+            agendaResource.setLessons(agenda.getLessons());
+            agendaResource.setPerformances(agenda.getPerformances());
+
+            return  new ResponseEntity<>(agendaResource, HttpStatus.OK);
+
+        } catch (UserServiceException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }
