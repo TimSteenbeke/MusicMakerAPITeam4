@@ -53,25 +53,21 @@ public class AgendaController {
     }
 
     @CrossOrigin(origins = "*")
-    @RequestMapping(method = RequestMethod.GET,value ="/api/agenda/{username}")
+    @RequestMapping(method = RequestMethod.GET,value ="/api/agenda/{userid}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
-    public ResponseEntity<AgendaResource> getOtherAgenda(@PathVariable("username") String username) {
+    public ResponseEntity<AgendaResource> getOtherAgenda(@PathVariable("userid") int userId) {
 
-        try {
-            User user =  userService.findUserByUsername(username);
+        User user =  userService.findUser(userId);
 
-            Agenda agenda= user.getAgenda();
-            AgendaResource agendaResource = new AgendaResource();
+        Agenda agenda= user.getAgenda();
+        AgendaResource agendaResource = new AgendaResource();
 
-            agendaResource.setAgendaOwner(agenda.getUser().getUsername());
-            agendaResource.setAgendaId(agenda.getAgendaId());
-            agendaResource.setLessons(agenda.getLessons());
-            agendaResource.setPerformances(agenda.getPerformances());
+        agendaResource.setAgendaOwner(agenda.getUser().getUsername());
+        agendaResource.setAgendaId(agenda.getAgendaId());
+        agendaResource.setLessons(agenda.getLessons());
+        agendaResource.setPerformances(agenda.getPerformances());
 
-            return  new ResponseEntity<>(agendaResource, HttpStatus.OK);
+        return  new ResponseEntity<>(agendaResource, HttpStatus.OK);
 
-        } catch (UserServiceException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
     }
 }
