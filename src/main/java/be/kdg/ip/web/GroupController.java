@@ -3,9 +3,7 @@ package be.kdg.ip.web;
 import be.kdg.ip.domain.Group;
 import be.kdg.ip.domain.User;
 import be.kdg.ip.services.api.GroupService;
-import be.kdg.ip.services.api.PerformanceService;
 import be.kdg.ip.services.api.UserService;
-import be.kdg.ip.web.dto.GroupUserDto;
 import be.kdg.ip.web.resources.GroupResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -94,7 +92,7 @@ public class GroupController {
     @RequestMapping(value = "/group/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Group> updateGroup(@PathVariable("id") int id, @RequestBody GroupResource groupResource) {
         Group group = new Group();
-        group.setId(id);
+        group.setGroupId(id);
         group.setName(groupResource.getName());
 
         List<User> users = new ArrayList<>();

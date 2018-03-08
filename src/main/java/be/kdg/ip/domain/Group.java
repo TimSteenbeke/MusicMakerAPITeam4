@@ -1,8 +1,5 @@
 package be.kdg.ip.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -14,7 +11,7 @@ public class Group {
     @Id
     @GeneratedValue
     @Column(nullable = false)
-    private int id;
+    private int groupId;
 
     @Column
     @Size(min = 4)
@@ -76,12 +73,12 @@ public class Group {
         this.supervisor = supervisor;
     }
 
-    public int getId() {
-        return id;
+    public int getGroupId() {
+        return groupId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
     }
 
     public String getName() {
