@@ -13,6 +13,10 @@ import java.util.List;
 @Entity
 public class Teacher extends Role {
 
+    public Teacher() {
+        super("Teacher");
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
