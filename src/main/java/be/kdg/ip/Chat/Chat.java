@@ -1,3 +1,4 @@
+/*
 package be.kdg.ip.Chat;
 
 import io.javalin.Javalin;
@@ -66,3 +67,4 @@ public class Chat {
     }
 
 }
+*/
