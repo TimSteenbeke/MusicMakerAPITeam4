@@ -90,38 +90,10 @@ public class CompositionController {
         return  new ResponseEntity<Composition>(composition,HttpStatus.OK);
     }
 
-    @GetMapping("/title/{title}")
+    @GetMapping("/filter/{filter}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<List<Composition>> findCompositionByTitle(@PathVariable("title") String title){
-        List<Composition> compositions = compositionService.getCompositionsByTitle(title);
-        return new ResponseEntity<>(compositions,HttpStatus.OK);
-    }
-
-    @GetMapping("/genre/{genre}")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<List<Composition>> findCompositionByGenre(@PathVariable("genre") String genre){
-        List<Composition> compositions = compositionService.getCompositionsByGenre(genre);
-        return new ResponseEntity<>(compositions,HttpStatus.OK);
-    }
-
-    @GetMapping("/subject/{subject}")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<List<Composition>> findCompositionBySubject(@PathVariable("subject") String subject){
-        List<Composition> compositions = compositionService.getCompositionsBySubject(subject);
-        return new ResponseEntity<>(compositions,HttpStatus.OK);
-    }
-
-    @GetMapping("/type/{type}")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<List<Composition>> findCompositionByType(@PathVariable("type") String type){
-        List<Composition> compositions = compositionService.getCompositionsByType(type);
-        return new ResponseEntity<>(compositions,HttpStatus.OK);
-    }
-
-    @GetMapping("/fileformat/{fileformat}")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<List<Composition>> findCompositionByFileFormat(@PathVariable("fileformat") String fileformat){
-        List<Composition> compositions = compositionService.getCompositionsByFormat(fileformat);
+    public ResponseEntity<List<Composition>> findCompositionByFilter(@PathVariable("filter") String filter){
+        List<Composition> compositions = compositionService.getCompositionsByFilter(filter);
         return new ResponseEntity<>(compositions,HttpStatus.OK);
     }
 
