@@ -50,6 +50,8 @@ public class Initializer {
     @Autowired
     private CompositionService compositionService;
 
+    @Autowired
+    private AddressService addressService;
     @PostConstruct
     public void addDummyInstruments() {
 
@@ -96,11 +98,21 @@ public class Initializer {
         rolesAll.add(student);
 
 
-        User jef = new User("jef", "jefiscool", "jef", "jefferson", rolesAdmin);
-        User jos = new User("jos", "josiscooler", "jos", "josserson", rolesStudent);
-        User tim = new User("tim", "tim", "brouwers", "brouwersiscool", rolesTeacher);
+        Address address = new Address("straatje","12","2910","Essen","belgie");
+        Address address2 = new Address("street","40","2910","Essen","belgie");
+        Address address3 = new Address("stationsweg","50","2910","Essen","belgie");
+        Address address4 = new Address("veldweg","68","2910","Essen","belgie");
+
+        addressService.addAddress(address);
+        addressService.addAddress(address2);
+        addressService.addAddress(address3);
+        addressService.addAddress(address4);
+
+        User jef = new User("jef", "jefiscool", "jef", "jefferson", rolesAdmin,new byte[0],address);
+        User jos = new User("jos", "josiscooler", "jos", "josserson", rolesStudent,new byte[0],address2);
+        User tim = new User("tim", "tim", "brouwers", "brouwersiscool", rolesTeacher,new byte[0],address3);
         userService.addUser(tim);
-        User timS = new User("timS", "tims", "Tim", "Steenbeke", rolesAll);
+        User timS = new User("timS", "tims", "Tim", "Steenbeke", rolesAll,new byte[0],address4);
         userService.addUser(timS);
 
         Group group = new Group();
