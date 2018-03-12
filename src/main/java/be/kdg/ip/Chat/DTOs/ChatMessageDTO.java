@@ -1,3 +1,4 @@
+/*
 package be.kdg.ip.Chat.DTOs;
 
 public class ChatMessageDTO {
@@ -39,3 +40,4 @@ public class ChatMessageDTO {
     return this.fromUserId;
   }
 }
+*/

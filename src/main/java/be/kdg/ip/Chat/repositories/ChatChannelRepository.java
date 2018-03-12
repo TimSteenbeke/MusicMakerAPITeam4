@@ -1,3 +1,4 @@
+/*
 package be.kdg.ip.Chat.repositories;
 
 
@@ -16,4 +17,4 @@ public interface ChatChannelRepository extends JpaRepository<ChatChannel, String
   public String getChannelUuid( int userIdOne, int userIdTwo);
 
   public ChatChannel getChannelDetails(String uuid);
-}
+}*/

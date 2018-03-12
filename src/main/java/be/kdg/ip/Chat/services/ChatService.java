@@ -1,3 +1,4 @@
+/*
 package be.kdg.ip.Chat.services;
 
 
@@ -94,4 +95,4 @@ public class ChatService implements IChatService {
 
         return ChatMessageMapper.mapMessagesToChatDTOs(messagesByLatest);
     }
-}
+}*/

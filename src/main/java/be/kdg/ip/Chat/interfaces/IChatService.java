@@ -1,3 +1,4 @@
+/*
 package be.kdg.ip.Chat.interfaces;
 
 import java.util.List;
@@ -16,4 +17,4 @@ public interface IChatService {
       throws BeansException, UserNotFoundException;
   
   List<ChatMessageDTO> getExistingChatMessages(String channelUuid);
-}
+}*/

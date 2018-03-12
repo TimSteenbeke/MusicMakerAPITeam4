@@ -1,3 +1,4 @@
+/*
 package be.kdg.ip.Chat.DTOs;
 
 public class ChatChannelInitializationDTO {
@@ -23,3 +24,4 @@ public class ChatChannelInitializationDTO {
     return userIdTwo;
   }
 }
+*/

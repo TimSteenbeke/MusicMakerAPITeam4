@@ -1,3 +1,4 @@
+/*
 package be.kdg.ip.Chat.mappers;
 
 
@@ -28,3 +29,4 @@ public class ChatMessageMapper {
         return new ChatMessage(dto.getFromUserId(), dto.getToUserId(), dto.getContents());
     }
 }
+*/

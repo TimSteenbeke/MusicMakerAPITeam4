@@ -1,3 +1,4 @@
+/*
 package be.kdg.ip.Chat.interfaces;
 
 import be.kdg.ip.Chat.DTOs.ChatChannelInitializationDTO;
@@ -19,3 +20,4 @@ public interface IChatChannelController {
 
     ResponseEntity<String> getExistingChatMessages(@PathVariable("channelUuid") String channelUuid);
 }
+*/

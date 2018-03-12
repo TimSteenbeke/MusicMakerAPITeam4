@@ -1,3 +1,4 @@
+/*
 package be.kdg.ip.Chat.models;
 
 
@@ -63,4 +64,4 @@ public class ChatMessage {
   public String getContents() {
     return this.contents;
   }
-}
+}*/

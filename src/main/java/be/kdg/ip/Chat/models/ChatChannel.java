@@ -1,3 +1,4 @@
+/*
 package be.kdg.ip.Chat.models;
 
 
@@ -51,4 +52,4 @@ public class ChatChannel {
   public String getUuid() {
     return this.uuid;
   }
-}
+}*/

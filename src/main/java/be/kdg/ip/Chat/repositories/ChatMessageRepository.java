@@ -1,3 +1,4 @@
+/*
 package be.kdg.ip.Chat.repositories;
 
 
@@ -14,3 +15,4 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, String
     public List<ChatMessage> getExistingChatMessages(
            int userIdOne,int userIdTwo, Pageable pageable);
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package be.kdg.ip.Chat.DTOs;
 
 public class EstablishedChatChannelDTO {
@@ -38,4 +39,4 @@ public class EstablishedChatChannelDTO {
   public String getUserTwoUsername() {
     return this.userTwoUsername;
   }
-}
+}*/
