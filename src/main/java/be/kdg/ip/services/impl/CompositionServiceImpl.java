@@ -40,30 +40,8 @@ public class CompositionServiceImpl implements CompositionService {
         return compositionRepository.save(composition);
     }
 
-
-
     @Override
-    public List<Composition> getCompositionsByTitle(String title) {
-        return compositionRepository.findAllByTitel(title);
-    }
-
-    @Override
-    public List<Composition> getCompositionsByGenre(String genre) {
-        return compositionRepository.findAllByGenre(genre);
-    }
-
-    @Override
-    public List<Composition> getCompositionsBySubject(String subject) {
-        return compositionRepository.findAllBySubject(subject);
-    }
-
-    @Override
-    public List<Composition> getCompositionsByType(String instrumentType) {
-        return compositionRepository.findAllByInstrumentType(instrumentType);
-    }
-
-    @Override
-    public List<Composition> getCompositionsByFormat(String format) {
-        return compositionRepository.findAllByFileFormatContains(format);
+    public List<Composition> getCompositionsByFilter(String filter) {
+        return compositionRepository.findAllByFilter(filter);
     }
 }

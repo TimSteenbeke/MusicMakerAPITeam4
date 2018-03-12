@@ -9,6 +9,8 @@ import be.kdg.ip.domain.roles.Teacher;
 import be.kdg.ip.services.api.RoleService;
 import be.kdg.ip.services.api.UserService;
 import be.kdg.ip.services.exceptions.UserServiceException;
+import be.kdg.ip.web.dto.RoleDTO;
+import be.kdg.ip.web.dto.RolesDTO;
 import be.kdg.ip.web.resources.RoleUpdateUserResource;
 import be.kdg.ip.web.resources.UserDetailsResource;
 import be.kdg.ip.web.resources.UserGetResource;
@@ -19,6 +21,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -200,5 +203,25 @@ public class UserController {
             }
         }
         return new ResponseEntity<User>(checkedUser, HttpStatus.FORBIDDEN);
+    }
+
+    @RequestMapping(value = "/userroles", method = RequestMethod.GET)
+    public ResponseEntity<RolesDTO> getRolesfromUser(Principal principal) {
+
+        try {
+            User user = userService.findUserByUsername(principal.getName());
+            RolesDTO rolesDTO = new RolesDTO();
+            for (Role role : user.getRoles()) {
+                RoleDTO roleDTO = new RoleDTO();
+                roleDTO.setRoleid(role.getRoleId());
+                roleDTO.setRolename(role.getRoleName());
+                rolesDTO.getRoles().add(roleDTO);
+            }
+
+
+            return new ResponseEntity<RolesDTO>(rolesDTO,HttpStatus.OK);
+        } catch (UserServiceException e) {
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
