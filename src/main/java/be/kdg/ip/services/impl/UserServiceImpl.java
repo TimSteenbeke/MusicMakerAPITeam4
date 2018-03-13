@@ -1,5 +1,6 @@
 package be.kdg.ip.services.impl;
 
+import be.kdg.ip.domain.Address;
 import be.kdg.ip.domain.Role;
 import be.kdg.ip.domain.User;
 import be.kdg.ip.repositories.api.UserRepository;
@@ -31,8 +32,8 @@ public class UserServiceImpl implements UserService {
 
 
 
-    public User addUser(String username, String password, String firstName, String lastName, List<Role> roles) {
-        return userRepository.save(new User(username,password,firstName,lastName,roles));
+    public User addUser(String username, String password, String firstName, String lastName, List<Role> roles, byte[] userimage, Address address) {
+        return userRepository.save(new User(username,password,firstName,lastName,roles,userimage,address));
     }
 
 

@@ -1,14 +1,15 @@
 package be.kdg.ip.web;
 
-import be.kdg.ip.domain.Group;
-import be.kdg.ip.domain.Role;
-import be.kdg.ip.domain.User;
+import be.kdg.ip.domain.*;
 import be.kdg.ip.domain.roles.Administrator;
 import be.kdg.ip.domain.roles.Student;
 import be.kdg.ip.domain.roles.Teacher;
+import be.kdg.ip.services.api.AddressService;
+import be.kdg.ip.services.api.CompositionService;
 import be.kdg.ip.services.api.RoleService;
 import be.kdg.ip.services.api.UserService;
 import be.kdg.ip.services.exceptions.UserServiceException;
+import be.kdg.ip.web.resources.*;
 import be.kdg.ip.web.dto.RoleDTO;
 import be.kdg.ip.web.dto.RolesDTO;
 import be.kdg.ip.web.resources.RoleUpdateUserResource;
@@ -21,8 +22,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -33,14 +36,18 @@ import javax.validation.Valid;
 public class UserController {
     private UserService userService;
     private RoleService roleService;
+    private AddressService addressService;
+    private CompositionService compositionService;
 
-    public UserController(UserService userService, RoleService roleService) {
+    public UserController(UserService userService, RoleService roleService, AddressService addressService, CompositionService compositionService) {
         this.userService = userService;
         this.roleService = roleService;
+        this.addressService = addressService;
+        this.compositionService = compositionService;
     }
 
 
-    //Aanmaken van een instrument
+    //bekijken return type
     @PostMapping
     //ToDo: Authorization fix: instrument post
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
@@ -52,33 +59,53 @@ public class UserController {
         user.setPassword(userResource.getPassword());
         user.setUsername(userResource.getUsername());
         List<Role> roles = user.getRoles();
-        roles.add(roleService.getRole(3));
+        roles.add(roleService.getRoleByName("Student"));
         user.setRoles(roles);
+
+        //image omzetten
+        String imageString = userResource.getUserimage();
+
+        try {
+            byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
+            user.setUserImage(decodedString);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        Address address = new Address();
+        address.setStreet(userResource.getStreet());
+        address.setStreetNumber(userResource.getStreetnumber());
+        address.setCountry(userResource.getCountry());
+        address.setCity(userResource.getCity());
+        address.setPostalCode(userResource.getPostalcode());
+
+        addressService.addAddress(address);
+
+        user.setAddress(address);
+
         User out = userService.addUser(user);
 
         return new ResponseEntity<>(out, HttpStatus.OK);
     }
 
- /*   //1 User opvragen met username
-    @GetMapping("/{userName}")
-    //ToDo: Authorization fix: user get
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<User> findUserByUserId(@PathVariable String userName) throws UserServiceException {
-        User user = userService.findUserByUsername(userName);
-        return new ResponseEntity<User>(user, HttpStatus.OK);
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<User> findUserByUserName(@PathVariable String userName) throws UserServiceException {
-        User user = userService.findUserByUsername(userName);
-        return new ResponseEntity<>(user, HttpStatus.OK);
-    }
-*/
     //1 User opvragen userId
     @GetMapping("/{userId}")
     //ToDo: Authorization fix: user get
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<User> findUserByUserId(@PathVariable int userId) throws UserServiceException {
+    public ResponseEntity<UserAddressDetailsResource> findUserByUserId(@PathVariable int userId) throws UserServiceException {
         User user = userService.findUser(userId);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        UserAddressDetailsResource userResource = new UserAddressDetailsResource();
+        userResource.setUsername(user.getUsername());
+        userResource.setFirstname(user.getFirstname());
+        userResource.setLastname(user.getLastname());
+        userResource.setCity(user.getAddress().getCity());
+        userResource.setCountry(user.getAddress().getCountry());
+        userResource.setPostalcode(user.getAddress().getPostalCode());
+        userResource.setStreet(user.getAddress().getStreet());
+        userResource.setStreetnumber(user.getAddress().getStreetNumber());
+        userResource.setUserimage(new sun.misc.BASE64Encoder().encode(user.getUserImage()));
+
+        return new ResponseEntity<>(userResource, HttpStatus.OK);
     }
 
     //Alle groepen opvragen
@@ -91,10 +118,7 @@ public class UserController {
         UserGetResource userGetResource = new UserGetResource();
         userGetResource.setUsers(new ArrayList<>());
         for (User user : users){
-            UserDetailsResource userDetailsResource = new UserDetailsResource();
-            userDetailsResource.setUserid(user.getId());
-            userDetailsResource.setFirstname(user.getFirstname());
-            userDetailsResource.setLastname(user.getLastname());
+            UserDetailsResource userDetailsResource = createUserDetailsResource(user);
             userGetResource.getUsers().add(userDetailsResource);
         }
         return new ResponseEntity<>(userGetResource, HttpStatus.OK);
@@ -108,10 +132,7 @@ public class UserController {
         UserGetResource userGetResource = new UserGetResource();
         userGetResource.setUsers(new ArrayList<>());
         for (User user : users){
-            UserDetailsResource userDetailsResource = new UserDetailsResource();
-            userDetailsResource.setUserid(user.getId());
-            userDetailsResource.setFirstname(user.getFirstname());
-            userDetailsResource.setLastname(user.getLastname());
+            UserDetailsResource userDetailsResource = createUserDetailsResource(user);
             userGetResource.getUsers().add(userDetailsResource);
         }
         return new ResponseEntity<>(userGetResource, HttpStatus.OK);
@@ -129,18 +150,12 @@ public class UserController {
 
         for (User user : admins){
             if (!teachers.contains(user)){
-                UserDetailsResource userDetailsResource = new UserDetailsResource();
-                userDetailsResource.setUserid(user.getId());
-                userDetailsResource.setFirstname(user.getFirstname());
-                userDetailsResource.setLastname(user.getLastname());
+                UserDetailsResource userDetailsResource = createUserDetailsResource(user);
                 userGetResource.getUsers().add(userDetailsResource);
             }
         }
         for (User user : teachers){
-            UserDetailsResource userDetailsResource = new UserDetailsResource();
-            userDetailsResource.setUserid(user.getId());
-            userDetailsResource.setFirstname(user.getFirstname());
-            userDetailsResource.setLastname(user.getLastname());
+            UserDetailsResource userDetailsResource = createUserDetailsResource(user);
             userGetResource.getUsers().add(userDetailsResource);
         }
 
@@ -160,15 +175,32 @@ public class UserController {
     @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
     //ToDo: Authorization fix: instrument updaten
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<User> updateUser(@PathVariable("id") int id, @RequestBody UserResource userResource) {
+    public ResponseEntity<User> updateUser(@PathVariable("id") int id, @RequestBody UserAddressDetailsResource userResource) {
 
         User user = userService.findUser(id);
 
         user.setFirstname(userResource.getFirstname());
         user.setLastname(userResource.getLastname());
-        user.setPassword(userResource.getPassword());
         user.setUsername(userResource.getUsername());
-        User out = userService.addUser(user);
+
+        //image omzetten
+        String imageString = userResource.getUserimage();
+        try {
+            byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
+            user.setUserImage(decodedString);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        Address address = addressService.getAddress(user.getAddress().getId());
+        address.setStreet(userResource.getStreet());
+        address.setStreetNumber(userResource.getStreetnumber());
+        address.setCountry(userResource.getCountry());
+        address.setCity(userResource.getCity());
+        address.setPostalCode(userResource.getPostalcode());
+
+        addressService.updateAddress(address);
+        User out = userService.updateUser(user);
         //
         return new ResponseEntity<>(out, HttpStatus.OK);
     }
@@ -204,6 +236,57 @@ public class UserController {
         }
         return new ResponseEntity<User>(checkedUser, HttpStatus.FORBIDDEN);
     }
+
+    @GetMapping("/excercises/{userId}")
+    public ResponseEntity<List<Composition>> getExcercisesUser(@PathVariable int userId){
+
+        User user = userService.findUser(userId);
+        List<Composition> excercises = user.getExercises();
+        return new  ResponseEntity<>(excercises,HttpStatus.OK);
+    }
+    @PostMapping("/excercises/{userId}")
+    public ResponseEntity<List<Composition>> addExcerciseUser(@PathVariable int userId, @RequestBody UserExcerciseResource userExcerciseResource){
+
+        User user = userService.findUser(userId);
+        Composition excercise = compositionService.getComposition(userExcerciseResource.getExcerciseid());
+        List<Composition> excercises = user.getExercises();
+        excercises.add(excercise);
+        user.setExercises(excercises);
+        userService.updateUser(user);
+        return new ResponseEntity<>(user.getExercises(),HttpStatus.OK);
+    }
+
+    @PostMapping("/excercises/remove/{userId}")
+    public ResponseEntity<List<Composition>> deleteExcerciseUser(@PathVariable int userId, @RequestBody UserExcerciseResource userExcerciseResource){
+        User user = userService.findUser(userId);
+        Composition excercise = compositionService.getComposition(userExcerciseResource.getExcerciseid());
+        List<Composition> excercises = user.getExercises();
+
+        excercises.remove(excercise);
+
+        user.setExercises(excercises);
+        userService.updateUser(user);
+
+        return new ResponseEntity<>(user.getExercises(),HttpStatus.OK);
+    }
+
+    @GetMapping("/user/instrumentlevels/{userId}")
+    public ResponseEntity<List<InstrumentLevel>> getInstrumentLevelsUser(@PathVariable int userId){
+
+        List<InstrumentLevel> instrumentLevels = userService.findUser(userId).getInstrumentLevels();
+
+
+        return new ResponseEntity<>(instrumentLevels,HttpStatus.OK);
+    }
+
+    private UserDetailsResource createUserDetailsResource(User user){
+        UserDetailsResource userDetailsResource = new UserDetailsResource();
+        userDetailsResource.setUserid(user.getId());
+        userDetailsResource.setFirstname(user.getFirstname());
+        userDetailsResource.setLastname(user.getLastname());
+        return userDetailsResource;
+    }
+
 
     @RequestMapping(value = "/userroles", method = RequestMethod.GET)
     public ResponseEntity<RolesDTO> getRolesfromUser(Principal principal) {
