@@ -40,6 +40,26 @@ public class Chat {
                     });
                 })
                 .start();
+
+        Javalin.create()
+                .port(7071)
+                .enableStaticFiles("static")
+                .ws("/chat", ws -> {
+                    ws.onConnect(session -> {
+                        String username = "User" + nextUserNumber++;
+                        userUsernameMap.put(session, username);
+                        broadcastMessage("Server", (username + " joined the chat"));
+                    });
+                    ws.onClose((session, status, message) -> {
+                        String username = userUsernameMap.get(session);
+                        userUsernameMap.remove(session);
+                        broadcastMessage("Server", (username + " left the chat"));
+                    });
+                    ws.onMessage((session, message) -> {
+                        broadcastMessage(userUsernameMap.get(session), message);
+                    });
+                })
+                .start();
     }
 
     // Sends a message from one user to all users, along with a list of current usernames
