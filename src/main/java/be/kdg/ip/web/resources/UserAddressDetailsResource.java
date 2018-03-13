@@ -1,35 +1,16 @@
 package be.kdg.ip.web.resources;
 
-import java.util.List;
-
-public class UserResource {
-    private String username;
+public class UserAddressDetailsResource {
     private String firstname;
     private String lastname;
-    private String password;
-    private String userimage;
     private String street;
     private String streetnumber;
     private String postalcode;
     private String city;
     private String country;
+    private String username;
+    private String userimage;
 
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
 
     public String getFirstname() {
         return firstname;
@@ -39,20 +20,12 @@ public class UserResource {
         this.firstname = firstname;
     }
 
-    public String getPassword() {
-        return password;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getUserimage() {
-        return userimage;
-    }
-
-    public void setUserimage(String userimage) {
-        this.userimage = userimage;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getStreet() {
@@ -93,5 +66,21 @@ public class UserResource {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUserimage() {
+        return userimage;
+    }
+
+    public void setUserimage(String userimage) {
+        this.userimage = userimage;
     }
 }
