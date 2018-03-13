@@ -1,5 +1,6 @@
 package be.kdg.ip.integratie;
 
+import be.kdg.ip.OAuthHelper;
 import be.kdg.ip.domain.CourseType;
 import be.kdg.ip.services.api.CourseTypeService;
 import be.kdg.ip.web.CourseTypeController;
@@ -14,13 +15,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithSecurityContext;
+import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -29,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
+@ContextConfiguration
 public class TestCourseType {
 
     @Autowired
@@ -40,12 +47,16 @@ public class TestCourseType {
     @Autowired
     private CourseTypeController controller;
 
+    @Autowired
+    private OAuthHelper oAuthHelper;
+
+
     @MockBean
     private CourseTypeService courseTypeService;
 
     @Before
     public void setup() throws Exception {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).apply(springSecurity()).build();
     }
 
     public static String asJsonString(final Object obj) {
@@ -62,7 +73,6 @@ public class TestCourseType {
     }
 
     @Test
-    @WithMockUser(username = "test", password = "test", roles = "ROLE_ADMIN")
     public void testGetCourseTypeById() throws Exception{
         int courseTypeId = 1;
 
@@ -72,7 +82,9 @@ public class TestCourseType {
 
         given(this.courseTypeService.getCourseType(courseTypeId)).willReturn(courseType);
 
-        mockMvc.perform(get("http://localhost:8080/api/courseTypes/1"))
+        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("jos","ADMIN");
+
+        mockMvc.perform(get("http://localhost:8080/api/courseTypes/1").with(bearerToken))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.price", CoreMatchers.is(courseType.getPrice())))
