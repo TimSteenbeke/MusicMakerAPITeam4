@@ -1,5 +1,7 @@
 package be.kdg.ip.web.resources;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
 public class GroupResource {

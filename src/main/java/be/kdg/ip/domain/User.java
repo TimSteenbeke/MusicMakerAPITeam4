@@ -29,7 +29,7 @@ public class User implements Serializable, UserDetails {
     @Column
     private String password;
 
-    @JsonIgnore
+    //@JsonIgnore
     @ManyToMany
     private List<Group> groups;
 

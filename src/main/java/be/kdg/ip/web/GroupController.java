@@ -5,6 +5,7 @@ import be.kdg.ip.domain.User;
 import be.kdg.ip.services.api.GroupService;
 import be.kdg.ip.services.api.UserService;
 import be.kdg.ip.web.resources.GroupResource;
+import be.kdg.ip.web.resources.GroupUserResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/groups")
@@ -29,22 +31,42 @@ public class GroupController {
     }
 
     @GetMapping("/allgroups")
-    public ResponseEntity<List<Group>> findAll(){
+    public ResponseEntity<List<GroupUserResource>> findAll() {
         List<Group> groups = groupService.getAllGroups();
-        return new ResponseEntity<List<Group>>(groups, HttpStatus.OK);
+        List<GroupUserResource> groupUserResources = new ArrayList<>();
+        for (Group group : groups) {
+            GroupUserResource groupUserResource = new GroupUserResource();
+            groupUserResource.setGroupid(group.getGroupId());
+            groupUserResource.setGroupimage(group.getGroupImage());
+            groupUserResource.setName(group.getName());
+            groupUserResource.setSupervisor(group.getSupervisor());
+            groupUserResource.setUsers(new ArrayList<>());
+            for (User user : group.getUsers()) {
+                groupUserResource.getUsers().add(user);
+                if (!user.getGroups().contains(group)) {
+                    user.getGroups().add(group);
+                }
+                userService.updateUser(user);
+            }
+            groupUserResources.add(groupUserResource);
+        }
+
+        return new ResponseEntity<>(groupUserResources, HttpStatus.OK);
     }
 
     @PostMapping
     //ToDo: Authorization fix: group post
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<Group> postNewGroup(@RequestBody GroupResource groupResource){
+    public ResponseEntity<GroupUserResource> postNewGroup(@RequestBody GroupResource groupResource) {
         Group group = new Group();
         group.setName(groupResource.getName());
+        GroupUserResource groupUserResource = new GroupUserResource();
 
         List<User> users = new ArrayList<>();
-        for (int i:groupResource.getUserids()){
+        for (int i : groupResource.getUserids()) {
             users.add(userService.findUser(i));
         }
+
         group.setUsers(users);
         group.setSupervisor(userService.findUser(groupResource.getSupervisorid()));
 
@@ -57,16 +79,42 @@ public class GroupController {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+
+
         Group out = groupService.addGroup(group);
-        return new ResponseEntity<>(out,HttpStatus.OK);
+        groupUserResource.setName(out.getName());
+        groupUserResource.setSupervisor(out.getSupervisor());
+        groupUserResource.setUsers(out.getUsers());
+        groupUserResource.setGroupimage(out.getGroupImage());
+        for (User user : group.getUsers()) {
+            if (!user.getGroups().contains(group)) {
+                user.getGroups().add(group);
+            }
+            userService.updateUser(user);
+        }
+        return new ResponseEntity<>(groupUserResource, HttpStatus.OK);
     }
 
     @GetMapping("/{groupId}")
     //ToDo: Authorization fix: group get by id
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<Group> getGroup(@PathVariable int groupId){
+    public ResponseEntity<GroupUserResource> getGroup(@PathVariable int groupId) {
         Group group = this.groupService.getGroup(groupId);
-        return new ResponseEntity<>(group, HttpStatus.OK);
+        GroupUserResource groupUserResource = new GroupUserResource();
+        groupUserResource.setGroupid(groupId);
+        groupUserResource.setGroupimage(group.getGroupImage());
+        groupUserResource.setName(group.getName());
+        groupUserResource.setSupervisor(group.getSupervisor());
+        groupUserResource.setUsers(new ArrayList<>());
+        for (User user : group.getUsers()) {
+            groupUserResource.getUsers().add(user);
+            if (!user.getGroups().contains(group)) {
+                user.getGroups().add(group);
+            }
+            userService.updateUser(user);
+        }
+
+        return new ResponseEntity<>(groupUserResource, HttpStatus.OK);
     }
 
     @GetMapping
@@ -76,13 +124,15 @@ public class GroupController {
     public ResponseEntity<Collection<Group>> getGroupsByUser(@PathVariable int userId) {
         User user = this.userService.findUser(userId);
 
-        return new ResponseEntity<>(user.getGroups(),HttpStatus.OK);
+        return new ResponseEntity<>(user.getGroups(), HttpStatus.OK);
     }
 
     @DeleteMapping("/{groupId}")
     public ResponseEntity<Group> deleteGroupById(@PathVariable("groupId") Integer groupId) {
 
         Group group = groupService.getGroup(groupId);
+
+
         groupService.removeGroup(groupId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -95,8 +145,10 @@ public class GroupController {
         group.setGroupId(id);
         group.setName(groupResource.getName());
 
+        GroupUserResource groupUserResource = new GroupUserResource();
+
         List<User> users = new ArrayList<>();
-        for (int i:groupResource.getUserids()){
+        for (int i : groupResource.getUserids()) {
             users.add(userService.findUser(i));
         }
         group.setUsers(users);
@@ -112,7 +164,16 @@ public class GroupController {
             e.printStackTrace();
         }
         Group out = groupService.addGroup(group);
-
-        return new ResponseEntity<>(out,HttpStatus.OK);
+        groupUserResource.setName(out.getName());
+        groupUserResource.setSupervisor(out.getSupervisor());
+        groupUserResource.setUsers(out.getUsers());
+        groupUserResource.setGroupimage(out.getGroupImage());
+        for (User user : group.getUsers()) {
+            if (!user.getGroups().contains(group)) {
+                user.getGroups().add(group);
+            }
+            userService.updateUser(user);
+        }
+        return new ResponseEntity<>(out, HttpStatus.OK);
     }
 }

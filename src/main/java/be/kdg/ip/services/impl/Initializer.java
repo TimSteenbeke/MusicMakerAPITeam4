@@ -99,30 +99,40 @@ public class Initializer {
         User jef = new User("jef", "jefiscool", "jef", "jefferson", rolesAdmin);
         User jos = new User("jos", "josiscooler", "jos", "josserson", rolesStudent);
         User tim = new User("tim", "tim", "brouwers", "brouwersiscool", rolesTeacher);
-        userService.addUser(tim);
         User timS = new User("timS", "tims", "Tim", "Steenbeke", rolesAll);
+
         userService.addUser(timS);
-
-        Group group = new Group();
-        group.setName("testGroup");
-        group.getUsers().add(jef);
-        group.getUsers().add(jos);
-        group.setSupervisor(tim);
-        groupService.addGroup(group);
-
-        jef.getGroups().add(group);
-
+        userService.addUser(tim);
         userService.addUser(jef);
         userService.addUser(jos);
 
+        Group group = new Group();
+        group.setName("testGroup");
+        List<User> users = group.getUsers();
+        users.add(userService.findUserByUsername("jef"));
+        users.add(userService.findUserByUsername("jos"));
+        group.setUsers(users);
+        group.setSupervisor(userService.findUserByUsername("tim"));
+        groupService.addGroup(group);
+
+
+        jef.getGroups().add(group);
+        jos.getGroups().add(group);
+
+
         Group group2 = new Group();
         group2.setName("testGroup2");
-        group2.setSupervisor(jef);
-        List<User> users = new ArrayList<>();
-        users.add(tim);
-        users.add(jos);
-        group2.setUsers(users);
+        group2.getUsers().add(userService.findUserByUsername("tim"));
+        group2.getUsers().add(userService.findUserByUsername("jos"));
+        group2.setSupervisor(userService.findUserByUsername("jef"));
         groupService.addGroup(group2);
+
+        tim.getGroups().add(group2);
+        jos.getGroups().add(group2);
+
+        userService.updateUser(tim);
+        userService.updateUser(jos);
+        userService.updateUser(jef);
 
 
         Course course = new Course();

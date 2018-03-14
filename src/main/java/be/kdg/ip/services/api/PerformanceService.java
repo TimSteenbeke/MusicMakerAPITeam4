@@ -5,7 +5,6 @@ import be.kdg.ip.domain.User;
 
 public interface PerformanceService {
     void addPerformance(Performance performance);
-    Performance getPerformance(int performanceId);
     //TODO: cruds
     Performance getPerformance(int PerformanceId);
 
