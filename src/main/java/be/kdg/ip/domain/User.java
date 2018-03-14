@@ -107,6 +107,7 @@ public class User implements Serializable, UserDetails {
         this.agenda = new Agenda();
         this.exercises = new ArrayList<>();
         this.instrumentLevels = new ArrayList<>();
+        this.groups  = new ArrayList<Group>();
     }
 
     public int getId() {
