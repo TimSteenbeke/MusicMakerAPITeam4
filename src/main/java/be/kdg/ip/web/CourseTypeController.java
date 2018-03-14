@@ -29,6 +29,7 @@ public class CourseTypeController {
         CourseTypeResource courseTypeResource = new CourseTypeResource();
 
         CourseType courseType = courseTypeService.getCourseType(courseTypeId);
+        courseTypeResource.setCourseTypeId(courseType.getCourseTypeId());
         courseTypeResource.setCourseTypeDescription(courseType.getDescription());
         courseTypeResource.setPrice(courseType.getPrice());
 
