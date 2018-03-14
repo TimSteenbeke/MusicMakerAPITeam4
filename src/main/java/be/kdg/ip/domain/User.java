@@ -50,6 +50,19 @@ public class User implements Serializable, UserDetails {
     @ManyToMany(mappedBy = "students")
     private List<Course> courses;
 
+    @Lob
+    @Column
+    private byte[] userImage;
+
+    @OneToOne
+    private Address address;
+
+    @ManyToMany
+    private List<Composition> exercises;
+
+    @OneToMany
+    private List<InstrumentLevel> instrumentLevels;
+
 
 
     public User(){
@@ -57,6 +70,8 @@ public class User implements Serializable, UserDetails {
         this.groups = new ArrayList<>();
         this.courses= new ArrayList<>();
         this.roles = new ArrayList<>();
+        this.exercises = new ArrayList<>();
+        this.instrumentLevels = new ArrayList<>();
     }
 
     public User(String firstname) {
@@ -65,9 +80,11 @@ public class User implements Serializable, UserDetails {
         this.groups = new ArrayList<>();
         this.courses= new ArrayList<>();
         this.roles = new ArrayList<>();
+        this.exercises = new ArrayList<>();
+        this.instrumentLevels = new ArrayList<>();
     }
 
-    public User(String username, String password, String firstname, String lastname, List<Role> roles) {
+    public User(String username, String password, String firstname, String lastname, List<Role> roles, byte[] userImage, Address address) {
         this.username = username;
         this.password = password;
         this.firstname = firstname;
@@ -75,6 +92,21 @@ public class User implements Serializable, UserDetails {
         this.roles = roles;
         this.agenda = new Agenda();
         this.groups = new ArrayList<Group>();
+        this.userImage = userImage;
+        this.address = address;
+        this.exercises = new ArrayList<>();
+        this.instrumentLevels = new ArrayList<>();
+    }
+
+    public User(String username, String firstname, String lastname, String password, List<Role> roles) {
+        this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.password = password;
+        this.roles = roles;
+        this.agenda = new Agenda();
+        this.exercises = new ArrayList<>();
+        this.instrumentLevels = new ArrayList<>();
     }
 
     public int getId() {
@@ -205,5 +237,37 @@ public class User implements Serializable, UserDetails {
 
     public void setAgenda(Agenda agenda) {
         this.agenda = agenda;
+    }
+
+    public byte[] getUserImage() {
+        return userImage;
+    }
+
+    public void setUserImage(byte[] userImage) {
+        this.userImage = userImage;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public List<Composition> getExercises() {
+        return exercises;
+    }
+
+    public void setExercises(List<Composition> exercises) {
+        this.exercises = exercises;
+    }
+
+    public List<InstrumentLevel> getInstrumentLevels() {
+        return instrumentLevels;
+    }
+
+    public void setInstrumentLevels(List<InstrumentLevel> instrumentLevels) {
+        this.instrumentLevels = instrumentLevels;
     }
 }

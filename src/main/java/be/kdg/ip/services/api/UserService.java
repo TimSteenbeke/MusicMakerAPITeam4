@@ -1,5 +1,6 @@
 package be.kdg.ip.services.api;
 
+import be.kdg.ip.domain.Address;
 import be.kdg.ip.domain.Role;
 import be.kdg.ip.domain.User;
 import be.kdg.ip.services.exceptions.UserServiceException;
@@ -15,7 +16,7 @@ import java.util.List;
 @Service
 public interface UserService extends UserDetailsService {
 
-    User addUser(String username, String password, String firstName, String lastName, List<Role> roles);
+    User addUser(String username, String password, String firstName, String lastName, List<Role> roles, byte[] userimage, Address address);
 
     User addUser(User user);
 
