@@ -82,7 +82,7 @@ public class TestCourseType {
 
         given(this.courseTypeService.getCourseType(courseTypeId)).willReturn(courseType);
 
-        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("jos","ADMIN");
+        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("gemockteUser","ADMIN");
 
         mockMvc.perform(get("http://localhost:8080/api/courseTypes/1").with(bearerToken))
                 .andDo(print())
