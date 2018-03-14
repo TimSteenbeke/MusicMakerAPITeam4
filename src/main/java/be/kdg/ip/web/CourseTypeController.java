@@ -59,7 +59,7 @@ public class CourseTypeController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(method = RequestMethod.POST,value ="api/courseTypes/")
+    @RequestMapping(method = RequestMethod.POST,value ="api/courseTypes")
     //ToDo: Authorization fix
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<CourseType> addCourseType(@Valid @RequestBody CourseTypeResource courseTypeResource) {
@@ -72,7 +72,7 @@ public class CourseTypeController {
     }
 
 
-    @RequestMapping(method = RequestMethod.GET,value ="api/courseTypes/")
+    @RequestMapping(method = RequestMethod.GET,value ="api/courseTypes")
     //ToDo: Authorization fix
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public List<CourseType> getAllCourseTypes() {
