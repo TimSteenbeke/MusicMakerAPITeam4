@@ -5,11 +5,11 @@ public class CourseTypeResource {
     private int price;
     private int courseTypeId;
 
-    public String getCourseTypeDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public void setCourseTypeDescription(String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
