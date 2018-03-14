@@ -72,6 +72,7 @@ public class User implements Serializable, UserDetails {
         this.roles = new ArrayList<>();
         this.exercises = new ArrayList<>();
         this.instrumentLevels = new ArrayList<>();
+        this.teachescourses= new ArrayList<>();
     }
 
     public User(String firstname) {
@@ -82,6 +83,8 @@ public class User implements Serializable, UserDetails {
         this.roles = new ArrayList<>();
         this.exercises = new ArrayList<>();
         this.instrumentLevels = new ArrayList<>();
+        this.teachescourses= new ArrayList<>();
+
     }
 
     public User(String username, String password, String firstname, String lastname, List<Role> roles, byte[] userImage, Address address) {
@@ -96,6 +99,10 @@ public class User implements Serializable, UserDetails {
         this.address = address;
         this.exercises = new ArrayList<>();
         this.instrumentLevels = new ArrayList<>();
+        this.teachescourses= new ArrayList<>();
+        this.courses= new ArrayList<>();
+
+
     }
 
     public User(String username, String firstname, String lastname, String password, List<Role> roles) {
@@ -108,6 +115,9 @@ public class User implements Serializable, UserDetails {
         this.exercises = new ArrayList<>();
         this.instrumentLevels = new ArrayList<>();
         this.groups  = new ArrayList<Group>();
+        this.teachescourses= new ArrayList<>();
+        this.courses= new ArrayList<>();
+
     }
 
     public int getId() {
