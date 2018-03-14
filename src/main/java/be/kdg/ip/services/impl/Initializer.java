@@ -20,38 +20,40 @@ import java.util.List;
 @Service
 public class Initializer {
 
+
     @Autowired
     private UserService userService;
+    /*
+        @Autowired
+        private InstrumentService instrumentService;
 
-    @Autowired
-    private InstrumentService instrumentService;
+        @Autowired
+        private LessonService lessonService;
 
-    @Autowired
-    private LessonService lessonService;
+        @Autowired
+        private AgendaService agendaService;
 
-    @Autowired
-    private AgendaService agendaService;
+        @Autowired
+        private PerformanceService performanceService;
 
-    @Autowired
-    private PerformanceService performanceService;
+        @Autowired
+        private InstrumentSoortService instrumentSoortService;
 
-    @Autowired
-    private InstrumentSoortService instrumentSoortService;
+        @Autowired
+        private CourseService courseService;
 
-    @Autowired
-    private CourseService courseService;
+        @Autowired
+        private GroupService groupService;
 
-    @Autowired
-    private GroupService groupService;
+        */@Autowired
+        private RoleService roleService;
+    /*
+        @Autowired
+        private CompositionService compositionService;
 
-    @Autowired
-    private RoleService roleService;
-
-    @Autowired
-    private CompositionService compositionService;
-
-    @Autowired
-    private AddressService addressService;
+     */ @Autowired
+        private AddressService addressService;
+   /*
 
     @PostConstruct
     public void addDummyInstruments() {
@@ -77,19 +79,20 @@ public class Initializer {
         compositionService.addComposition(composition);
 
     }
-
+*/
     @PostConstruct
     void addAgendaItems() throws UserServiceException {
         Role administrator = new Administrator();
         roleService.addRole(administrator);
+        /*
         Role teacher = new Teacher();
         roleService.addRole(teacher);
         Role student = new Student();
         roleService.addRole(student);
 
-        List<Role> rolesAdmin = new ArrayList<Role>();
+       */ List<Role> rolesAdmin = new ArrayList<Role>();
         rolesAdmin.add(administrator);
-        List<Role> rolesTeacher = new ArrayList<Role>();
+       /* List<Role> rolesTeacher = new ArrayList<Role>();
         rolesTeacher.add(teacher);
         List<Role> rolesStudent = new ArrayList<Role>();
         rolesStudent.add(student);
@@ -98,26 +101,26 @@ public class Initializer {
         rolesAll.add(teacher);
         rolesAll.add(student);
 
-        Address address = new Address("straat","29","2910","Essen","belgie");
-        Address address2 = new Address("straatje","2","2910","Essen","belgie");
+       */ Address address = new Address("straat","29","2910","Essen","belgie");
+        /*Address address2 = new Address("straatje","2","2910","Essen","belgie");
         Address address3 = new Address("straatweg","8","2910","Essen","belgie");
         Address address4 = new Address("wegstraat","77","2910","Essen","belgie");
 
-        addressService.addAddress(address);
-        addressService.addAddress(address2);
+       */ addressService.addAddress(address);
+       /* addressService.addAddress(address2);
         addressService.addAddress(address3);
         addressService.addAddress(address4);
 
 
-        User jef = new User("jef", "jefiscool", "jef", "jefferson", rolesAdmin,new byte[0],address);
-        User jos = new User("jos", "josiscooler", "jos", "josserson", rolesStudent,new byte[0],address2);
+        */User jef = new User("jef", "jefiscool", "jef", "jefferson", rolesAdmin,new byte[0],address);
+       /* User jos = new User("jos", "josiscooler", "jos", "josserson", rolesStudent,new byte[0],address2);
         User tim = new User("tim", "tim", "brouwers", "brouwersiscool", rolesTeacher,new byte[0],address3);
         User timS = new User("timS", "tims", "Tim", "Steenbeke", rolesAll,new byte[0],address4);
 
         userService.addUser(timS);
-        userService.addUser(tim);
+        userService.addUser(tim);*/
         userService.addUser(jef);
-        userService.addUser(jos);
+       /* userService.addUser(jos);
 
         Group group = new Group();
         group.setName("testGroup");
@@ -167,11 +170,16 @@ public class Initializer {
         course.getTeachers().add(tim);
         tim.getTeachescourses().add(course);
         userService.updateUser(tim);
+        userService.updateUser(jos);
+        userService.updateUser(timS);
+
+        lesson.setCourse(courseService.getCourse(course.getCourseId()));
+        lessonService.addLesson(agenda, lesson);
+
         courseService.addCourse(course);
 
 
-        lesson.setCourse(course);
-        lessonService.addLesson(agenda, lesson);
+
 
         Performance performance = new Performance();
         performance.setBeschrijving("een beschrijving van een optreden");
@@ -198,7 +206,7 @@ public class Initializer {
         System.out.println("agenda items toegevoegd");
         System.out.println("ok");
 
-
+*/
         //GROUPS TOEVOEGEN
     }
 }
