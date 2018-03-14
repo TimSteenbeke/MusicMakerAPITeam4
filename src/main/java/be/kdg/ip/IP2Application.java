@@ -25,7 +25,7 @@ public class IP2Application {
     @Bean
     public Docket simpleDiffServiceApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("calculator")
+                .groupName("Integratieproject")
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.any())
