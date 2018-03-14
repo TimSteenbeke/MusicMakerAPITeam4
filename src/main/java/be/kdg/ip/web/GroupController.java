@@ -131,7 +131,10 @@ public class GroupController {
     public ResponseEntity<Group> deleteGroupById(@PathVariable("groupId") Integer groupId) {
 
         Group group = groupService.getGroup(groupId);
-
+        for(User user: group.getUsers()){
+            user.getGroups().remove(group);
+            userService.updateUser(user);
+        }
 
         groupService.removeGroup(groupId);
 
