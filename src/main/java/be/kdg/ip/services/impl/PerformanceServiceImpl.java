@@ -2,6 +2,7 @@ package be.kdg.ip.services.impl;
 
 import be.kdg.ip.domain.Performance;
 import be.kdg.ip.domain.User;
+import be.kdg.ip.domain.User;
 import be.kdg.ip.repositories.api.PerformanceRepository;
 import be.kdg.ip.services.api.PerformanceService;
 import org.springframework.beans.factory.annotation.Autowired;
