@@ -9,7 +9,7 @@ public class CourseTypeResource {
         return description;
     }
 
-    public void setCourseTypeDescription(String courseTypeDescription) {
+    public void setCourseTypeDescription(String description) {
         this.description = description;
     }
 
