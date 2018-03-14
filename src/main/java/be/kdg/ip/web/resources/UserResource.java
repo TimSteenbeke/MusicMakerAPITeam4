@@ -2,7 +2,7 @@ package be.kdg.ip.web.resources;
 
 import java.util.List;
 
-public class UserResource {
+public class   UserResource {
     private String username;
     private String firstname;
     private String lastname;
