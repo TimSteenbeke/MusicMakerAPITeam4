@@ -1,31 +1,45 @@
+/*
 
 package be.kdg.ip.Chat;
 
 import io.javalin.Javalin;
-import io.javalin.embeddedserver.jetty.websocket.WsSession;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 import org.eclipse.jetty.websocket.api.Session;
 import org.json.JSONObject;
+
 import static j2html.TagCreator.article;
 import static j2html.TagCreator.attrs;
 import static j2html.TagCreator.b;
 import static j2html.TagCreator.p;
 import static j2html.TagCreator.span;
+import static j2html.TagCreator.join;
+
 
 public class Chat {
-
     private static Map<Session, String> userUsernameMap = new ConcurrentHashMap<>();
     private static int nextUserNumber = 1; // Assign to username for next connecting user
 
     public static void main(String[] args) {
+
+
         Javalin.create()
                 .port(7070)
                 .enableStaticFiles("static")
                 .ws("/chat", ws -> {
-                    ws.onConnect(session -> {
+                    ws.onConnect((session) -> {
+                        System.out.println("========== ========== ========== sesion ========== ========== ========== " +
+                                "========== ========== ========== ========== ========== ==========");
+                        System.out.println(session.getId());
+                        System.out.println(session.getLocalAddress());
+                        System.out.println(session.getRemote());
+                        System.out.println(session.queryString());
+                        System.out.println("========== ========== ========== ========== ========== ========== ========== " +
+                                "========== ========== ========== ========== ==========");
                         String username = "User" + nextUserNumber++;
                         userUsernameMap.put(session, username);
                         broadcastMessage("Server", (username + " joined the chat"));
@@ -80,10 +94,9 @@ public class Chat {
     // Builds a HTML element with a sender-name, a message, and a timestamp
     private static String createHtmlMessageFromSender(String sender, String message) {
         return article(
-                b(sender + " says:"),
+                p(join(b(sender + " says:"), message))
                 span(attrs(".timestamp"), new SimpleDateFormat("HH:mm:ss").format(new Date())),
-                p(message)
-        ).render();
+                ).render();
     }
-
 }
+*/
