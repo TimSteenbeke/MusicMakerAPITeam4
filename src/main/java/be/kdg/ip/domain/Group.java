@@ -1,8 +1,5 @@
 package be.kdg.ip.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -14,7 +11,7 @@ public class Group {
     @Id
     @GeneratedValue
     @Column(nullable = false)
-    private int id;
+    private int groupId;
 
     @Column
     @Size(min = 4)
@@ -24,13 +21,40 @@ public class Group {
     //@Cascade(org.hibernate.annotations.CascadeType.ALL)
     private User supervisor;
 
-    @JsonIgnore
+    //voor jsonignore moet nog andere oplossing gezocht worden? users worden niet opgeslagen nu...
+
     @ManyToMany(mappedBy = "groups")
     private List<User> users;
 
     //@JsonIgnore
     @OneToMany(mappedBy = "group")
     private List<Performance> performances;
+
+    @Lob
+    @Column
+    private byte[] groupImage;
+
+
+    public Group() {
+        this.users = new ArrayList<>();
+        this.performances = new ArrayList<>();
+
+    }
+
+    public Group(String name, User supervisor, List<User> users) {
+        this.name = name;
+        this.supervisor = supervisor;
+        this.users = users;
+        this.performances = new ArrayList<>();
+    }
+
+    public byte[] getGroupImage() {
+        return groupImage;
+    }
+
+    public void setGroupImage(byte[] groupImage) {
+        this.groupImage = groupImage;
+    }
 
     public List<Performance> getPerformances() {
         return performances;
@@ -40,16 +64,6 @@ public class Group {
         this.performances = performances;
     }
 
-    public Group(String name, User supervisor, List<User> users) {
-        this.name = name;
-        this.supervisor = supervisor;
-        this.users = users;
-    }
-
-    public Group() {
-        this.users = new ArrayList<User>();
-
-    }
 
     public User getSupervisor() {
         return supervisor;
@@ -59,12 +73,12 @@ public class Group {
         this.supervisor = supervisor;
     }
 
-    public int getId() {
-        return id;
+    public int getGroupId() {
+        return groupId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
     }
 
     public String getName() {
