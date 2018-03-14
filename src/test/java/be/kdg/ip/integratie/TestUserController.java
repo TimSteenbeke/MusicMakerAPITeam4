@@ -11,7 +11,9 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -39,7 +41,7 @@ public class TestUserController {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
-    @Mock
+    @MockBean
     private UserService userService;
 
     public static String asJsonString(final Object obj) {
@@ -52,7 +54,7 @@ public class TestUserController {
 
     @Before
     public void init() throws Exception {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
     }
 
     @Test
@@ -66,6 +68,7 @@ public class TestUserController {
 
         this.mockMvc.perform(post("")
                 //.with(user("admin1").roles("ADMIN"))
+                .param("compresource", asJsonString(userResource))
                 .with(csrf())
                 .contentType(APPLICATION_JSON)
                 .content(asJsonString(userResource))
