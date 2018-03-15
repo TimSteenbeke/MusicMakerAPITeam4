@@ -67,7 +67,7 @@ public class InstrumentLevelController {
         return new ResponseEntity<>(instrumentLevels,HttpStatus.OK);
     }
 
-    //niet nodig denk ik
+    //fix delete in user!!!!!!
     @DeleteMapping("/{instrumentLevelId}")
     public ResponseEntity<InstrumentLevel> deleteInstrumentLevel(@PathVariable("instrumentLevelId") Integer instrumentLevelId){
         InstrumentLevel instrumentLevel = instrumentLevelService.getIntrumentLevel(instrumentLevelId);

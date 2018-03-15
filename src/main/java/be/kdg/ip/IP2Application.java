@@ -25,11 +25,10 @@ public class IP2Application {
     @Bean
     public Docket simpleDiffServiceApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("calculator")
+                .groupName("Integratieproject")
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.any())
+                .apis( RequestHandlerSelectors.basePackage( "be.kdg.ip.web" ))
                 .build()
                 .pathMapping("/");
 
@@ -37,7 +36,7 @@ public class IP2Application {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("API calls team 4")
+                .title("Music Makers API Team 4")
                 .description("onze API calls")
                 .version("1.0")
                 .build();

@@ -51,9 +51,9 @@ public class TestGroupService {
 
         groupService.addUsersToGroup(group, users);
 
-        List<User> allUsers = this.groupService.getAllUsers(group.getId());
+        List<User> allUsers = this.groupService.getAllUsers(group.getGroupId());
 
-        //assertEquals(allUsers.get(0).getId(), newUser.getId());
-        //assertEquals(allUsers.get(1).getId(), newUser2.getId());
+        //assertEquals(allUsers.get(0).getGroupId(), newUser.getGroupId());
+        //assertEquals(allUsers.get(1).getGroupId(), newUser2.getGroupId());
     }
 }

@@ -52,6 +52,7 @@ public class Initializer {
 
     @Autowired
     private AddressService addressService;
+
     @PostConstruct
     public void addDummyInstruments() {
 
@@ -72,11 +73,9 @@ public class Initializer {
         instrumentService.addInstrument(instrument3);
 
 
-        Composition composition = new Composition("Test", "Test", "Test","Test","Test","Test","Test","Test.pdf",new byte[5]);
-        Composition composition2 = new Composition("Tim", "Tim Brouwers", "Engels","Rock","Tim ziet het niet meer zitten","Blaas","www.youtube.com/timbrouwers","Timbrouwers.xml",new byte[5]);
-
+        Composition composition = new Composition("Test", "Test", "Test","Test","Test","Test","Test","Test",new byte[5]);
         compositionService.addComposition(composition);
-        compositionService.addComposition(composition2);
+
     }
 
     @PostConstruct
@@ -99,35 +98,54 @@ public class Initializer {
         rolesAll.add(teacher);
         rolesAll.add(student);
 
-
-        Address address = new Address("straatje","12","2910","Essen","belgie");
-        Address address2 = new Address("street","40","2910","Essen","belgie");
-        Address address3 = new Address("stationsweg","50","2910","Essen","belgie");
-        Address address4 = new Address("veldweg","68","2910","Essen","belgie");
+        Address address = new Address("straat","29","2910","Essen","belgie");
+        Address address2 = new Address("straatje","2","2910","Essen","belgie");
+        Address address3 = new Address("straatweg","8","2910","Essen","belgie");
+        Address address4 = new Address("wegstraat","77","2910","Essen","belgie");
 
         addressService.addAddress(address);
         addressService.addAddress(address2);
         addressService.addAddress(address3);
         addressService.addAddress(address4);
 
+
         User jef = new User("jef", "jefiscool", "jef", "jefferson", rolesAdmin,new byte[0],address);
         User jos = new User("jos", "josiscooler", "jos", "josserson", rolesStudent,new byte[0],address2);
         User tim = new User("tim", "tim", "brouwers", "brouwersiscool", rolesTeacher,new byte[0],address3);
-        userService.addUser(tim);
         User timS = new User("timS", "tims", "Tim", "Steenbeke", rolesAll,new byte[0],address4);
+
         userService.addUser(timS);
+        userService.addUser(tim);
+        userService.addUser(jef);
+        userService.addUser(jos);
 
         Group group = new Group();
         group.setName("testGroup");
-        group.getUsers().add(jef);
-        group.getUsers().add(jos);
-        group.setSupervisor(tim);
+        List<User> users = group.getUsers();
+        users.add(userService.findUserByUsername("jef"));
+        users.add(userService.findUserByUsername("jos"));
+        group.setUsers(users);
+        group.setSupervisor(userService.findUserByUsername("tim"));
         groupService.addGroup(group);
 
-        jef.getGroups().add(group);
 
-        userService.addUser(jef);
-        userService.addUser(jos);
+        jef.getGroups().add(group);
+        jos.getGroups().add(group);
+
+
+        Group group2 = new Group();
+        group2.setName("testGroup2");
+        group2.getUsers().add(userService.findUserByUsername("tim"));
+        group2.getUsers().add(userService.findUserByUsername("jos"));
+        group2.setSupervisor(userService.findUserByUsername("jef"));
+        groupService.addGroup(group2);
+
+        tim.getGroups().add(group2);
+        jos.getGroups().add(group2);
+
+        userService.updateUser(tim);
+        userService.updateUser(jos);
+        userService.updateUser(jef);
 
 
         Course course = new Course();
@@ -144,7 +162,11 @@ public class Initializer {
         lesson.setEndDateTime(vandaag.plusDays(3).plusHours(5));
 
         course.getStudents().add(jef);
+        jef.getCourses().add(course);
+        userService.updateUser(jef);
         course.getTeachers().add(tim);
+        tim.getTeachescourses().add(course);
+        userService.updateUser(tim);
         courseService.addCourse(course);
 
 
