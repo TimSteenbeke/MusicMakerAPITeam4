@@ -14,6 +14,7 @@ public class GroupUserResource {
     private User supervisor;
     @JsonIgnoreProperties({"username","lastname","password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired"})
     private List<User> users;
+    private List<Integer> userids;
     private byte[] groupimage;
 
     public int getGroupid() {
@@ -38,6 +39,14 @@ public class GroupUserResource {
 
     public void setSupervisor(User supervisor) {
         this.supervisor = supervisor;
+    }
+
+    public List<Integer> getUserids() {
+        return userids;
+    }
+
+    public void setUserids(List<Integer> userids) {
+        this.userids = userids;
     }
 
     public List<User> getUsers() {

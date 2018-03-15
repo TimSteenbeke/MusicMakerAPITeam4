@@ -4,6 +4,7 @@ import be.kdg.ip.domain.Group;
 import be.kdg.ip.domain.User;
 import be.kdg.ip.services.api.GroupService;
 import be.kdg.ip.services.api.UserService;
+import be.kdg.ip.services.exceptions.UserServiceException;
 import be.kdg.ip.web.resources.GroupResource;
 import be.kdg.ip.web.resources.GroupUserResource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collection;
@@ -34,6 +36,7 @@ public class GroupController {
     public ResponseEntity<List<GroupUserResource>> findAll() {
         List<Group> groups = groupService.getAllGroups();
         List<GroupUserResource> groupUserResources = new ArrayList<>();
+        List<Integer> userids = new ArrayList<>();
         for (Group group : groups) {
             GroupUserResource groupUserResource = new GroupUserResource();
             groupUserResource.setGroupid(group.getGroupId());
@@ -41,13 +44,16 @@ public class GroupController {
             groupUserResource.setName(group.getName());
             groupUserResource.setSupervisor(group.getSupervisor());
             groupUserResource.setUsers(new ArrayList<>());
+
             for (User user : group.getUsers()) {
                 groupUserResource.getUsers().add(user);
+                userids.add(user.getId());
                 if (!user.getGroups().contains(group)) {
                     user.getGroups().add(group);
                 }
                 userService.updateUser(user);
             }
+            groupUserResource.setUserids(userids);
             groupUserResources.add(groupUserResource);
         }
 
@@ -106,8 +112,10 @@ public class GroupController {
         groupUserResource.setName(group.getName());
         groupUserResource.setSupervisor(group.getSupervisor());
         groupUserResource.setUsers(new ArrayList<>());
+        groupUserResource.setUserids(new ArrayList<>());
         for (User user : group.getUsers()) {
             groupUserResource.getUsers().add(user);
+            groupUserResource.getUserids().add(user.getId());
             if (!user.getGroups().contains(group)) {
                 user.getGroups().add(group);
             }
@@ -121,17 +129,37 @@ public class GroupController {
     @CrossOrigin(origins = "*")
     //ToDo: Authorization fix: group get by user
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<Collection<Group>> getGroupsByUser(@PathVariable int userId) {
-        User user = this.userService.findUser(userId);
+    public ResponseEntity<List<GroupUserResource>> getGroupsByUser(Principal principal) {
+        String username = principal.getName();
+        User user = null;
+        List<GroupUserResource> groupUserResources = new ArrayList<>();
+        try {
+            user = this.userService.findUserByUsername(username);
+            for(Group group: user.getGroups()){
+                GroupUserResource groupUserResource = new GroupUserResource();
+                groupUserResource.setGroupid(group.getGroupId());
+                groupUserResource.setGroupimage(group.getGroupImage());
+                groupUserResource.setName(group.getName());
+                groupUserResource.setSupervisor(group.getSupervisor());
 
-        return new ResponseEntity<>(user.getGroups(), HttpStatus.OK);
+                groupUserResources.add(groupUserResource);
+            }
+        } catch (UserServiceException e) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+
+        return new ResponseEntity<>(groupUserResources, HttpStatus.OK);
     }
 
     @DeleteMapping("/{groupId}")
     public ResponseEntity<Group> deleteGroupById(@PathVariable("groupId") Integer groupId) {
 
         Group group = groupService.getGroup(groupId);
-
+        for(User user: group.getUsers()){
+            user.getGroups().remove(group);
+            userService.updateUser(user);
+        }
 
         groupService.removeGroup(groupId);
 
