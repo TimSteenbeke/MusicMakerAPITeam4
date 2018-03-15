@@ -11,6 +11,7 @@ import org.hamcrest.collection.IsMapContaining;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -86,6 +87,9 @@ public class TestCourseController {
 
     @Test
     public void addCourse() throws Exception {
+        Course course = new Course("description",50,new ArrayList<>(), new ArrayList<>(),new ArrayList<>());
+        
+
         RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser", "STUDENT");
 
         RequestBuilder request = post("http://localhost:8080/api/courses").with(bearerToken);
@@ -147,7 +151,8 @@ public class TestCourseController {
 
         mockMvc.perform(request)
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.description",CoreMatchers.is(course.getBeschrijving())));
 
     }
 

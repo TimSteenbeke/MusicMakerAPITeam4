@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Service("courseService")
+@Service("CourseService")
 @Transactional
 public class CourseServiceImpl implements CourseService {
 

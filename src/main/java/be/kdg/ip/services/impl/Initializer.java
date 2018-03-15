@@ -50,6 +50,7 @@ public class Initializer {
     @Autowired
     private CompositionService compositionService;
 
+
     @PostConstruct
     public void addDummyInstruments() {
 
@@ -150,10 +151,11 @@ public class Initializer {
 
         course.getStudents().add(jef);
         course.getTeachers().add(tim);
-        courseService.addCourse(course);
 
+        Course savedcourse =courseService.addCourse(course);
 
-        lesson.setCourse(course);
+        lesson.setCourse(savedcourse);
+
         lessonService.addLesson(agenda, lesson);
 
         Performance performance = new Performance();
