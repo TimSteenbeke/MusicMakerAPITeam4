@@ -1,16 +1,23 @@
 package be.kdg.ip.web.resources;
 
 public class CourseTypeResource {
-    private String courseTypeDescription;
+    private String description;
     private int price;
+    private int courseTypeId;
 
-    public String getCourseTypeDescription() {
-        return courseTypeDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setCourseTypeDescription(String courseTypeDescription) {
-        this.courseTypeDescription = courseTypeDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
+
+    public void setCourseTypeId(int courseTypeId) {
+        this.courseTypeId = courseTypeId;
+    }
+
+    public int getCourseTypeId(){return courseTypeId;}
 
     public int getPrice() {
         return price;

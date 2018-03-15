@@ -186,6 +186,7 @@ public class UserController {
         //image omzetten
         String imageString = userResource.getUserimage();
         try {
+            imageString = imageString.replaceAll("(\\r|\\n)", "");
             byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
             user.setUserImage(decodedString);
         } catch (UnsupportedEncodingException e) {

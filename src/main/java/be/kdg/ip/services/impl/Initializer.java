@@ -50,6 +50,9 @@ public class Initializer {
     @Autowired
     private CompositionService compositionService;
 
+    @Autowired
+    private AddressService addressService;
+
     @PostConstruct
     public void addDummyInstruments() {
 
@@ -95,11 +98,21 @@ public class Initializer {
         rolesAll.add(teacher);
         rolesAll.add(student);
 
+        Address address = new Address("straat","29","2910","Essen","belgie");
+        Address address2 = new Address("straatje","2","2910","Essen","belgie");
+        Address address3 = new Address("straatweg","8","2910","Essen","belgie");
+        Address address4 = new Address("wegstraat","77","2910","Essen","belgie");
 
-        User jef = new User("jef", "jefiscool", "jef", "jefferson", rolesAdmin);
-        User jos = new User("jos", "josiscooler", "jos", "josserson", rolesStudent);
-        User tim = new User("tim", "tim", "brouwers", "brouwersiscool", rolesTeacher);
-        User timS = new User("timS", "tims", "Tim", "Steenbeke", rolesAll);
+        addressService.addAddress(address);
+        addressService.addAddress(address2);
+        addressService.addAddress(address3);
+        addressService.addAddress(address4);
+
+
+        User jef = new User("jef", "jefiscool", "jef", "jefferson", rolesAdmin,new byte[0],address);
+        User jos = new User("jos", "josiscooler", "jos", "josserson", rolesStudent,new byte[0],address2);
+        User tim = new User("tim", "tim", "brouwers", "brouwersiscool", rolesTeacher,new byte[0],address3);
+        User timS = new User("timS", "tims", "Tim", "Steenbeke", rolesAll,new byte[0],address4);
 
         userService.addUser(timS);
         userService.addUser(tim);
@@ -149,7 +162,11 @@ public class Initializer {
         lesson.setEndDateTime(vandaag.plusDays(3).plusHours(5));
 
         course.getStudents().add(jef);
+        jef.getCourses().add(course);
+        userService.updateUser(jef);
         course.getTeachers().add(tim);
+        tim.getTeachescourses().add(course);
+        userService.updateUser(tim);
         courseService.addCourse(course);
 
 

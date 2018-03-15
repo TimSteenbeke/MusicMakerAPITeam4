@@ -114,6 +114,7 @@ public class InstrumentController {
         String imageString = instrumentUpdateResource.getAfbeelding();
 
         try {
+            imageString = imageString.replaceAll("(\\r|\\n)", "");
             byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
             in.setAfbeelding(decodedString);
         } catch (UnsupportedEncodingException e) {

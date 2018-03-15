@@ -29,7 +29,8 @@ public class CourseTypeController {
         CourseTypeResource courseTypeResource = new CourseTypeResource();
 
         CourseType courseType = courseTypeService.getCourseType(courseTypeId);
-        courseTypeResource.setCourseTypeDescription(courseType.getDescription());
+        courseTypeResource.setCourseTypeId(courseType.getCourseTypeId());
+        courseTypeResource.setDescription(courseType.getDescription());
         courseTypeResource.setPrice(courseType.getPrice());
 
         return new ResponseEntity<CourseTypeResource>(courseTypeResource, HttpStatus.OK);
@@ -41,7 +42,7 @@ public class CourseTypeController {
     public ResponseEntity<CourseType> updateCourseType(@PathVariable("courseTypeId") int courseTypeId, @RequestBody CourseTypeResource courseTypeResource){
         CourseType courseType = new CourseType();
         courseType.setCourseTypeId(courseTypeId);
-        courseType.setDescription(courseTypeResource.getCourseTypeDescription());
+        courseType.setDescription(courseTypeResource.getDescription());
         courseType.setPrice(courseTypeResource.getPrice());
 
         CourseType out = courseTypeService.updateCourseType(courseType);
@@ -58,12 +59,12 @@ public class CourseTypeController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(method = RequestMethod.POST,value ="api/courseTypes/")
+    @RequestMapping(method = RequestMethod.POST,value ="api/courseTypes")
     //ToDo: Authorization fix
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<CourseType> addCourseType(@Valid @RequestBody CourseTypeResource courseTypeResource) {
         CourseType courseType = new CourseType();
-        courseType.setDescription(courseTypeResource.getCourseTypeDescription());
+        courseType.setDescription(courseTypeResource.getDescription());
         courseType.setPrice(courseTypeResource.getPrice());
 
         CourseType out = courseTypeService.addCourseType(courseType);
@@ -71,7 +72,7 @@ public class CourseTypeController {
     }
 
 
-    @RequestMapping(method = RequestMethod.GET,value ="api/courseTypes/")
+    @RequestMapping(method = RequestMethod.GET,value ="api/courseTypes")
     //ToDo: Authorization fix
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public List<CourseType> getAllCourseTypes() {
