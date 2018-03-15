@@ -52,6 +52,14 @@ public class Course {
         this.teachers = new ArrayList<User>();
     }
 
+    public Course(String beschrijving, int prijs, List<User> teachers, List<User> students, List<Lesson> lessons) {
+        Beschrijving = beschrijving;
+        this.prijs = prijs;
+        this.teachers = teachers;
+        this.students = students;
+        this.lessons = lessons;
+    }
+
     public int getCourseId() {
         return courseId;
     }
