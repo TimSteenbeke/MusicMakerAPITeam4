@@ -1,3 +1,4 @@
+/*
 package be.kdg.ip.Chat.ChatControllers;
 
 import be.kdg.ip.Chat.History.ChatHistoryDao;
@@ -5,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,11 +21,13 @@ public class MessageController {
     @Autowired
     private ChatHistoryDao chatHistoryDao;
 
-    /*
+    */
+/*
      * This MessageMapping annotated method will be handled by
      * SimpAnnotationMethodMessageHandler and after that the Message will be
      * forwarded to Broker channel to be forwarded to the client via WebSocket
-     */
+     *//*
+
 
     @CrossOrigin(origins = "*")
     @MessageMapping("/all")
@@ -40,3 +44,4 @@ public class MessageController {
         return chatHistoryDao.get();
     }
 }
+*/

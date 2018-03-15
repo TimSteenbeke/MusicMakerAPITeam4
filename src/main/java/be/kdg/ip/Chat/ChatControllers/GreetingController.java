@@ -1,3 +1,4 @@
+/*
 package be.kdg.ip.Chat.ChatControllers;
 
 import be.kdg.ip.Chat.Messages.Greeting;
@@ -19,3 +20,4 @@ public class GreetingController {
         return new Greeting("Hello, " + message.getName() + "!");
     }
 }
+*/
