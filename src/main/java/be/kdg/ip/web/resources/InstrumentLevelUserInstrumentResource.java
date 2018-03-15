@@ -1,37 +1,16 @@
-package be.kdg.ip.domain;
+package be.kdg.ip.web.resources;
 
-import javax.persistence.*;
+import be.kdg.ip.domain.Instrument;
+import be.kdg.ip.domain.User;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@Entity
-@Table(name ="instrumentlevel")
-public class InstrumentLevel {
-
-    @Id
-    @GeneratedValue
-    @Column(name="InstrumentLevelId",nullable = false)
-    private int InstrumentLevelId;
-
-    @Column
+public class InstrumentLevelUserInstrumentResource {
     private int maxLevel;
-    @Column
     private int level;
 
-    @ManyToOne
     private Instrument instrument;
-
-    @ManyToOne
+    @JsonIgnoreProperties({"username","lastname","password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired","instrumentLevels"})
     private User user;
-
-    public InstrumentLevel() {
-    }
-
-    public int getInstrumentLevelId() {
-        return InstrumentLevelId;
-    }
-
-    public void setInstrumentLevelId(int instrumentLevelId) {
-        InstrumentLevelId = instrumentLevelId;
-    }
 
     public int getMaxLevel() {
         return maxLevel;
