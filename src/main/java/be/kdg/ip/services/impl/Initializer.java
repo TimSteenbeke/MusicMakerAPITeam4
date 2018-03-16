@@ -53,6 +53,9 @@ public class Initializer {
     @Autowired
     private AddressService addressService;
 
+    @Autowired
+    private CourseTypeService courseTypeService;
+
     @PostConstruct
     public void addDummyInstruments() {
 
@@ -149,8 +152,15 @@ public class Initializer {
 
 
         Course course = new Course();
-        course.setBeschrijving("Een muziekCOURSE");
-        course.setPrijs(20);
+
+        CourseType courseType = new CourseType();
+        courseType.setDescription("Pianoles");
+        courseType.setPrice(10);
+
+
+        courseTypeService.addCourseType(courseType);
+
+        course.setCourseType(courseType);
 
 
         Agenda agenda = jef.getAgenda();
