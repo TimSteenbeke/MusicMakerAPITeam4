@@ -108,6 +108,33 @@ public class UserController {
         return new ResponseEntity<>(userResource, HttpStatus.OK);
     }
 
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/loggedin")
+    //ToDo: Authorization fix: group get by user
+    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    public ResponseEntity<UserAddressDetailsResource> GetCurrentUser(Principal principal) {
+        String username = principal.getName();
+        UserAddressDetailsResource userResource = new UserAddressDetailsResource();
+        User user = null;
+        try {
+            user = userService.findUserByUsername(username);
+            userResource.setUsername(user.getUsername());
+            userResource.setFirstname(user.getFirstname());
+            userResource.setLastname(user.getLastname());
+            userResource.setCity(user.getAddress().getCity());
+            userResource.setCountry(user.getAddress().getCountry());
+            userResource.setPostalcode(user.getAddress().getPostalCode());
+            userResource.setStreet(user.getAddress().getStreet());
+            userResource.setStreetnumber(user.getAddress().getStreetNumber());
+            userResource.setUserimage(new sun.misc.BASE64Encoder().encode(user.getUserImage()));
+        } catch (UserServiceException e) {
+            e.printStackTrace();
+        }
+
+        return new ResponseEntity<>(userResource, HttpStatus.OK);
+    }
+
     //Alle groepen opvragen
     @GetMapping
     @CrossOrigin(origins = "*")
