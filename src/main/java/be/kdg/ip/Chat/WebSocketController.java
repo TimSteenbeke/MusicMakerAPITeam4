@@ -1,4 +1,4 @@
-package be.kdg.ip.Chat.ChatControllers;
+package be.kdg.ip.Chat;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;

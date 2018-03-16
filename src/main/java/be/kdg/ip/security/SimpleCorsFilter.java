@@ -16,7 +16,8 @@ import java.util.List;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class SimpleCorsFilter implements Filter {
 
-    private final List<String> allowedOrigins = Arrays.asList("http://localhost:3000",
+    private final List<String> allowedOrigins = Arrays.asList(
+            "http://localhost:3000",
             "http://musicmaker-team4.herokuapp.com",
             "https://musicmaker-team4.herokuapp.com");
 
