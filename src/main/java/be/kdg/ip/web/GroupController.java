@@ -113,6 +113,7 @@ public class GroupController {
         groupUserResource.setSupervisor(group.getSupervisor());
         groupUserResource.setUsers(new ArrayList<>());
         groupUserResource.setUserids(new ArrayList<>());
+
         for (User user : group.getUsers()) {
             groupUserResource.getUsers().add(user);
             groupUserResource.getUserids().add(user.getId());
@@ -135,6 +136,7 @@ public class GroupController {
         List<GroupUserResource> groupUserResources = new ArrayList<>();
         try {
             user = this.userService.findUserByUsername(username);
+
             for(Group group: user.getGroups()){
                 GroupUserResource groupUserResource = new GroupUserResource();
                 groupUserResource.setGroupid(group.getGroupId());

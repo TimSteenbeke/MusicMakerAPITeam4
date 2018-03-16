@@ -1,5 +1,6 @@
 package be.kdg.ip.integratie;
 
+import be.kdg.ip.OAuthHelper;
 import be.kdg.ip.domain.Composition;
 import be.kdg.ip.services.api.CompositionService;
 import be.kdg.ip.web.resources.CompositionResource;
@@ -19,8 +20,12 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 import java.util.ArrayList;
@@ -51,12 +56,15 @@ public class TestMuziekstukken {
     @Autowired
     private WebApplicationContext wac;
 
+    @Autowired
+    private OAuthHelper oAuthHelper;
+
     @MockBean
     private CompositionService compositionService;
 
     @Before
     public void setup() throws Exception {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).apply(springSecurity()).build();
     }
 
     public static String asJsonString(final Object obj) {
@@ -69,13 +77,17 @@ public class TestMuziekstukken {
 
     @Test
     public void testGetCompositionById() throws Exception{
+        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("jef","ADMIN");
+
         int compositionId = 1;
 
         Composition composition = new Composition("Tim", "Test", "Test","Test","Test","Test","Test","Test",new byte[5]);
 
         given(this.compositionService.getComposition(compositionId)).willReturn(composition);
 
-        mockMvc.perform(get("http://localhost:8080/api/compositions/1"))
+        RequestBuilder request = get("http://localhost:8080/api/compositions/1").with(bearerToken);
+
+        mockMvc.perform(request)
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.titel", CoreMatchers.is(composition.getTitel())));
@@ -83,6 +95,8 @@ public class TestMuziekstukken {
 
     @Test
     public void testGetAllCompositions() throws Exception {
+        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser","ADMIN");
+
         Composition composition = new Composition();
         composition.setTitel("TitelTest");
 
@@ -90,7 +104,7 @@ public class TestMuziekstukken {
 
         given(compositionService.getAllCompositions()).willReturn(compositionList);
 
-        mockMvc.perform(get("http://localhost:8080/api/compositions/")
+        mockMvc.perform(get("http://localhost:8080/api/compositions/").with(bearerToken)
                 .contentType(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -100,6 +114,9 @@ public class TestMuziekstukken {
 
     @Test
     public void testPostComposition() throws Exception {
+        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser","ADMIN");
+
+
         CompositionResource compositionResource = new CompositionResource();
         compositionResource.setTitel("Tim");
         compositionResource.setArtist("Tim");
@@ -110,7 +127,7 @@ public class TestMuziekstukken {
         compositionResource.setFileFormat("Tim");
         compositionResource.setContent("Tim");
 
-        this.mockMvc.perform(post("")
+        this.mockMvc.perform(post("").with(bearerToken)
                 //.with(user("admin1").roles("ADMIN"))
                 .param("files", "Tim")
                 .param("compresource", asJsonString(compositionResource))
@@ -123,13 +140,15 @@ public class TestMuziekstukken {
 
     @Test
     public void testGetCompositionWhenIdExists() throws Exception {
+        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser","ADMIN");
+
         // given
         given(compositionService.getComposition(1))
                 .willReturn(new Composition("Test", "Test", "Test","Test","Test","Test","Test","Test",new byte[5]));
 
         // when
         MockHttpServletResponse response = mockMvc.perform(
-                get("https://musicmaker-api-team4.herokuapp.com/api/compositions/1")
+                get("https://musicmaker-api-team4.herokuapp.com/api/compositions/1").with(bearerToken)
                         .accept(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse();
 
@@ -150,9 +169,11 @@ public class TestMuziekstukken {
 
     @Test
     public void testDeleteComposition() throws Exception {
+        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser","ADMIN");
+        
         compositionService.addComposition(new Composition("Test", "Test", "Test","Test","Test","Test","Test","Test",new byte[5]));
 
-        this.mockMvc.perform(delete("/api/compositions/1")
+        this.mockMvc.perform(delete("/api/compositions/1").with(bearerToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -178,9 +199,11 @@ public class TestMuziekstukken {
 
     @Test
     public void testReturn404WhenNotFound() throws Exception {
+        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser","ADMIN");
+
         when(compositionService.getComposition(23)).thenReturn(null);
 
-        this.mockMvc.perform(get("api/compositions/23")
+        this.mockMvc.perform(get("api/compositions/23").with(bearerToken)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
