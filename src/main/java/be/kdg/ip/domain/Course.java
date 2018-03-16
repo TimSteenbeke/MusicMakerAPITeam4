@@ -25,6 +25,10 @@ public class Course {
     @ManyToMany
     private List<User> students;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "course")
+    private List<Lesson> lessons;
+
     public List<User> getTeachers() {
         return teachers;
     }
@@ -40,10 +44,6 @@ public class Course {
     public void setStudents(List<User> students) {
         this.students = students;
     }
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "course")
-    private List<Lesson> lessons;
 
     public Course() {
         this.lessons = new ArrayList<Lesson>();
