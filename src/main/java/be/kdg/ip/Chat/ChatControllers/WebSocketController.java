@@ -20,6 +20,7 @@ public class WebSocketController {
 
     @MessageMapping("/send/message/{id}")
     public void onRecieveMessage(@DestinationVariable String id, String message) {
-        this.template.convertAndSend("/chat/" + id, new SimpleDateFormat("HH:mm:ss").format(new Date()) + "- " + message);
+        this.template.convertAndSend("/chat/" + id,
+                new SimpleDateFormat("HH:mm:ss").format(new Date()) + "- " + message);
     }
 }
