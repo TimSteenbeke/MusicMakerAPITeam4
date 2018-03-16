@@ -1,3 +1,4 @@
+/*
 package be.kdg.ip.Chat.Messages;
 
 public class Greeting{
@@ -16,3 +17,4 @@ public class Greeting{
 
 
 }
+*/

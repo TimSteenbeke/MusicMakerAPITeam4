@@ -1,3 +1,4 @@
+/*
 package be.kdg.ip.Chat.History;
 
 import com.google.common.cache.Cache;
@@ -29,4 +30,4 @@ public class ChatHistoryDao {
                 .collect(Collectors.toList());
     }
 
-}
+}*/

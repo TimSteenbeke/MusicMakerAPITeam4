@@ -1,3 +1,4 @@
+/*
 package be.kdg.ip.Chat.Messages;
 
 public class HelloMessage {
@@ -18,3 +19,4 @@ public class HelloMessage {
         this.name = name;
     }
 }
+*/
