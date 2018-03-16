@@ -156,7 +156,7 @@ public class Initializer {
         CourseType courseType = new CourseType();
         courseType.setDescription("Pianoles");
         courseType.setPrice(10);
-        courseType.setDurationInMinutes(60);
+   
 
         courseTypeService.addCourseType(courseType);
 

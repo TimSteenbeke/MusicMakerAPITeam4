@@ -4,7 +4,6 @@ public class CourseTypeResource {
     private String description;
     private int price;
     private int courseTypeId;
-    private int durationInMinutes;
 
     public String getDescription() {
         return description;
@@ -26,13 +25,5 @@ public class CourseTypeResource {
 
     public void setPrice(int price) {
         this.price = price;
-    }
-
-    public int getDurationInMinutes() {
-        return durationInMinutes;
-    }
-
-    public void setDurationInMinutes(int durationInMinutes) {
-        this.durationInMinutes = durationInMinutes;
     }
 }

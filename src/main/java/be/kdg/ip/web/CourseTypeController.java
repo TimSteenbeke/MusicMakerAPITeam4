@@ -32,7 +32,6 @@ public class CourseTypeController {
         courseTypeResource.setCourseTypeId(courseType.getCourseTypeId());
         courseTypeResource.setDescription(courseType.getDescription());
         courseTypeResource.setPrice(courseType.getPrice());
-        courseTypeResource.setDurationInMinutes(courseType.getDurationInMinutes());
 
         return new ResponseEntity<CourseTypeResource>(courseTypeResource, HttpStatus.OK);
     }
@@ -45,7 +44,6 @@ public class CourseTypeController {
         courseType.setCourseTypeId(courseTypeId);
         courseType.setDescription(courseTypeResource.getDescription());
         courseType.setPrice(courseTypeResource.getPrice());
-        courseType.setDurationInMinutes(courseTypeResource.getDurationInMinutes());
 
         CourseType out = courseTypeService.updateCourseType(courseType);
         return new ResponseEntity<>(out, HttpStatus.OK);
@@ -68,7 +66,6 @@ public class CourseTypeController {
         CourseType courseType = new CourseType();
         courseType.setDescription(courseTypeResource.getDescription());
         courseType.setPrice(courseTypeResource.getPrice());
-        courseType.setDurationInMinutes(courseTypeResource.getDurationInMinutes());
 
         CourseType out = courseTypeService.addCourseType(courseType);
         return new ResponseEntity<>(out, HttpStatus.OK);
