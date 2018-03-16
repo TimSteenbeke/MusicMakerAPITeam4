@@ -1,8 +1,10 @@
 package be.kdg.ip.web;
 
 import be.kdg.ip.domain.Course;
+import be.kdg.ip.domain.CourseType;
 import be.kdg.ip.domain.User;
 import be.kdg.ip.services.api.CourseService;
+import be.kdg.ip.services.api.CourseTypeService;
 import be.kdg.ip.web.dto.CourseDTO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,6 +30,9 @@ public class CourseController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CourseTypeService courseTypeService;
+
     public CourseController(CourseService courseService) {
         this.courseService = courseService;
     }
@@ -45,8 +50,9 @@ public class CourseController {
     public ResponseEntity<CourseResource> addCourse(@Valid @RequestBody CourseResource courseResource) {
         Course course = new Course();
 
-        course.setPrijs(courseResource.getPrijs());
-        course.setBeschrijving(courseResource.getCoursebeschrijving());
+        CourseType courseType = courseTypeService.getCourseType(courseResource.getCourseTypeId());
+
+        course.setCourseType(courseType);
 
         //Add all students to the course
         List<User> students = new ArrayList<User>();
@@ -73,8 +79,8 @@ public class CourseController {
     public ResponseEntity<CourseResource> updateCourse(@PathVariable("courseId") int courseId,@Valid @RequestBody CourseResource courseResource) {
         Course course = courseService.getCourse(courseId);
 
-        course.setPrijs(courseResource.getPrijs());
-        course.setBeschrijving(courseResource.getCoursebeschrijving());
+        CourseType courseType = courseTypeService.getCourseType(courseResource.getCourseTypeId());
+        course.setCourseType(courseType);
 
         //Add all students to the course
         List<User> students = new ArrayList<User>();
@@ -112,7 +118,7 @@ public class CourseController {
         CourseDTO courseDTO = new CourseDTO();
         courseDTO.setStudents(course.getStudents());
         courseDTO.setTeachers(course.getTeachers());
-        courseDTO.setDescription(course.getBeschrijving());
+        courseDTO.setCourseTypeId(course.getCourseType().getCourseTypeId());
 
         return new ResponseEntity<CourseDTO>(courseDTO,HttpStatus.OK);
 

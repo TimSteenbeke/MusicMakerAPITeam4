@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
 
 public class CourseDTO {
+
+    private int courseTypeId;
     private String description;
     @JsonIgnoreProperties({"username","lastname","password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired"})
     private List<User> teachers;
@@ -35,5 +37,13 @@ public class CourseDTO {
 
     public void setStudents(List<User> students) {
         this.students = students;
+    }
+
+    public int getCourseTypeId() {
+        return courseTypeId;
+    }
+
+    public void setCourseTypeId(int courseTypeId) {
+        this.courseTypeId = courseTypeId;
     }
 }
