@@ -13,6 +13,17 @@ public class CourseType {
     @Column
     private int price;
 
+    @Column
+    private int durationInMinutes;
+
+    public int getDurationInMinutes() {
+        return durationInMinutes;
+    }
+
+    public void setDurationInMinutes(int durationInMinutes) {
+        this.durationInMinutes = durationInMinutes;
+    }
+
     public int getCourseTypeId() {
         return courseTypeId;
     }

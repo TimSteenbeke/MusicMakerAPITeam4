@@ -13,10 +13,9 @@ public class Course {
     @Column
     @GeneratedValue
     private int courseId;
-    @Column
-    private String Beschrijving;
-    @Column
-    private int prijs;
+
+    @ManyToOne
+    private CourseType courseType;
 
     @JsonIgnore
     @ManyToMany
@@ -60,27 +59,19 @@ public class Course {
         this.courseId = courseId;
     }
 
-    public String getBeschrijving() {
-        return Beschrijving;
-    }
-
-    public void setBeschrijving(String beschrijving) {
-        Beschrijving = beschrijving;
-    }
-
-    public int getPrijs() {
-        return prijs;
-    }
-
-    public void setPrijs(int prijs) {
-        this.prijs = prijs;
-    }
-
     public List<Lesson> getLessons() {
         return lessons;
     }
 
     public void setLessons(List<Lesson> lessons) {
         this.lessons = lessons;
+    }
+
+    public CourseType getCourseType() {
+        return courseType;
+    }
+
+    public void setCourseType(CourseType courseType) {
+        this.courseType = courseType;
     }
 }
