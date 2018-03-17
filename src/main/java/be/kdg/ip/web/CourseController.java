@@ -129,7 +129,9 @@ public class CourseController {
         CourseDTO courseDTO = new CourseDTO();
         courseDTO.setStudents(course.getStudents());
         courseDTO.setTeachers(course.getTeachers());
-        courseDTO.setCourseTypeId(course.getCourseType().getCourseTypeId());
+
+        CourseType courseType = courseTypeService.getCourseType(course.getCourseType().getCourseTypeId());
+        courseDTO.setCourseType(courseType);
 
         return new ResponseEntity<CourseDTO>(courseDTO,HttpStatus.OK);
 
