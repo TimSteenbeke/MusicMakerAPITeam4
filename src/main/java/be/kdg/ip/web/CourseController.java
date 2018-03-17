@@ -48,57 +48,68 @@ public class CourseController {
     //ToDo: Authorization fix: courses post
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<CourseResource> addCourse(@Valid @RequestBody CourseResource courseResource) {
-        Course course = new Course();
 
         CourseType courseType = courseTypeService.getCourseType(courseResource.getCourseTypeId());
+        if(courseType != null) {
+            Course course = new Course();
 
-        course.setCourseType(courseType);
+            course.setCourseType(courseType);
 
-        //Add all students to the course
-        List<User> students = new ArrayList<User>();
-        for (Integer studentid : courseResource.getStudentids()) {
-            students.add(userService.findUser(studentid));
+            //Add all students to the course
+            List<User> students = new ArrayList<User>();
+            for (Integer studentid : courseResource.getStudentids()) {
+                students.add(userService.findUser(studentid));
+            }
+            course.setStudents(students);
+
+            //Add all teachers to the course
+            List<User> teachers = new ArrayList<User>();
+            for (Integer teacherid : courseResource.getTeacherids()) {
+                teachers.add(userService.findUser(teacherid));
+            }
+
+            course.setTeachers(teachers);
+            courseService.addCourse(course);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        course.setStudents(students);
-
-        //Add all teachers to the course
-        List<User> teachers = new ArrayList<User>();
-        for(Integer teacherid : courseResource.getTeacherids()) {
-            teachers.add(userService.findUser(teacherid));
-        }
-
-        course.setTeachers(teachers);
-        courseService.addCourse(course);
-
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value="api/courses/{courseId}")
     //ToDo: Authorization fix: courses put
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<CourseResource> updateCourse(@PathVariable("courseId") int courseId,@Valid @RequestBody CourseResource courseResource) {
-        Course course = courseService.getCourse(courseId);
 
         CourseType courseType = courseTypeService.getCourseType(courseResource.getCourseTypeId());
-        course.setCourseType(courseType);
 
-        //Add all students to the course
-        List<User> students = new ArrayList<User>();
-        for (Integer studentid : courseResource.getStudentids()) {
-            students.add(userService.findUser(studentid));
+        if (courseType != null) {
+            Course course = courseService.getCourse(courseId);
+
+
+            course.setCourseType(courseType);
+
+            //Add all students to the course
+            List<User> students = new ArrayList<User>();
+            for (Integer studentid : courseResource.getStudentids()) {
+                students.add(userService.findUser(studentid));
+            }
+            course.setStudents(students);
+
+            //Add all teachers to the course
+            List<User> teachers = new ArrayList<User>();
+            for (Integer teacherid : courseResource.getTeacherids()) {
+                teachers.add(userService.findUser(teacherid));
+            }
+
+            course.setTeachers(teachers);
+            courseService.updateCourse(course);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        course.setStudents(students);
-
-        //Add all teachers to the course
-        List<User> teachers = new ArrayList<User>();
-        for(Integer teacherid : courseResource.getTeacherids()) {
-            teachers.add(userService.findUser(teacherid));
-        }
-
-        course.setTeachers(teachers);
-        courseService.updateCourse(course);
-
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value="api/courses/{courseId}")
@@ -118,7 +129,9 @@ public class CourseController {
         CourseDTO courseDTO = new CourseDTO();
         courseDTO.setStudents(course.getStudents());
         courseDTO.setTeachers(course.getTeachers());
-        courseDTO.setCourseTypeId(course.getCourseType().getCourseTypeId());
+
+        CourseType courseType = courseTypeService.getCourseType(course.getCourseType().getCourseTypeId());
+        courseDTO.setCourseType(courseType);
 
         return new ResponseEntity<CourseDTO>(courseDTO,HttpStatus.OK);
 
