@@ -28,6 +28,12 @@ public class Performance {
     @Column
     private LocalDateTime endDateTime;
 
+    @ManyToMany
+    private List<User> absentMembers;
+
+    @ManyToMany
+    private List<User> presentMembers;
+
     @JsonIgnore
     @ManyToMany(mappedBy="performances")
     private List<Agenda> agendas;
@@ -38,6 +44,12 @@ public class Performance {
 
     public Group getGroup() {
         return group;
+    }
+
+    public Performance() {
+        this.agendas = new ArrayList<Agenda>();
+        this.absentMembers = new ArrayList<User>();
+        this.presentMembers = new ArrayList<User>();
     }
 
     public void setGroup(Group group) {
@@ -68,10 +80,6 @@ public class Performance {
         this.endDateTime = endDateTime;
     }
 
-    public Performance() {
-        this.agendas = new ArrayList<Agenda>();
-    }
-
     public int getPerformanceId() {
         return performanceId;
     }
@@ -86,5 +94,21 @@ public class Performance {
 
     public void setAgendas(List<Agenda> agendas) {
         this.agendas = agendas;
+    }
+
+    public List<User> getAbsentMembers() {
+        return absentMembers;
+    }
+
+    public void setAbsentMembers(List<User> absentMembers) {
+        this.absentMembers = absentMembers;
+    }
+
+    public List<User> getPresentMembers() {
+        return presentMembers;
+    }
+
+    public void setPresentMembers(List<User> presentMembers) {
+        this.presentMembers = presentMembers;
     }
 }

@@ -10,4 +10,5 @@ public interface CompositionService {
     Composition getComposition(int compositionId);
     void removeComposition(int compositionId);
     Composition updateComposition(Composition composition);
+    List<Composition> getCompositionsByFilter(String filter);
 }

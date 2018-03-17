@@ -39,4 +39,9 @@ public class CompositionServiceImpl implements CompositionService {
     public Composition updateComposition(Composition composition) {
         return compositionRepository.save(composition);
     }
+
+    @Override
+    public List<Composition> getCompositionsByFilter(String filter) {
+        return compositionRepository.findAllByFilter(filter);
+    }
 }

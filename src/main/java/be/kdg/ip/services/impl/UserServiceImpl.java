@@ -1,5 +1,6 @@
 package be.kdg.ip.services.impl;
 
+import be.kdg.ip.domain.Address;
 import be.kdg.ip.domain.Role;
 import be.kdg.ip.domain.User;
 import be.kdg.ip.repositories.api.UserRepository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service("userService")
 @Transactional
@@ -26,8 +28,8 @@ public class UserServiceImpl implements UserService {
 
 
 
-    public User addUser(String username, String password, String firstName, String lastName, List<Role> roles) {
-        return userRepository.save(new User(username,password,firstName,lastName,roles));
+    public User addUser(String username, String password, String firstName, String lastName, List<Role> roles, byte[] userimage, Address address) {
+        return userRepository.save(new User(username,password,firstName,lastName,roles,userimage,address));
     }
 
 
@@ -39,11 +41,34 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public List<User> getUserWithRole(Role role) {
+        return userRepository.findAll().stream().filter(x -> x.getRoles().contains(role)).collect(Collectors.toList());
+    }
+
+
+    @Override
     public User findUserByUsername(String username) throws UserServiceException {
         User user = userRepository.findByUsername(username);
         if (user == null)
             throw new UserServiceException("User not found");
         return user;
+    }
+
+    @Override
+    public User updateUser(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
+    public void deleteUser(int userId) {
+        User user = userRepository.findUserById(userId);
+
+        userRepository.delete(user);
     }
 
     @Override

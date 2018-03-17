@@ -15,6 +15,13 @@ public abstract class Role {
     @Column
     private int roleId;
 
+    @Column
+    private String roleName;
+
+    public Role(String roleName) {
+        this.roleName = roleName;
+    }
+
 
     public abstract Collection<? extends GrantedAuthority> getAuthorities();
 
@@ -26,4 +33,11 @@ public abstract class Role {
         this.roleId = roleId;
     }
 
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
 }

@@ -18,6 +18,9 @@ public class Course {
     @Column
     private int price;
 
+    @ManyToOne
+    private CourseType courseType;
+
     @JsonIgnore
     @ManyToMany
     private List<User> teachers;
@@ -25,6 +28,10 @@ public class Course {
     @JsonIgnore
     @ManyToMany
     private List<User> students;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "course")
+    private List<Lesson> lessons;
 
     public List<User> getTeachers() {
         return teachers;
@@ -41,10 +48,6 @@ public class Course {
     public void setStudents(List<User> students) {
         this.students = students;
     }
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "course")
-    private List<Lesson> lessons;
 
     public Course() {
         this.lessons = new ArrayList<Lesson>();
@@ -82,5 +85,13 @@ public class Course {
 
     public void setLessons(List<Lesson> lessons) {
         this.lessons = lessons;
+    }
+
+    public CourseType getCourseType() {
+        return courseType;
+    }
+
+    public void setCourseType(CourseType courseType) {
+        this.courseType = courseType;
     }
 }

@@ -1,8 +1,12 @@
 package be.kdg.ip.web;
 
 import be.kdg.ip.domain.Course;
+import be.kdg.ip.domain.CourseType;
 import be.kdg.ip.domain.User;
 import be.kdg.ip.services.api.CourseService;
+import be.kdg.ip.services.api.CourseTypeService;
+import be.kdg.ip.web.dto.CourseDTO;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,23 +30,29 @@ public class CourseController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CourseTypeService courseTypeService;
+
     public CourseController(CourseService courseService) {
         this.courseService = courseService;
     }
 
     @RequestMapping(method = RequestMethod.GET,value ="api/courses")
-    //ToDo: Authorization fix: courses
-    // @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    //ToDo: Authorization fix: courses get
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public List<Course> getCourses() {
         return courseService.getAllCourses();
     }
 
     @RequestMapping(method = RequestMethod.POST, value="api/courses")
+    //ToDo: Authorization fix: courses post
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<CourseResource> addCourse(@Valid @RequestBody CourseResource courseResource) {
         Course course = new Course();
 
-        course.setPrice(courseResource.getPrice());
-        course.setDescription(courseResource.getCoursedescription());
+        CourseType courseType = courseTypeService.getCourseType(courseResource.getCourseTypeId());
+
+        course.setCourseType(courseType);
 
         //Add all students to the course
         List<User> students = new ArrayList<User>();
@@ -64,11 +74,13 @@ public class CourseController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value="api/courses/{courseId}")
+    //ToDo: Authorization fix: courses put
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<CourseResource> updateCourse(@PathVariable("courseId") int courseId,@Valid @RequestBody CourseResource courseResource) {
         Course course = courseService.getCourse(courseId);
 
-        course.setPrice(courseResource.getPrice());
-        course.setDescription(courseResource.getCoursedescription());
+        CourseType courseType = courseTypeService.getCourseType(courseResource.getCourseTypeId());
+        course.setCourseType(courseType);
 
         //Add all students to the course
         List<User> students = new ArrayList<User>();
@@ -90,10 +102,30 @@ public class CourseController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value="api/courses/{courseId}")
+    //ToDo: Authorization fix: courses delete
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<CourseResource> updateCourse(@PathVariable("courseId") int courseId) {
         courseService.removeCourse(courseId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @RequestMapping(method = RequestMethod.GET,value ="api/courses/{courseId}")
+    //ToDo: Authorization fix: courses get
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    public ResponseEntity<CourseDTO> getCourse(@PathVariable("courseId") int courseId) {
+        Course course =  courseService.getCourse(courseId);
+
+        CourseDTO courseDTO = new CourseDTO();
+        courseDTO.setStudents(course.getStudents());
+        courseDTO.setTeachers(course.getTeachers());
+        courseDTO.setCourseTypeId(course.getCourseType().getCourseTypeId());
+
+        return new ResponseEntity<CourseDTO>(courseDTO,HttpStatus.OK);
+
+
+
+    }
+
 
 
 

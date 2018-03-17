@@ -13,6 +13,10 @@ import java.util.List;
 @Entity
 public class Student extends Role {
 
+    public Student() {
+        super("Student");
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
@@ -20,5 +24,4 @@ public class Student extends Role {
         authorities.add(new SimpleGrantedAuthority("STUDENT"));
         return authorities;
     }
-
 }

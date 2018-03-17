@@ -76,6 +76,7 @@ public class InstrumentController {
     @GetMapping
     @CrossOrigin(origins = "*")
     //ToDo: Authorization fix: get all instrument
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<List<Instrument>> findAll() {
         List<Instrument> instruments = instrumentService.getAllInstruments();
         return new ResponseEntity<>(instruments, HttpStatus.OK);
@@ -84,7 +85,7 @@ public class InstrumentController {
     //Delete an instrument
     @DeleteMapping("/{instrumentId}")
     //ToDo: Authorization fix: delete instrument
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<Instrument> deleteInstrumentById(@PathVariable("instrumentId") Integer instrumentId) {
         Instrument instrument = instrumentService.getInstrument(instrumentId);
         instrumentService.removeInstrument(instrument.getInstrumentId());
@@ -95,7 +96,7 @@ public class InstrumentController {
     //Update an instrument
     @RequestMapping(value = "/instrument/{id}", method = RequestMethod.PUT)
     //ToDo: Authorization fix: instrument updaten
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<InstrumentUpdateResource> updateUser(@PathVariable("id") int id, @RequestBody InstrumentUpdateResource instrumentUpdateResource) {
         //Instrument in = mapperFacade.map(instrumentUpdateResource,Instrument.class);
         Instrument in = new Instrument();
@@ -109,6 +110,7 @@ public class InstrumentController {
         String imageString = instrumentUpdateResource.getImage();
 
         try {
+            imageString = imageString.replaceAll("(\\r|\\n)", "");
             byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
             in.setImage(decodedString);
         } catch (UnsupportedEncodingException e) {

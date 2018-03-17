@@ -1,20 +1,22 @@
 package be.kdg.ip.web;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+
+@RestController
+@CrossOrigin(origins = "*")
+@RequestMapping("/api/login")
 public class LoginController {
     //ToDo: login tokenizer
     // Login form
-    @RequestMapping("/login")
+    @RequestMapping("*")
     public String login() {
         return "login";
     }
 
     // Login form with error
-    @RequestMapping("/login-error")
+    @RequestMapping("/error")
     public String loginError(Model model) {
         model.addAttribute("loginError", true);
         return "login";

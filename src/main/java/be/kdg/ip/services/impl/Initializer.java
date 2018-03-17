@@ -47,6 +47,15 @@ public class Initializer {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private CompositionService compositionService;
+
+    @Autowired
+    private AddressService addressService;
+
+    @Autowired
+    private CourseTypeService courseTypeService;
+
     @PostConstruct
     public void addDummyInstruments() {
 
@@ -65,6 +74,11 @@ public class Initializer {
         instrumentService.addInstrument(instrument);
         instrumentService.addInstrument(instrument2);
         instrumentService.addInstrument(instrument3);
+
+
+        Composition composition = new Composition("Test", "Test", "Test","Test","Test","Test","Test","Test",new byte[5]);
+        compositionService.addComposition(composition);
+
     }
 
     @PostConstruct
@@ -87,30 +101,66 @@ public class Initializer {
         rolesAll.add(teacher);
         rolesAll.add(student);
 
+        Address address = new Address("straat","29","2910","Essen","belgie");
+        Address address2 = new Address("straatje","2","2910","Essen","belgie");
+        Address address3 = new Address("straatweg","8","2910","Essen","belgie");
+        Address address4 = new Address("wegstraat","77","2910","Essen","belgie");
 
-        User jef = new User("jef", "jefiscool", "jef", "jefferson", rolesAdmin);
-        User jos = new User("jos", "josiscooler", "jos", "josserson", rolesStudent);
-        User tim = new User("tim", "tim", "brouwers", "brouwersiscool", rolesTeacher);
-        userService.addUser(tim);
-        User timS = new User("timS", "tims", "Tim", "Steenbeke", rolesAll);
+        addressService.addAddress(address);
+        addressService.addAddress(address2);
+        addressService.addAddress(address3);
+        addressService.addAddress(address4);
+
+
+        User jef = new User("jef", "jefiscool", "jef", "jefferson", rolesAdmin,new byte[0],address);
+        User jos = new User("jos", "josiscooler", "jos", "josserson", rolesStudent,new byte[0],address2);
+        User tim = new User("tim", "tim", "brouwers", "brouwersiscool", rolesTeacher,new byte[0],address3);
+        User timS = new User("timS", "tims", "Tim", "Steenbeke", rolesAll,new byte[0],address4);
+
         userService.addUser(timS);
-
-        Group group = new Group();
-        group.setGroupName("testGroup");
-        group.getUsers().add(jef);
-        group.getUsers().add(jos);
-        group.setSupervisor(tim);
-        groupService.addGroup(group);
-
-        jef.getGroups().add(group);
-
+        userService.addUser(tim);
         userService.addUser(jef);
         userService.addUser(jos);
 
+        Group group = new Group();
+        group.setName("testGroup");
+        List<User> users = group.getUsers();
+        users.add(userService.findUserByUsername("jef"));
+        users.add(userService.findUserByUsername("jos"));
+        group.setUsers(users);
+        group.setSupervisor(userService.findUserByUsername("tim"));
+        groupService.addGroup(group);
+
+
+        jef.getGroups().add(group);
+        jos.getGroups().add(group);
+
+
+        Group group2 = new Group();
+        group2.setName("testGroup2");
+        group2.getUsers().add(userService.findUserByUsername("tim"));
+        group2.getUsers().add(userService.findUserByUsername("jos"));
+        group2.setSupervisor(userService.findUserByUsername("jef"));
+        groupService.addGroup(group2);
+
+        tim.getGroups().add(group2);
+        jos.getGroups().add(group2);
+
+        userService.updateUser(tim);
+        userService.updateUser(jos);
+        userService.updateUser(jef);
+
 
         Course course = new Course();
-        course.setDescription("Een muziekCOURSE");
-        course.setPrice(20);
+
+        CourseType courseType = new CourseType();
+        courseType.setDescription("Pianoles");
+        courseType.setPrice(10);
+
+
+        courseTypeService.addCourseType(courseType);
+
+        course.setCourseType(courseType);
 
 
         Agenda agenda = jef.getAgenda();
@@ -122,7 +172,11 @@ public class Initializer {
         lesson.setEndDateTime(vandaag.plusDays(3).plusHours(5));
 
         course.getStudents().add(jef);
+        jef.getCourses().add(course);
+        userService.updateUser(jef);
         course.getTeachers().add(tim);
+        tim.getTeachescourses().add(course);
+        userService.updateUser(tim);
         courseService.addCourse(course);
 
 

@@ -1,14 +1,12 @@
 package be.kdg.ip.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "tgroup") //groupName can't be group because it is a reserved keyword within the h2 database
+@Table(name = "tgroup") //name can't be group because it is a reserved keyword within the h2 database
 public class Group {
     @Id
     @GeneratedValue
@@ -17,19 +15,22 @@ public class Group {
 
     @Column
     @Size(min = 4)
-    private String groupName;
+    private String name;
 
     @ManyToOne
     //@Cascade(org.hibernate.annotations.CascadeType.ALL)
     private User supervisor;
 
-    @JsonIgnore
     @ManyToMany(mappedBy = "groups")
     private List<User> users;
 
     //@JsonIgnore
     @OneToMany(mappedBy = "group")
     private List<Performance> performances;
+
+    @Lob
+    @Column
+    private byte[] groupImage;
 
     public List<Performance> getPerformances() {
         return performances;
@@ -40,15 +41,33 @@ public class Group {
     }
 
     public Group(String name, User supervisor, List<User> users) {
-        this.groupName = name;
+        this.name = name;
         this.supervisor = supervisor;
         this.users = users;
+        this.performances = new ArrayList<>();
     }
 
     public Group() {
         this.users = new ArrayList<User>();
-
+        this.performances = new ArrayList<>();
     }
+
+    public byte[] getGroupImage() {
+        return groupImage;
+    }
+
+    public void setGroupImage(byte[] groupImage) {
+        this.groupImage = groupImage;
+    }
+
+    public List<Performance> getPerformances() {
+        return performances;
+    }
+
+    public void setPerformances(List<Performance> performances) {
+        this.performances = performances;
+    }
+
 
     public User getSupervisor() {
         return supervisor;
@@ -66,12 +85,12 @@ public class Group {
         this.groupId = groupId;
     }
 
-    public String getGroupName() {
-        return groupName;
+    public String getName() {
+        return name;
     }
 
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<User> getUsers() {
