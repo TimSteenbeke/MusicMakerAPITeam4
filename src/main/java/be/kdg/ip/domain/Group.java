@@ -60,15 +60,6 @@ public class Group {
         this.groupImage = groupImage;
     }
 
-    public List<Performance> getPerformances() {
-        return performances;
-    }
-
-    public void setPerformances(List<Performance> performances) {
-        this.performances = performances;
-    }
-
-
     public User getSupervisor() {
         return supervisor;
     }

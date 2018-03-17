@@ -5,13 +5,14 @@ import be.kdg.ip.domain.InstrumentCategory;
 import be.kdg.ip.services.api.InstrumentCategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/instrumentCategories")
+@RequestMapping("/api/instrumentsoorten")
 public class InstrumentCategoryController {
 
     private InstrumentCategoryService instrumentCategoryService;
@@ -21,10 +22,10 @@ public class InstrumentCategoryController {
         this.instrumentCategoryService = instrumentCategoryService;
     }
 
-    //creation of an instrument
+    //Aanmaken van een instrument
     @PostMapping
     //ToDo: Authorization fix: instrumentsoort create
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<InstrumentCategory> createInstrument(@Valid @RequestBody InstrumentCategory instrumentCategory) {
 
         InstrumentCategory out = instrumentCategoryService.addInstrumentCategory(instrumentCategory);
@@ -33,34 +34,34 @@ public class InstrumentCategoryController {
         return  new ResponseEntity<>(out, HttpStatus.OK);
     }
 
-    //Request 1 InstrumentCategory
-    @GetMapping("/{instrumentCategoryId}")
+    //1 InstrumentSoort opvragen
+    @GetMapping("/{instrumentSoortId}")
     //ToDo: Authorization fix: instrumentsoort get
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<InstrumentCategory> findInstrumentById(@PathVariable int instrumentSoortId){
-        InstrumentCategory instrumentCategory = instrumentCategoryService.getInstrumentCategory(instrumentSoortId);
-        return  new ResponseEntity<InstrumentCategory>(instrumentCategory,HttpStatus.OK);
+        InstrumentCategory instrumentSoort = instrumentCategoryService.getInstrumentCategory(instrumentSoortId);
+        return  new ResponseEntity<InstrumentCategory>(instrumentSoort,HttpStatus.OK);
     }
 
     @GetMapping
     @CrossOrigin(origins = "*")
     //ToDo: Authorization fix: instrumentsoort get all
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<List<InstrumentCategory>> findAll(){
-        List<InstrumentCategory> instrumentCategoryList = instrumentCategoryService.getAllInstrumentCategories();
-        return new ResponseEntity<>(instrumentCategoryList, HttpStatus.OK);
+        List<InstrumentCategory> instrumentSoortList = instrumentCategoryService.getAllInstrumentCategories();
+        return new ResponseEntity<>(instrumentSoortList, HttpStatus.OK);
     }
 
-    //Delete instrument category
-    @PostMapping("/{instrumentCategoryId}")
+    //Een instrumentSoort verwijderen
+    @PostMapping("/{instrumentSoortId}")
     //ToDo: Authorization fix: instrumentsoort delete
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<InstrumentCategory> deleteInstrumentById(@PathVariable("instrumentSoortId") Integer instrumentSoortId){
 
         InstrumentCategory instrumentCategory = instrumentCategoryService.getInstrumentCategory(instrumentSoortId);
 
         for (Instrument i : instrumentCategory.getInstrumentList()){
-            i.setInstrumentCategory(null);
+            i.setType(null);
         }
 
         instrumentCategoryService.removeInstrumentCategory(instrumentSoortId);
@@ -72,7 +73,7 @@ public class InstrumentCategoryController {
     //Een instrumentCategory updaten
     @RequestMapping(value = "/instrumentsoort/{id}", method = RequestMethod.PUT)
     //ToDo: Authorization fix: instrumentsoort update
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<InstrumentCategory> updateUser(@PathVariable("id") int id, @RequestBody InstrumentCategory instrumentCategory) {
 
         instrumentCategory.setInstrumentCategoryId(id);

@@ -50,7 +50,7 @@ public class CompositionController {
 
         CompositionResource compositionResource =  mapper.readValue(compresource, CompositionResource.class);
         Composition composition = new Composition();
-        composition.setTitle(compositionResource.getTitle());
+        composition.setTitle(compositionResource.getTitel());
         composition.setArtist(compositionResource.getArtist());
         composition.setLanguage(compositionResource.getLanguage());
         composition.setGenre(compositionResource.getGenre());
@@ -58,7 +58,7 @@ public class CompositionController {
         composition.setLink(compositionResource.getLink());
         composition.setInstrumentType(compositionResource.getInstrumentType());
         composition.setFileFormat(compositionResource.getFileFormat());
-        composition.setInstrumentType(compositionResource.getInstrumentcategory());
+        composition.setInstrumentType(compositionResource.getInstrumentType());
 
         try {
             composition.setFileFormat(files.getOriginalFilename());
@@ -108,14 +108,14 @@ public class CompositionController {
     public ResponseEntity<CompositionResource> updateComposition(@PathVariable("compositionId") int compositionId,@Valid @RequestBody CompositionResource compositionResource) {
         Composition composition = compositionService.getComposition(compositionId);
 
-        composition.setTitle(compositionResource.getTitle());
+        composition.setTitle(compositionResource.getTitel());
         composition.setArtist(compositionResource.getArtist());
         composition.setLanguage(compositionResource.getLanguage());
         composition.setGenre(compositionResource.getGenre());
         composition.setSubject(compositionResource.getSubject());
         composition.setLink(compositionResource.getLink());
         composition.setFileFormat(compositionResource.getFileFormat());
-        composition.setInstrumentType(compositionResource.getInstrumentcategory());
+        composition.setInstrumentType(compositionResource.getInstrumentType());
 
 
         try {

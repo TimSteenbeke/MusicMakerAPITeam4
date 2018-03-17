@@ -1,22 +1,22 @@
 package be.kdg.ip.web.resources;
 
 public class InstrumentCategoryResource {
-    private int InstrumentSoortId;
-    private String soortNaam;
+    private int instrumentcategoryid;
+    private String categoryname;
 
-    public int getInstrumentSoortId() {
-        return InstrumentSoortId;
+    public int getInstrumentcategoryid() {
+        return instrumentcategoryid;
     }
 
-    public void setInstrumentSoortId(int instrumentSoortId) {
-        InstrumentSoortId = instrumentSoortId;
+    public void setInstrumentcategoryid(int instrumentcategoryid) {
+        this.instrumentcategoryid = instrumentcategoryid;
     }
 
-    public String getSoortNaam() {
-        return soortNaam;
+    public String getCategoryname() {
+        return categoryname;
     }
 
-    public void setSoortNaam(String soortNaam) {
-        this.soortNaam = soortNaam;
+    public void setCategoryname(String categoryname) {
+        this.categoryname = categoryname;
     }
 }
