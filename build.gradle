@@ -6,12 +6,14 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+//        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.10.RELEASE")
     }
 }
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 group = 'be.kdg'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
@@ -47,5 +49,32 @@ dependencies {
     //security Java Web Tokenizer
     compile group: 'org.springframework.security', name: 'spring-security-jwt', version: '1.0.7.RELEASE'
     compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.1.0.RELEASE'
+
+    //Chat Dependencies
+//    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.6.1'
+    /*compile group: 'com.j2html', name: 'j2html', version: '1.2.2'
+    compile group: 'org.json', name: 'json', version: '20090211'
+    compile group: 'io.javalin', name: 'javalin', version: '1.4.1'
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.8.2'
+
+    compile group: 'javax.json', name: 'javax.json-api', version: '1.1.2'
+    compile group: 'io.socket', name: 'socket.io-client', version: '1.0.0'
+
+    compile group: 'org.springframework', name: 'spring-messaging', version: '5.0.4.RELEASE'
+    compile group: 'org.springframework', name: 'spring-websocket', version: '5.0.4.RELEASE'*/
+
+/*    compile("org.springframework.boot:spring-boot-starter-websocket")
+    compile("org.webjars:webjars-locator-core")
+    compile("org.webjars:sockjs-client:1.0.2")
+    compile("org.webjars:stomp-websocket:2.3.3")
+    compile("org.webjars:bootstrap:3.3.7")
+    compile("org.webjars:jquery:3.1.0")
+
+    testCompile("org.springframework.boot:spring-boot-starter-test")*/
+
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-websocket')
+
+    testCompile('org.springframework.boot:spring-boot-starter-test')
 
 }
