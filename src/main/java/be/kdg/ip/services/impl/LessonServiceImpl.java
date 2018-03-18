@@ -9,6 +9,8 @@ import be.kdg.ip.services.exceptions.UserServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service("LessonService")
 public class LessonServiceImpl implements LessonService {
     @Autowired
@@ -61,6 +63,17 @@ public class LessonServiceImpl implements LessonService {
             }
         }
         lessonRepository.save(lesson);
+    }
+
+    @Override
+    public List<User> getNoStatusStudents(Lesson lesson) {
+        List<User> allStudents = lesson.getCourse().getStudents();
+
+        allStudents.removeAll(lesson.getAbsentStudents());
+        allStudents.removeAll(lesson.getPresentStudents());
+
+        return allStudents;
+
     }
 }
 
