@@ -1,18 +1,25 @@
 package be.kdg.ip.web.dto;
 
-import be.kdg.ip.domain.CourseType;
 import be.kdg.ip.domain.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
 
 public class CourseDTO {
-
-    private CourseType courseType;
-    @JsonIgnoreProperties({"username","lastname","password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired","address","exercises","instrumentLevels","userImage"})
+    private String description;
+    @JsonIgnoreProperties({"username","lastname","password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired"})
     private List<User> teachers;
-    @JsonIgnoreProperties({"username","lastname","password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired","address","exercises","instrumentLevels","userImage"})
+    @JsonIgnoreProperties({"username","lastname","password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired"})
     private List<User> students;
+
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public List<User> getTeachers() {
         return teachers;
@@ -28,13 +35,5 @@ public class CourseDTO {
 
     public void setStudents(List<User> students) {
         this.students = students;
-    }
-
-    public CourseType getCourseType() {
-        return courseType;
-    }
-
-    public void setCourseType(CourseType courseType) {
-        this.courseType = courseType;
     }
 }

@@ -26,4 +26,5 @@ public class CourseTypeResource {
     public void setPrice(int price) {
         this.price = price;
     }
+
 }
