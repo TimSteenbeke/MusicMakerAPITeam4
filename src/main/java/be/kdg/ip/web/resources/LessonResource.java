@@ -20,6 +20,16 @@ public class LessonResource {
    // private List<Agenda> agendas;
 
 
+    public LessonResource(LocalDateTime startdatetime, LocalDateTime enddatetime, int courseid) {
+        this.startdatetime = startdatetime;
+        this.enddatetime = enddatetime;
+        this.courseid = courseid;
+    }
+
+    public LessonResource() {
+
+    }
+
     public LocalDateTime getStartdatetime() {
         return startdatetime;
     }
