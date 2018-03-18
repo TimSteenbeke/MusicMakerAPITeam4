@@ -1,3 +1,4 @@
+/*
 package be.kdg.ip.Chat;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,3 +27,4 @@ public class WebSocketController {
                 new SimpleDateFormat("HH:mm:ss").format(new Date()) + "- " + message);
     }
 }
+*/
