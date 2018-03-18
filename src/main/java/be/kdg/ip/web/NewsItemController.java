@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
+import java.security.Principal;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -28,19 +29,22 @@ public class NewsItemController {
 
     @RequestMapping(method = RequestMethod.POST,value ="/")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<NewsItemResource> addNewsItem(@Valid @RequestBody NewsItemResource newsItemResource) {
+    public ResponseEntity<NewsItemResource> addNewsItem(@Valid @RequestBody NewsItemResource newsItemResource,Principal principal) {
         NewsItem newsItem = new NewsItem();
         newsItem.setMessage(newsItemResource.getMessage());
         newsItem.setDate(new Date());
-        newsItem.setEditor(userService.findUser(newsItemResource.getUserId()));
+        newsItem.setEditor(principal.getName());
+        newsItem.setTitle(newsItemResource.getTitle());
 
         String imageString = newsItemResource.getMessageImage();
 
-        try {
-            byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
-            newsItem.setMessageImage(decodedString);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        if(!imageString.equals("")){
+            try {
+                byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
+                newsItem.setMessageImage(decodedString);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
 
         newsItemService.addNewsItem(newsItem);

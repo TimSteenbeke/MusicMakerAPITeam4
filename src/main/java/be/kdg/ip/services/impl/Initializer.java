@@ -126,8 +126,8 @@ public class Initializer {
         userService.addUser(jef);
         userService.addUser(jos);
 
-        //NewsItem newsItem = new NewsItem("Dit is een melding!","Dit is de inhoud van de melding",tim,new Date());
-        //newsItemService.addNewsItem(newsItem);
+        NewsItem newsItem = new NewsItem("Dit is een melding!","Dit is de inhoud van de melding","Tim Brouwers",new Date());
+        newsItemService.addNewsItem(newsItem);
 
         Group group = new Group();
         group.setName("testGroup");

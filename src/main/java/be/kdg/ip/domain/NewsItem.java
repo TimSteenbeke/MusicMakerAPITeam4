@@ -17,9 +17,8 @@ public class NewsItem {
     @Column
     private String message;
 
-    @ManyToOne
-    @JoinColumn(name = "userId")
-    private User editor;
+    @Column
+    private String editor;
 
     @Column
     private Date date;
@@ -32,7 +31,7 @@ public class NewsItem {
 
     }
 
-    public NewsItem(String title, String message, User editor, Date date){
+    public NewsItem(String title, String message, String editor, Date date){
         this.title = title;
         this.message = message;
         this.editor = editor;
@@ -63,11 +62,11 @@ public class NewsItem {
         this.message = message;
     }
 
-    public User getEditor() {
+    public String getEditor() {
         return editor;
     }
 
-    public void setEditor(User editor) {
+    public void setEditor(String editor) {
         this.editor = editor;
     }
 

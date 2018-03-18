@@ -2,9 +2,10 @@ package be.kdg.ip.web.resources;
 
 public class NewsItemResource {
     private String message;
-    private int userId;
+    private String editor;
     private String date;
     private String messageImage;
+    private String title;
 
     public String getMessage() {
         return message;
@@ -14,12 +15,20 @@ public class NewsItemResource {
         this.message = message;
     }
 
-    public int getUserId() {
-        return userId;
+    public String getTitle() {
+        return title;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getEditor() {
+        return editor;
+    }
+
+    public void setEditor(String editor) {
+        this.editor = editor;
     }
 
     public String getDate() {
