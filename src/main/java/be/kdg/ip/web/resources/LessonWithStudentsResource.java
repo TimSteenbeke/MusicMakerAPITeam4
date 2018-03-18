@@ -21,10 +21,11 @@ public class LessonWithStudentsResource {
 
     @JsonIgnoreProperties({"username","password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired","address","exercises","instrumentLevels","userImage"})
     private List<User> absentStudents;
+    @JsonIgnoreProperties({"username","password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired","address","exercises","instrumentLevels","userImage"})
     private List<User> presentStudents;
     @JsonIgnoreProperties({"username","password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired","address","exercises","instrumentLevels","userImage"})
     private List<User> noStatusStudents;
-    @JsonIgnoreProperties({"username","password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired","address","exercises","instrumentLevels","userImage"})
+
 
 
     public LessonWithStudentsResource(LocalDateTime startdatetime, LocalDateTime enddatetime, int courseid, List<User> absentStudents, List<User> presentStudents, List<User> noStatusStudents) {
