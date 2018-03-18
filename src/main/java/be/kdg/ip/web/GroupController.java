@@ -1,6 +1,7 @@
 package be.kdg.ip.web;
 
 import be.kdg.ip.domain.Group;
+import be.kdg.ip.domain.NewsItem;
 import be.kdg.ip.domain.User;
 import be.kdg.ip.services.api.GroupService;
 import be.kdg.ip.services.api.UserService;
@@ -113,6 +114,11 @@ public class GroupController {
         groupUserResource.setSupervisor(group.getSupervisor());
         groupUserResource.setUsers(new ArrayList<>());
         groupUserResource.setUserids(new ArrayList<>());
+        groupUserResource.setNewsItems(new ArrayList<>());
+
+        for(NewsItem newsItem : group.getNewsItems()){
+            groupUserResource.getNewsItems().add(newsItem);
+        }
 
         for (User user : group.getUsers()) {
             groupUserResource.getUsers().add(user);

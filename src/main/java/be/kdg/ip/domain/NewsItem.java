@@ -1,5 +1,7 @@
 package be.kdg.ip.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -19,6 +21,10 @@ public class NewsItem {
 
     @Column
     private String editor;
+
+    @JsonIgnore
+    @ManyToOne
+    private Group group;
 
     @Column
     private Date date;
@@ -68,6 +74,14 @@ public class NewsItem {
 
     public void setEditor(String editor) {
         this.editor = editor;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public Date getDate() {

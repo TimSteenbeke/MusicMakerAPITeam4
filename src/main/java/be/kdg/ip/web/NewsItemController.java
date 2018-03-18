@@ -1,6 +1,8 @@
 package be.kdg.ip.web;
 
+import be.kdg.ip.domain.Group;
 import be.kdg.ip.domain.NewsItem;
+import be.kdg.ip.services.api.GroupService;
 import be.kdg.ip.services.api.NewsItemService;
 import be.kdg.ip.services.api.UserService;
 import be.kdg.ip.web.resources.NewsItemResource;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +30,9 @@ public class NewsItemController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    GroupService groupService;
+
     @RequestMapping(method = RequestMethod.POST,value ="/")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<NewsItemResource> addNewsItem(@Valid @RequestBody NewsItemResource newsItemResource,Principal principal) {
@@ -35,6 +41,7 @@ public class NewsItemController {
         newsItem.setDate(new Date());
         newsItem.setEditor(principal.getName());
         newsItem.setTitle(newsItemResource.getTitle());
+        newsItem.setGroup(groupService.getGroup(newsItemResource.getGroupid()));
 
         String imageString = newsItemResource.getMessageImage();
 
@@ -71,5 +78,28 @@ public class NewsItemController {
     public ResponseEntity<NewsItemResource> deleteNewsItem(@PathVariable("newsitemId") int newsitemId) {
         newsItemService.removeNewsItem(newsitemId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/newsitem/{newsitemId}", method = RequestMethod.PUT)
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    public ResponseEntity<NewsItemResource> updateNewsItem(@PathVariable("newsitemId") int newsitemId, @RequestBody NewsItemResource newsItemResource) {
+        NewsItem newsItem = newsItemService.getNewsItem(newsitemId);
+        newsItem.setMessage(newsItemResource.getMessage());
+        newsItem.setTitle(newsItemResource.getTitle());
+
+        String imageString = newsItemResource.getMessageImage();
+
+        if(imageString != null){
+            try {
+                byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
+                newsItem.setMessageImage(decodedString);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+
+        newsItemService.updateNewsItem(newsItem);
+
+        return new ResponseEntity<>(newsItemResource, HttpStatus.OK);
     }
 }

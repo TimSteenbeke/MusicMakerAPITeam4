@@ -1,5 +1,6 @@
 package be.kdg.ip.web.resources;
 
+import be.kdg.ip.domain.NewsItem;
 import be.kdg.ip.domain.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -15,6 +16,7 @@ public class GroupUserResource {
     @JsonIgnoreProperties({"username","lastname","password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired"})
     private List<User> users;
     private List<Integer> userids;
+    private List<NewsItem> newsItems;
     private byte[] groupimage;
 
     public int getGroupid() {
@@ -63,5 +65,13 @@ public class GroupUserResource {
 
     public void setGroupimage(byte[] groupimage) {
         this.groupimage = groupimage;
+    }
+
+    public List<NewsItem> getNewsItems() {
+        return newsItems;
+    }
+
+    public void setNewsItems(List<NewsItem> newsItems) {
+        this.newsItems = newsItems;
     }
 }

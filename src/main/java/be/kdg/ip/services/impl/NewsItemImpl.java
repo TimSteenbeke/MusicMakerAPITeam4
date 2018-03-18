@@ -25,7 +25,7 @@ public class NewsItemImpl implements NewsItemService {
 
     @Override
     public List<NewsItem> getNewsItems() {
-        return newsItemRepository.findAll();
+        return newsItemRepository.findAllByOrderByDateDesc();
     }
 
     @Override
