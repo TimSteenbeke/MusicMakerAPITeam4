@@ -5,12 +5,10 @@ import be.kdg.ip.domain.Composition;
 import be.kdg.ip.services.api.CompositionService;
 import be.kdg.ip.web.resources.CompositionResource;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.bytebuddy.asm.Advice;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,10 +23,6 @@ import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Collections.singletonList;
@@ -36,12 +30,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -62,11 +55,6 @@ public class TestMuziekstukken {
     @MockBean
     private CompositionService compositionService;
 
-    @Before
-    public void setup() throws Exception {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).apply(springSecurity()).build();
-    }
-
     public static String asJsonString(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);
@@ -75,13 +63,18 @@ public class TestMuziekstukken {
         }
     }
 
+    @Before
+    public void setup() throws Exception {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).apply(springSecurity()).build();
+    }
+
     @Test
-    public void testGetCompositionById() throws Exception{
-        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("jef","ADMIN");
+    public void testGetCompositionById() throws Exception {
+        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("jef", "ADMIN");
 
         int compositionId = 1;
 
-        Composition composition = new Composition("Tim", "Test", "Test","Test","Test","Test","Test","Test",new byte[5]);
+        Composition composition = new Composition("Tim", "Test", "Test", "Test", "Test", "Test", "Test", "Test", new byte[5]);
 
         given(this.compositionService.getComposition(compositionId)).willReturn(composition);
 
@@ -95,7 +88,7 @@ public class TestMuziekstukken {
 
     @Test
     public void testGetAllCompositions() throws Exception {
-        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser","ADMIN");
+        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser", "ADMIN");
 
         Composition composition = new Composition();
         composition.setTitel("TitelTest");
@@ -114,7 +107,7 @@ public class TestMuziekstukken {
 
     @Test
     public void testPostComposition() throws Exception {
-        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser","ADMIN");
+        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser", "ADMIN");
 
 
         CompositionResource compositionResource = new CompositionResource();
@@ -140,11 +133,11 @@ public class TestMuziekstukken {
 
     @Test
     public void testGetCompositionWhenIdExists() throws Exception {
-        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser","ADMIN");
+        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser", "ADMIN");
 
         // given
         given(compositionService.getComposition(1))
-                .willReturn(new Composition("Test", "Test", "Test","Test","Test","Test","Test","Test",new byte[5]));
+                .willReturn(new Composition("Test", "Test", "Test", "Test", "Test", "Test", "Test", "Test", new byte[5]));
 
         // when
         MockHttpServletResponse response = mockMvc.perform(
@@ -169,9 +162,9 @@ public class TestMuziekstukken {
 
     @Test
     public void testDeleteComposition() throws Exception {
-        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser","ADMIN");
-        
-        compositionService.addComposition(new Composition("Test", "Test", "Test","Test","Test","Test","Test","Test",new byte[5]));
+        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser", "ADMIN");
+
+        compositionService.addComposition(new Composition("Test", "Test", "Test", "Test", "Test", "Test", "Test", "Test", new byte[5]));
 
         this.mockMvc.perform(delete("/api/compositions/1").with(bearerToken)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -199,7 +192,7 @@ public class TestMuziekstukken {
 
     @Test
     public void testReturn404WhenNotFound() throws Exception {
-        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser","ADMIN");
+        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser", "ADMIN");
 
         when(compositionService.getComposition(23)).thenReturn(null);
 
