@@ -32,10 +32,9 @@ public class AgendaController {
             String username = principal.getName();
             User user =  userService.findUserByUsername(username);
 
-
             AgendaResource agendaResource = new AgendaResource();
-
             agendaResource.setAgendaOwner(user.getUsername());
+
             //TODO: remove id from resource
             agendaResource.setAgendaId(1);
 
@@ -66,9 +65,7 @@ public class AgendaController {
 
         User user =  userService.findUser(userId);
 
-
         AgendaResource agendaResource = new AgendaResource();
-
         agendaResource.setAgendaOwner(user.getFirstname() + " " + user.getLastname());
         //TODO: remove id from resource
         agendaResource.setAgendaId(1);

@@ -135,7 +135,7 @@ public class Initializer {
         List<User> users = group.getUsers();
         users.add(userService.findUserByUsername("jef"));
         users.add(userService.findUserByUsername("jos"));
-        group.setUsers(users);
+        //group.setUsers(users);
         group.setSupervisor(userService.findUserByUsername("tim"));
         groupService.addGroup(group);
 
@@ -170,8 +170,6 @@ public class Initializer {
 
         course.setCourseType(courseType);
 
-
-
         LocalDateTime vandaag = LocalDateTime.now();
 
         Lesson lesson = new Lesson();
@@ -180,14 +178,13 @@ public class Initializer {
 
         course.getStudents().add(jef);
         jef.getCourses().add(course);
-        userService.updateUser(jef);
+
+        // userService.updateUser(jef);
         course.getTeachers().add(tim);
         tim.getTeachescourses().add(course);
-        userService.updateUser(tim);
+      //  userService.updateUser(tim);
+        course.getLessons().add(lesson);
         courseService.addCourse(course);
-
-        lesson.setCourse(course);
-
 
         Performance performance = new Performance();
         performance.setDescription("een beschrijving van een optreden");

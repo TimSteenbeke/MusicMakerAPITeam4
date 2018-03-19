@@ -4,6 +4,7 @@ import be.kdg.ip.domain.NewsItem;
 import be.kdg.ip.domain.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GroupUserResource {
@@ -18,6 +19,12 @@ public class GroupUserResource {
     private List<Integer> userids;
     private List<NewsItem> newsItems;
     private byte[] groupimage;
+
+    public GroupUserResource() {
+        this.users = new ArrayList<User>();
+        this.userids = new ArrayList<Integer>();
+        this.newsItems = new ArrayList<NewsItem>();
+    }
 
     public int getGroupid() {
         return groupid;

@@ -17,7 +17,7 @@ public class User implements Serializable, UserDetails {
 
     @Id
     @GeneratedValue
-    @Column(name="UserId",nullable = false)
+    @Column(name="userId",nullable = false)
     private int id;
 
     @Column(name = "Username", nullable = true, length = 255)
@@ -29,14 +29,11 @@ public class User implements Serializable, UserDetails {
     @Column
     private String password;
 
-    //@JsonIgnore
     @ManyToMany
     private List<Group> groups;
 
-
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
-
 
     @JsonIgnore
     @ManyToMany(mappedBy = "teachers")
@@ -58,8 +55,6 @@ public class User implements Serializable, UserDetails {
 
     @OneToMany
     private List<InstrumentLevel> instrumentLevels;
-
-
 
 
     public User(){
