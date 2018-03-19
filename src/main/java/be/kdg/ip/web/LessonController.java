@@ -46,18 +46,20 @@ public class LessonController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<LessonResource> addLesson(@Valid @RequestBody LessonResource lessonResource) {
 
-        //Lesson aanmaken based op lessonResource
+        //Create lesson based on lessonResource
         Lesson lesson = new Lesson();
         lesson.setStartDateTime(lessonResource.getStartdatetime());
         lesson.setEndDateTime(lessonResource.getEnddatetime());
-        //Course ophalen
+        //Get a course
         Course course = courseService.getCourse(lessonResource.getCourseid());
         lesson.setCourse(course);
 
-        //Lesson toevoegen
+        //Add lesson
         lessonService.addLesson(lesson);
-        //Voor iedere User in Course van les ( les toevoegen aan agenda van user) = Best aparte service voor maken
+
+        //For each User in Course of Lesson (add lesson to agenda of user) = best to make a seperate service for this
         agendaService.addLessonToEveryAgenda(lesson);
+
 
         return  new ResponseEntity<>(lessonResource, HttpStatus.OK);
     }

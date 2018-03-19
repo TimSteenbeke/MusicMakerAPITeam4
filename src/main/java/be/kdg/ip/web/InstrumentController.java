@@ -2,7 +2,7 @@ package be.kdg.ip.web;
 
 import be.kdg.ip.domain.Instrument;
 import be.kdg.ip.services.api.InstrumentService;
-import be.kdg.ip.services.api.InstrumentSoortService;
+import be.kdg.ip.services.api.InstrumentCategoryService;
 import be.kdg.ip.web.assemblers.InstrumentAssembler;
 import be.kdg.ip.web.assemblers.InstrumentUpdateAssembler;
 import be.kdg.ip.web.resources.InstrumentResource;
@@ -13,9 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.imageio.ImageIO;
 import javax.validation.Valid;
-import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 import java.util.List;
@@ -28,35 +26,34 @@ public class InstrumentController {
     private final MapperFacade mapperFacade;
     private final InstrumentAssembler instrumentAssembler;
     private final InstrumentUpdateAssembler instrumentUpdateAssembler;
-    private InstrumentSoortService instrumentSoortService;
+    private InstrumentCategoryService instrumentCategoryService;
 
-    public InstrumentController(InstrumentService instrumentService, MapperFacade mapperFacade, InstrumentAssembler instrumentAssembler, InstrumentUpdateAssembler instrumentUpdateAssembler, InstrumentSoortService instrumentSoortService) {
+    public InstrumentController(InstrumentService instrumentService, MapperFacade mapperFacade, InstrumentAssembler instrumentAssembler, InstrumentUpdateAssembler instrumentUpdateAssembler, InstrumentCategoryService instrumentCategoryService) {
         this.instrumentService = instrumentService;
         this.mapperFacade = mapperFacade;
         this.instrumentAssembler = instrumentAssembler;
-        this.instrumentSoortService = instrumentSoortService;
+        this.instrumentCategoryService = instrumentCategoryService;
         this.instrumentUpdateAssembler = instrumentUpdateAssembler;
     }
 
-    //Nog beter bekijken
-    //Aanmaken van een instrument
+    //Creation of an instrument
     @PostMapping
     //ToDo: Authorization fix: instrument post
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<InstrumentResource> createInstrument(@Valid @RequestBody InstrumentResource instrumentResource) {
         Instrument in = new Instrument();
-        in.setSoort(instrumentSoortService.getInstrumentSoort(instrumentResource.getInstrumentsoortid()));
-        in.setNaam(instrumentResource.getNaam());
+        in.setInstrumentCategory(instrumentCategoryService.getInstrumentCategory(instrumentResource.getInstrumentid()));
+        in.setInstrumentName(instrumentResource.getInstrumentname());
         in.setType(instrumentResource.getType());
-        in.setUitvoering(instrumentResource.getUitvoering());
+        in.setDetails(instrumentResource.getDetails());
 
-        //image omzetten
-        String imageString = instrumentResource.getAfbeelding();
+        //converting image
+        String imageString = instrumentResource.getImage();
 
         try {
             // byte[] name = Base64.getEncoder().encode("hello world".getBytes());
             byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
-            in.setAfbeelding(decodedString);
+            in.setImage(decodedString);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -66,7 +63,7 @@ public class InstrumentController {
         return new ResponseEntity<>(instrumentAssembler.toResource(out), HttpStatus.OK);
     }
 
-    //1 Instrument opvragen
+    //Request 1 instrument
     @GetMapping("/{instrumentId}")
     //ToDo: Authorization fix: get instrument
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
@@ -76,7 +73,7 @@ public class InstrumentController {
         return new ResponseEntity<Instrument>(instrument, HttpStatus.OK);
     }
 
-    //Alle instrumenten opvragen
+    //Request all instruments
     @GetMapping
     @CrossOrigin(origins = "*")
     //ToDo: Authorization fix: get all instrument
@@ -86,7 +83,7 @@ public class InstrumentController {
         return new ResponseEntity<>(instruments, HttpStatus.OK);
     }
 
-    //Een instrument verwijderen
+    //Delete an instrument
     @DeleteMapping("/{instrumentId}")
     //ToDo: Authorization fix: delete instrument
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
@@ -97,26 +94,26 @@ public class InstrumentController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    //Een instrument updaten
+    //Update an instrument
     @RequestMapping(value = "/instrument/{id}", method = RequestMethod.PUT)
     //ToDo: Authorization fix: instrument updaten
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<InstrumentUpdateResource> updateInstrument(@PathVariable("id") int id, @RequestBody InstrumentUpdateResource instrumentUpdateResource) {
         //Instrument in = mapperFacade.map(instrumentUpdateResource,Instrument.class);
         Instrument in = new Instrument();
-        in.setSoort(instrumentSoortService.getInstrumentSoort(instrumentUpdateResource.getInstrumentsoortid()));
+        in.setInstrumentCategory(instrumentCategoryService.getInstrumentCategory(instrumentUpdateResource.getInstrumentcategoryid()));
         in.setInstrumentId(id);
-        in.setNaam(instrumentUpdateResource.getNaam());
-        in.setUitvoering(instrumentUpdateResource.getUitvoering());
+        in.setInstrumentName(instrumentUpdateResource.getName());
+        in.setDetails(instrumentUpdateResource.getDetails());
         in.setType(instrumentUpdateResource.getType());
 
-        //image omzetten
-        String imageString = instrumentUpdateResource.getAfbeelding();
+        //convert image
+        String imageString = instrumentUpdateResource.getImage();
 
         try {
             imageString = imageString.replaceAll("(\\r|\\n)", "");
             byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
-            in.setAfbeelding(decodedString);
+            in.setImage(decodedString);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

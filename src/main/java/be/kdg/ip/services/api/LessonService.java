@@ -17,4 +17,5 @@ public interface LessonService {
     Lesson updateLesson(Lesson lesson);
     void setUserPresent(int lessonId, User user);
     void setUserAbsent(int lessonId, User user);
+    List<User> getNoStatusStudents(Lesson lesson);
 }

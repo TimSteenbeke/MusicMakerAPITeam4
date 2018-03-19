@@ -1,17 +1,13 @@
 package be.kdg.ip.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 //import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.fasterxml.jackson.*;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -22,7 +18,7 @@ public class Performance {
     private int performanceId;
 
     @Column
-    private String beschrijving;
+    private String description;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @Column
@@ -67,12 +63,12 @@ public class Performance {
         this.group = group;
     }
 
-    public String getBeschrijving() {
-        return beschrijving;
+    public String getDescription() {
+        return description;
     }
 
-    public void setBeschrijving(String beschrijving) {
-        this.beschrijving = beschrijving;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public LocalDateTime getStartDateTime() {

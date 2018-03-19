@@ -18,7 +18,7 @@ public class PerformanceResource {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime enddatetime;
 
-    private String beschrijving;
+    private String description;
 
     public LocalDateTime getStartdatetime() {
         return startdatetime;
@@ -36,12 +36,12 @@ public class PerformanceResource {
         this.enddatetime = enddatetime;
     }
 
-    public String getBeschrijving() {
-        return beschrijving;
+    public String getDescription() {
+        return description;
     }
 
-    public void setBeschrijving(String beschrijving) {
-        this.beschrijving = beschrijving;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Integer getGroup() {

@@ -46,7 +46,7 @@ public class PerformanceController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<PerformanceResource> addPerformance(@Valid @RequestBody PerformanceResource performanceResource) {
 
-        //performance aanmaken based op perforamnceresource
+        //create performance based on performanceresource
         Performance performance = new Performance();
         performance.setStartDateTime(performanceResource.getStartdatetime());
         performance.setEndDateTime(performanceResource.getEnddatetime());
@@ -54,9 +54,11 @@ public class PerformanceController {
 
         //Group object ophalen en koppelen aan performance
         Group group = groupService.getGroup(performanceResource.getGroup());
+        //Fetch group object and link it to a performance
+        Group group = groupService.getGroup(performanceResource.getGroupid());
         performance.setGroup(group);
 
-        //performance toevoegen
+        //Add performance
         performanceService.addPerformance(performance);
 
         //add Performance to every involved agenda

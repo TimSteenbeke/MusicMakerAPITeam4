@@ -1,6 +1,7 @@
 package be.kdg.ip.web;
 
 import be.kdg.ip.domain.Group;
+import be.kdg.ip.domain.NewsItem;
 import be.kdg.ip.domain.User;
 import be.kdg.ip.services.api.GroupService;
 import be.kdg.ip.services.api.UserService;
@@ -16,7 +17,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Collection;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -113,6 +113,12 @@ public class GroupController {
         groupUserResource.setSupervisor(group.getSupervisor());
         groupUserResource.setUsers(new ArrayList<>());
         groupUserResource.setUserids(new ArrayList<>());
+        groupUserResource.setNewsItems(new ArrayList<>());
+
+        for(NewsItem newsItem : group.getNewsItems()){
+            groupUserResource.getNewsItems().add(newsItem);
+        }
+
         for (User user : group.getUsers()) {
             groupUserResource.getUsers().add(user);
             groupUserResource.getUserids().add(user.getId());
@@ -135,6 +141,7 @@ public class GroupController {
         List<GroupUserResource> groupUserResources = new ArrayList<>();
         try {
             user = this.userService.findUserByUsername(username);
+
             for(Group group: user.getGroups()){
                 GroupUserResource groupUserResource = new GroupUserResource();
                 groupUserResource.setGroupid(group.getGroupId());

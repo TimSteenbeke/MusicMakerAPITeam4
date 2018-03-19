@@ -16,10 +16,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
-/**
- * Created by wouter on 30.01.17.
- */
 @Service("userService")
 @Transactional
 public class UserServiceImpl implements UserService {

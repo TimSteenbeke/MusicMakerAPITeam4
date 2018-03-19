@@ -2,7 +2,7 @@ package be.kdg.ip.integratie;
 
 import be.kdg.ip.IP2Application;
 import be.kdg.ip.domain.Instrument;
-import be.kdg.ip.domain.InstrumentSoort;
+import be.kdg.ip.domain.InstrumentCategory;
 import be.kdg.ip.services.api.InstrumentService;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,18 +23,18 @@ public class TestInstrumentService {
 
     @Before
     public void setup(){
-        InstrumentSoort soort = new InstrumentSoort("piano");
+        InstrumentCategory soort = new InstrumentCategory("piano");
         Instrument instrument = new Instrument(soort,"naam","type","uitvoering");
         instrumentService.addInstrument(instrument);
     }
 
     @Test
     public void TestAddInstrument(){
-        InstrumentSoort soort = new InstrumentSoort("gitaar");
+        InstrumentCategory soort = new InstrumentCategory("gitaar");
         Instrument instrument = new Instrument(soort,"naam2","type2","uitvoering2");
         instrumentService.addInstrument(instrument);
         Instrument opgehaaldInstrument = instrumentService.getInstrument(instrument.getInstrumentId());
-        assertEquals(instrument.getNaam(),opgehaaldInstrument.getNaam());
+        assertEquals(instrument.getInstrumentName(),opgehaaldInstrument.getInstrumentName());
         assertEquals(instrument.getType(),opgehaaldInstrument.getType());
     }
 

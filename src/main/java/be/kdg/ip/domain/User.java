@@ -33,6 +33,7 @@ public class User implements Serializable, UserDetails {
     @ManyToMany
     private List<Group> groups;
 
+
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
 
@@ -65,6 +66,7 @@ public class User implements Serializable, UserDetails {
 
 
 
+
     public User(){
         this.agenda = new Agenda();
         this.groups = new ArrayList<>();
@@ -84,7 +86,6 @@ public class User implements Serializable, UserDetails {
         this.exercises = new ArrayList<>();
         this.instrumentLevels = new ArrayList<>();
         this.teachescourses= new ArrayList<>();
-
     }
 
     public User(String username, String password, String firstname, String lastname, List<Role> roles, byte[] userImage, Address address) {
@@ -281,4 +282,4 @@ public class User implements Serializable, UserDetails {
     public void setInstrumentLevels(List<InstrumentLevel> instrumentLevels) {
         this.instrumentLevels = instrumentLevels;
     }
-}
+    }

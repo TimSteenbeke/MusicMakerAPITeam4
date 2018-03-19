@@ -30,6 +30,9 @@ public class Group {
     @OneToMany(mappedBy = "group")
     private List<Performance> performances;
 
+    @OneToMany(mappedBy = "group")
+    private List<NewsItem> newsItems;
+
     @Lob
     @Column
     private byte[] groupImage;
@@ -38,6 +41,7 @@ public class Group {
     public Group() {
         this.users = new ArrayList<>();
         this.performances = new ArrayList<>();
+        this.newsItems = new ArrayList<>();
 
     }
 
@@ -46,6 +50,7 @@ public class Group {
         this.supervisor = supervisor;
         this.users = users;
         this.performances = new ArrayList<>();
+        this.newsItems = new ArrayList<>();
     }
 
     public byte[] getGroupImage() {
@@ -64,6 +69,13 @@ public class Group {
         this.performances = performances;
     }
 
+    public List<NewsItem> getNewsItems() {
+        return newsItems;
+    }
+
+    public void setNewsItems(List<NewsItem> newsItems) {
+        this.newsItems = newsItems;
+    }
 
     public User getSupervisor() {
         return supervisor;

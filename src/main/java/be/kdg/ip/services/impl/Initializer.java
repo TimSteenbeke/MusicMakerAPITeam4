@@ -4,9 +4,6 @@ import be.kdg.ip.domain.*;
 import be.kdg.ip.domain.roles.Administrator;
 import be.kdg.ip.domain.roles.Student;
 import be.kdg.ip.domain.roles.Teacher;
-import be.kdg.ip.services.api.GroupService;
-import be.kdg.ip.services.api.InstrumentService;
-import be.kdg.ip.services.api.UserService;
 import be.kdg.ip.services.api.*;
 import be.kdg.ip.services.exceptions.UserServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -36,7 +34,7 @@ public class Initializer {
     private PerformanceService performanceService;
 
     @Autowired
-    private InstrumentSoortService instrumentSoortService;
+    private InstrumentCategoryService instrumentCategoryService;
 
     @Autowired
     private CourseService courseService;
@@ -53,20 +51,28 @@ public class Initializer {
     @Autowired
     private AddressService addressService;
 
+    @Autowired
+    private NewsItemService newsItemService;
+
+    @Autowired
+    private CourseTypeService courseTypeService;
+
+
+
     @PostConstruct
     public void addDummyInstruments() {
 
-        InstrumentSoort instrumentSoort = new InstrumentSoort("Slag");
-        InstrumentSoort instrumentSoort2 = new InstrumentSoort("Blaas");
-        InstrumentSoort instrumentSoort3 = new InstrumentSoort("Snaar");
+        InstrumentCategory instrumentCategory = new InstrumentCategory("Slag");
+        InstrumentCategory instrumentCategory2 = new InstrumentCategory("Blaas");
+        InstrumentCategory instrumentCategory3 = new InstrumentCategory("Snaar");
 
-        instrumentSoortService.addInstrumentSoort(instrumentSoort);
-        instrumentSoortService.addInstrumentSoort(instrumentSoort2);
-        instrumentSoortService.addInstrumentSoort(instrumentSoort3);
+        instrumentCategoryService.addInstrumentCategory(instrumentCategory);
+        instrumentCategoryService.addInstrumentCategory(instrumentCategory2);
+        instrumentCategoryService.addInstrumentCategory(instrumentCategory3);
 
-        Instrument instrument = new Instrument(instrumentSoort, "Drum", "drummen", "Tim");
-        Instrument instrument2 = new Instrument(instrumentSoort2, "Trompet", "Tim", "Tim");
-        Instrument instrument3 = new Instrument(instrumentSoort3, "Tim", "Tim", "Tim");
+        Instrument instrument = new Instrument(instrumentCategory, "Drum", "drummen", "Tim");
+        Instrument instrument2 = new Instrument(instrumentCategory2, "Trompet", "Tim", "Tim");
+        Instrument instrument3 = new Instrument(instrumentCategory3, "Tim", "Tim", "Tim");
 
         instrumentService.addInstrument(instrument);
         instrumentService.addInstrument(instrument2);
@@ -114,10 +120,15 @@ public class Initializer {
         User tim = new User("tim", "tim", "brouwers", "brouwersiscool", rolesTeacher,new byte[0],address3);
         User timS = new User("timS", "tims", "Tim", "Steenbeke", rolesAll,new byte[0],address4);
 
+
+
         userService.addUser(timS);
         userService.addUser(tim);
         userService.addUser(jef);
         userService.addUser(jos);
+
+        NewsItem newsItem = new NewsItem("Dit is een melding!","Dit is de inhoud van de melding","Tim Brouwers",new Date());
+        newsItemService.addNewsItem(newsItem);
 
         Group group = new Group();
         group.setName("testGroup");
@@ -149,8 +160,15 @@ public class Initializer {
 
 
         Course course = new Course();
-        course.setBeschrijving("Een muziekCOURSE");
-        course.setPrijs(20);
+
+        CourseType courseType = new CourseType();
+        courseType.setDescription("Pianoles");
+        courseType.setPrice(10);
+
+
+        courseTypeService.addCourseType(courseType);
+
+        course.setCourseType(courseType);
 
 
         Agenda agenda = jef.getAgenda();
@@ -174,7 +192,7 @@ public class Initializer {
         lessonService.addLesson(agenda, lesson);
 
         Performance performance = new Performance();
-        performance.setBeschrijving("een beschrijving van een optreden");
+        performance.setDescription("een beschrijving van een optreden");
 
 
         performance.setStartDateTime(vandaag);
@@ -183,7 +201,7 @@ public class Initializer {
 
 
         Performance performance2 = new Performance();
-        performance2.setBeschrijving("een beschrijving van ANDER OPTREDEN");
+        performance2.setDescription("een beschrijving van ANDER OPTREDEN");
         performance2.setStartDateTime(vandaag.plusDays(1));
         performance2.setEndDateTime(vandaag.plusDays(1).plusHours(4));
         performance2.setGroup(group2);

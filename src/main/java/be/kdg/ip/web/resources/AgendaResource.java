@@ -3,7 +3,6 @@ package be.kdg.ip.web.resources;
 import be.kdg.ip.domain.Lesson;
 import be.kdg.ip.domain.Performance;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.util.List;
 

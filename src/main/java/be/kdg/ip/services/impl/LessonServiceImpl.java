@@ -16,7 +16,6 @@ public class LessonServiceImpl implements LessonService {
     @Autowired
     LessonRepository lessonRepository;
 
-
     @Override
     public void addLesson(Agenda agenda, Lesson lesson) {
         agenda.getLessons().add(lesson);
@@ -78,6 +77,17 @@ public class LessonServiceImpl implements LessonService {
             }
         }
         lessonRepository.save(lesson);
+    }
+
+    @Override
+    public List<User> getNoStatusStudents(Lesson lesson) {
+        List<User> allStudents = lesson.getCourse().getStudents();
+
+        allStudents.removeAll(lesson.getAbsentStudents());
+        allStudents.removeAll(lesson.getPresentStudents());
+
+        return allStudents;
+
     }
 }
 

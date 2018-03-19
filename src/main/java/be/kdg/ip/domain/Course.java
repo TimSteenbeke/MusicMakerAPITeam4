@@ -14,9 +14,12 @@ public class Course {
     @GeneratedValue
     private int courseId;
     @Column
-    private String Beschrijving;
+    private String description;
     @Column
-    private int prijs;
+    private int price;
+
+    @ManyToOne
+    private CourseType courseType;
 
     @JsonIgnore
     @ManyToMany
@@ -25,6 +28,10 @@ public class Course {
     @JsonIgnore
     @ManyToMany
     private List<User> students;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "course")
+    private List<Lesson> lessons;
 
     public List<User> getTeachers() {
         return teachers;
@@ -42,10 +49,6 @@ public class Course {
         this.students = students;
     }
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "course")
-    private List<Lesson> lessons;
-
     public Course() {
         this.lessons = new ArrayList<Lesson>();
         this.students = new ArrayList<User>();
@@ -60,20 +63,20 @@ public class Course {
         this.courseId = courseId;
     }
 
-    public String getBeschrijving() {
-        return Beschrijving;
+    public String getDescription() {
+        return description;
     }
 
-    public void setBeschrijving(String beschrijving) {
-        Beschrijving = beschrijving;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public int getPrijs() {
-        return prijs;
+    public int getPrice() {
+        return price;
     }
 
-    public void setPrijs(int prijs) {
-        this.prijs = prijs;
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public List<Lesson> getLessons() {
@@ -82,5 +85,13 @@ public class Course {
 
     public void setLessons(List<Lesson> lessons) {
         this.lessons = lessons;
+    }
+
+    public CourseType getCourseType() {
+        return courseType;
+    }
+
+    public void setCourseType(CourseType courseType) {
+        this.courseType = courseType;
     }
 }
