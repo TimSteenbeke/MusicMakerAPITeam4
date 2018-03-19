@@ -3,6 +3,7 @@ package be.kdg.ip.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,12 +18,11 @@ public class InstrumentCategory {
     @Column
     private String categoryName;
 
-    @JsonIgnore
     @OneToMany( mappedBy="instrumentCategory",cascade={CascadeType.MERGE})
     private List<Instrument> instrumentList;
 
     public InstrumentCategory(){
-
+        this.instrumentList = new ArrayList<>();
     }
 
     public InstrumentCategory(String categoryName) {

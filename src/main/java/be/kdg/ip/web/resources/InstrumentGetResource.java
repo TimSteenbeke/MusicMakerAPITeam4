@@ -1,25 +1,16 @@
 package be.kdg.ip.web.resources;
 
-import java.io.Serializable;
+import be.kdg.ip.domain.InstrumentCategory;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-public class InstrumentResource implements Serializable {
-
-    private int instrumentid;
+public class InstrumentGetResource {
     private String instrumentname;
     private String type;
     private String details;
     private String image;
-    private Integer instrumentCategoryid;
+    @JsonIgnoreProperties({"instrumentList"})
+    private InstrumentCategory instrumentCategory;
 
-
-
-    public int getInstrumentid() {
-        return instrumentid;
-    }
-
-    public void setInstrumentid(int instrumentid) {
-        this.instrumentid = instrumentid;
-    }
     public String getInstrumentname() {
         return instrumentname;
     }
@@ -52,11 +43,11 @@ public class InstrumentResource implements Serializable {
         this.image = image;
     }
 
-    public Integer getInstrumentCategoryid() {
-        return instrumentCategoryid;
+    public InstrumentCategory getInstrumentCategory() {
+        return instrumentCategory;
     }
 
-    public void setInstrumentCategoryid(Integer instrumentCategoryid) {
-        this.instrumentCategoryid = instrumentCategoryid;
+    public void setInstrumentCategory(InstrumentCategory instrumentCategory) {
+        this.instrumentCategory = instrumentCategory;
     }
 }

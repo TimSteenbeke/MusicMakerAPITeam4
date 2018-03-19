@@ -74,6 +74,10 @@ public class Initializer {
         Instrument instrument2 = new Instrument(instrumentCategory2, "Trompet", "Tim", "Tim");
         Instrument instrument3 = new Instrument(instrumentCategory3, "Tim", "Tim", "Tim");
 
+        instrument.setImage(new byte[0]);
+        instrument2.setImage(new byte[0]);
+        instrument3.setImage(new byte[0]);
+
         instrumentService.addInstrument(instrument);
         instrumentService.addInstrument(instrument2);
         instrumentService.addInstrument(instrument3);
@@ -119,7 +123,6 @@ public class Initializer {
         User jos = new User("jos", "josiscooler", "jos", "josserson", rolesStudent,new byte[0],address2);
         User tim = new User("tim", "tim", "brouwers", "brouwersiscool", rolesTeacher,new byte[0],address3);
         User timS = new User("timS", "tims", "Tim", "Steenbeke", rolesAll,new byte[0],address4);
-
 
 
         userService.addUser(timS);

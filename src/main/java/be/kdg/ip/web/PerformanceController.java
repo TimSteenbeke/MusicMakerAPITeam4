@@ -50,12 +50,11 @@ public class PerformanceController {
         Performance performance = new Performance();
         performance.setStartDateTime(performanceResource.getStartdatetime());
         performance.setEndDateTime(performanceResource.getEnddatetime());
-        performance.setBeschrijving(performanceResource.getBeschrijving());
+        performance.setDescription(performanceResource.getDescription());
 
-        //Group object ophalen en koppelen aan performance
-        Group group = groupService.getGroup(performanceResource.getGroup());
+
         //Fetch group object and link it to a performance
-        Group group = groupService.getGroup(performanceResource.getGroupid());
+        Group group = groupService.getGroup(performanceResource.getGroup());
         performance.setGroup(group);
 
         //Add performance
@@ -74,7 +73,7 @@ public class PerformanceController {
 
         PerformanceGetResource performanceGetResource = new PerformanceGetResource();
 
-       performanceGetResource.setBeschrijving(performance.getBeschrijving());
+       performanceGetResource.setBeschrijving(performance.getDescription());
        performanceGetResource.setEnddatetime(performance.getEndDateTime());
        performanceGetResource.setStartdatetime(performance.getEndDateTime());
        performanceGetResource.setGroup(performance.getGroup());
@@ -89,7 +88,7 @@ public class PerformanceController {
 
         for (Performance performance : performances){
             PerformanceGetResource performanceGetResource = new PerformanceGetResource();
-            performanceGetResource.setBeschrijving(performance.getBeschrijving());
+            performanceGetResource.setBeschrijving(performance.getDescription());
             performanceGetResource.setEnddatetime(performance.getEndDateTime());
             performanceGetResource.setStartdatetime(performance.getEndDateTime());
             performanceGetResource.setGroup(performance.getGroup());
@@ -118,7 +117,7 @@ public class PerformanceController {
         agendaService.removePerformanceFromEveryAgenda(performance);
         Group group = groupService.getGroup(performanceResource.getGroup());
         performance.setGroup(group);
-        performance.setBeschrijving(performanceResource.getBeschrijving());
+        performance.setDescription(performanceResource.getDescription());
         performance.setEndDateTime(performanceResource.getEnddatetime());
         performance.setStartDateTime(performanceResource.getStartdatetime());
 

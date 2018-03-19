@@ -50,7 +50,7 @@ public class Performance {
     }
 
     public Performance(String beschrijving, LocalDateTime startDateTime, LocalDateTime endDateTime, Group group) {
-        this.beschrijving = beschrijving;
+        this.description = beschrijving;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.group = group;
