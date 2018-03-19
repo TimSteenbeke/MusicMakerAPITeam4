@@ -10,7 +10,7 @@ import java.util.List;
 public class Group {
     @Id
     @GeneratedValue
-    @Column(nullable = false)
+    @Column(nullable = false, name = "groupId")
     private int groupId;
 
     @Column
@@ -18,15 +18,11 @@ public class Group {
     private String name;
 
     @ManyToOne
-    //@Cascade(org.hibernate.annotations.CascadeType.ALL)
     private User supervisor;
-
-    //voor jsonignore moet nog andere oplossing gezocht worden? users worden niet opgeslagen nu...
 
     @ManyToMany(mappedBy = "groups")
     private List<User> users;
 
-    //@JsonIgnore
     @OneToMany(mappedBy = "group")
     private List<Performance> performances;
 

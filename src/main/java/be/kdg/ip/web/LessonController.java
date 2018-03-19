@@ -3,7 +3,6 @@ package be.kdg.ip.web;
 import be.kdg.ip.domain.Course;
 import be.kdg.ip.domain.Lesson;
 import be.kdg.ip.domain.User;
-import be.kdg.ip.services.api.AgendaService;
 import be.kdg.ip.services.api.CourseService;
 import be.kdg.ip.services.api.LessonService;
 import be.kdg.ip.services.api.UserService;
@@ -11,7 +10,6 @@ import be.kdg.ip.services.exceptions.UserServiceException;
 import be.kdg.ip.web.dto.StatusDTO;
 import be.kdg.ip.web.resources.LessonGetResource;
 import be.kdg.ip.web.resources.LessonResource;
-import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +17,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.xml.ws.Response;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +31,6 @@ public class LessonController {
     @Autowired
     CourseService courseService;
 
-    @Autowired
-    AgendaService agendaService;
 
     @Autowired
     UserService userService;
@@ -56,10 +51,6 @@ public class LessonController {
 
         //Add lesson
         lessonService.addLesson(lesson);
-
-        //For each User in Course of Lesson (add lesson to agenda of user) = best to make a seperate service for this
-        agendaService.addLessonToEveryAgenda(lesson);
-
 
         return  new ResponseEntity<>(lessonResource, HttpStatus.OK);
     }
@@ -97,7 +88,7 @@ public class LessonController {
     @DeleteMapping("/{lessonId}")
     public ResponseEntity<Lesson> deleteLesson(@PathVariable("lessonId") Integer lessonId){
 
-        agendaService.removeLessonFromEveryAgenda(lessonService.getLesson(lessonId));
+
         lessonService.deleteLesson(lessonId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -107,8 +98,6 @@ public class LessonController {
     public ResponseEntity<LessonResource> updateLesson(@PathVariable("id") int id, @RequestBody LessonResource lessonResource){
 
         Lesson lesson = lessonService.getLesson(id);
-
-        agendaService.removeLessonFromEveryAgenda(lesson);
 
         lesson.setStartDateTime(lessonResource.getStartdatetime());
         lesson.setEndDateTime(lessonResource.getEnddatetime());
@@ -120,7 +109,6 @@ public class LessonController {
         //Voor iedere User in Course van les ( les toevoegen aan agenda van user) = Best aparte service voor maken
         //agendaService.updateLessonFromEveryAgenda(lesson);
 
-        agendaService.addLessonToEveryAgenda(lesson);
 
         //Lesson toevoegen
         lessonService.updateLesson(lesson);

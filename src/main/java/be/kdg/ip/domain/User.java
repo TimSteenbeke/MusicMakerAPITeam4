@@ -17,7 +17,7 @@ public class User implements Serializable, UserDetails {
 
     @Id
     @GeneratedValue
-    @Column(name="UserId",nullable = false)
+    @Column(name="userId",nullable = false)
     private int id;
 
     @Column(name = "Username", nullable = true, length = 255)
@@ -29,19 +29,11 @@ public class User implements Serializable, UserDetails {
     @Column
     private String password;
 
-    //@JsonIgnore
     @ManyToMany
     private List<Group> groups;
 
-
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
-
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "agenda_id")
-    private Agenda agenda;
-
 
     @JsonIgnore
     @ManyToMany(mappedBy = "teachers")
@@ -65,10 +57,7 @@ public class User implements Serializable, UserDetails {
     private List<InstrumentLevel> instrumentLevels;
 
 
-
-
     public User(){
-        this.agenda = new Agenda();
         this.groups = new ArrayList<>();
         this.courses= new ArrayList<>();
         this.roles = new ArrayList<>();
@@ -79,7 +68,6 @@ public class User implements Serializable, UserDetails {
 
     public User(String firstname) {
         this.firstname = firstname;
-        this.agenda = new Agenda();
         this.groups = new ArrayList<>();
         this.courses= new ArrayList<>();
         this.roles = new ArrayList<>();
@@ -94,7 +82,6 @@ public class User implements Serializable, UserDetails {
         this.firstname = firstname;
         this.lastname = lastname;
         this.roles = roles;
-        this.agenda = new Agenda();
         this.groups = new ArrayList<Group>();
         this.userImage = userImage;
         this.address = address;
@@ -112,7 +99,6 @@ public class User implements Serializable, UserDetails {
         this.lastname = lastname;
         this.password = password;
         this.roles = roles;
-        this.agenda = new Agenda();
         this.exercises = new ArrayList<>();
         this.instrumentLevels = new ArrayList<>();
         this.groups  = new ArrayList<Group>();
@@ -227,9 +213,6 @@ public class User implements Serializable, UserDetails {
         return super.equals(obj);
     }
 
-    public Agenda getAgenda() {
-        return agenda;
-    }
 
     public List<Course> getTeachescourses() {
         return teachescourses;
@@ -247,9 +230,6 @@ public class User implements Serializable, UserDetails {
         this.courses = courses;
     }
 
-    public void setAgenda(Agenda agenda) {
-        this.agenda = agenda;
-    }
 
     public byte[] getUserImage() {
         return userImage;
