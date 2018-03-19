@@ -109,7 +109,7 @@ public class testCompositionService {
                 .andExpect(jsonPath("$[0].titel", is(composition.getTitle())));
     }
 
-    @Test
+    /*@Test
     public void testPostComposition() throws Exception {
         RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser","ADMIN");
 
@@ -133,7 +133,7 @@ public class testCompositionService {
                 .accept(MediaType.MULTIPART_FORM_DATA))
                 .andDo(print())
                 .andExpect(status().isOk());
-    }
+    }*/
 
     @Test
     public void testGetCompositionWhenIdExists() throws Exception {

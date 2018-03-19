@@ -4,9 +4,6 @@ import be.kdg.ip.domain.*;
 import be.kdg.ip.domain.roles.Administrator;
 import be.kdg.ip.domain.roles.Student;
 import be.kdg.ip.domain.roles.Teacher;
-import be.kdg.ip.services.api.GroupService;
-import be.kdg.ip.services.api.InstrumentService;
-import be.kdg.ip.services.api.UserService;
 import be.kdg.ip.services.api.*;
 import be.kdg.ip.services.exceptions.UserServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -54,7 +52,12 @@ public class Initializer {
     private AddressService addressService;
 
     @Autowired
+    private NewsItemService newsItemService;
+
+    @Autowired
     private CourseTypeService courseTypeService;
+
+
 
     @PostConstruct
     public void addDummyInstruments() {
@@ -117,10 +120,15 @@ public class Initializer {
         User tim = new User("tim", "tim", "brouwers", "brouwersiscool", rolesTeacher,new byte[0],address3);
         User timS = new User("timS", "tims", "Tim", "Steenbeke", rolesAll,new byte[0],address4);
 
+
+
         userService.addUser(timS);
         userService.addUser(tim);
         userService.addUser(jef);
         userService.addUser(jos);
+
+        NewsItem newsItem = new NewsItem("Dit is een melding!","Dit is de inhoud van de melding","Tim Brouwers",new Date());
+        newsItemService.addNewsItem(newsItem);
 
         Group group = new Group();
         group.setName("testGroup");
