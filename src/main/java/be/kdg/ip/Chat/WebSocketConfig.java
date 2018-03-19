@@ -1,8 +1,5 @@
-/*
 package be.kdg.ip.Chat;
 
-*/
-/*
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
@@ -20,8 +17,7 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry brokerRegistry) {
-        *//*
-*/
+
 /*
          * The application destination prefix is an arbitrary prefix to
          * differentiate between messages that need to be routed to
@@ -29,13 +25,10 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
          * routed to the broker to broadcast to subscribed clients. After
          * application level work is finished the message can be routed to
          * broker for broadcasting.
-         *//*
 */
-/*
+
         brokerRegistry.setApplicationDestinationPrefixes("/app");
 
-        *//*
-*/
 /*
          * The list of destination prefixes provided in this are based on what
          * broker is getting used. In this case we will use in-memory broker
@@ -44,26 +37,22 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
          * chosen. The convention dictates usage of "/topic" destination for
          * pub-sub model targeting many subscribers and the "/queue" destination
          * for point to point messaging.
-         *//*
 */
-/*
+
         brokerRegistry.enableSimpleBroker("/topic", "/queue");
 
-        *//*
-*/
 /*
          * For configuring dedicated broker use the below code.
          *//*
 */
-/*
+
         // brokerRegistry.enableStompBrokerRelay("/topic", "/queue");
     }
 
 }
-*//*
 
 
-import org.springframework.context.annotation.Configuration;
+/*import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -85,5 +74,5 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
         registry.setApplicationDestinationPrefixes("/app")
                 .enableSimpleBroker("/chat");
     }
-}
-*/
+}*/
+
