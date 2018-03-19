@@ -8,6 +8,8 @@ import be.kdg.ip.repositories.api.GroupRepository;
 import be.kdg.ip.services.api.GroupService;
 import be.kdg.ip.services.api.UserService;
 import be.kdg.ip.services.impl.GroupServiceImpl;
+import be.kdg.ip.web.resources.GroupResource;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -24,11 +27,16 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -54,6 +62,14 @@ public class TestGroupService {
 
     @MockBean
     private UserService userService;
+
+    public static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Before
     public void setup(){
@@ -95,9 +111,44 @@ public class TestGroupService {
     }
 
     @Test
-    public void testCreateGroup(){
-        //Group group = new Group("nameGroup");
+    public void testGetAllGroups() throws Exception{
+        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser", "ADMIN");
+
+        Group group = new Group();
+        group.setName("Groepsnaam");
         //groupService.addGroup(group);
+        List<Group> groupList = Collections.singletonList(group);
+
+        given(groupService.getAllGroups()).willReturn(groupList);
+
+        mockMvc.perform(get("http://localhost:8080/api/groups/allgroups/").with(bearerToken)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
+
+    }
+
+    @Test
+    public void testPostGroup() throws Exception{
+        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser", "ADMIN");
+
+        GroupResource groupResource = new GroupResource();
+        groupResource.setName("testGroep");
+        groupResource.setSupervisorid(1);
+        List<Integer> userids = new ArrayList<>();
+        userids.add(1);
+        groupResource.setUserids(userids);
+        groupResource.setGroupimage("image");
+
+        this.mockMvc.perform(post("").with(bearerToken)
+                .param("files","testGroep")
+                .param("groupresource", asJsonString(groupResource))
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .with(csrf())
+                .accept(MediaType.MULTIPART_FORM_DATA))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
