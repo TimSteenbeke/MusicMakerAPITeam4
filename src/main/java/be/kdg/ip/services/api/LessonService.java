@@ -12,6 +12,9 @@ public interface LessonService {
     void addLesson(Agenda agenda, Lesson lesson);
     void addLesson(Lesson lesson);
     Lesson getLesson(int lessonId);
+    List<Lesson> getAllLessons();
+    void deleteLesson(int lessonId );
+    Lesson updateLesson(Lesson lesson);
     void setUserPresent(int lessonId, User user);
     void setUserAbsent(int lessonId, User user);
     List<User> getNoStatusStudents(Lesson lesson);

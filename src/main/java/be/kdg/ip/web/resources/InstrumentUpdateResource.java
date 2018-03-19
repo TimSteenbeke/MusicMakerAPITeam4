@@ -1,27 +1,18 @@
 package be.kdg.ip.web.resources;
 
 public class InstrumentUpdateResource {
-    private int instrumentcategoryid;
-    private String name;
+    private String instrumentname;
     private String type;
     private String details;
     private String image;
+    private Integer instrumentCategoryid;
 
-
-
-    public int getInstrumentcategoryid() {
-        return instrumentcategoryid;
+    public String getInstrumentname() {
+        return instrumentname;
     }
 
-    public void setInstrumentcategoryid(int instrumentcategoryid) {
-        this.instrumentcategoryid = instrumentcategoryid;
-    }
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setInstrumentname(String instrumentname) {
+        this.instrumentname = instrumentname;
     }
 
     public String getType() {
@@ -48,4 +39,11 @@ public class InstrumentUpdateResource {
         this.image = image;
     }
 
+    public Integer getInstrumentCategoryid() {
+        return instrumentCategoryid;
+    }
+
+    public void setInstrumentCategoryid(Integer instrumentCategoryid) {
+        this.instrumentCategoryid = instrumentCategoryid;
+    }
 }

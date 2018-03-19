@@ -1,16 +1,11 @@
 package be.kdg.ip.web.resources;
 
+import java.util.List;
+
 public class InstrumentCategoryResource {
-    private int instrumentcategoryid;
     private String categoryname;
 
-    public int getInstrumentcategoryid() {
-        return instrumentcategoryid;
-    }
-
-    public void setInstrumentcategoryid(int instrumentcategoryid) {
-        this.instrumentcategoryid = instrumentcategoryid;
-    }
+    private List<Integer> instrumentIds;
 
     public String getCategoryname() {
         return categoryname;
@@ -18,5 +13,13 @@ public class InstrumentCategoryResource {
 
     public void setCategoryname(String categoryname) {
         this.categoryname = categoryname;
+    }
+
+    public List<Integer> getInstrumentIds() {
+        return instrumentIds;
+    }
+
+    public void setInstrumentIds(List<Integer> instrumentIds) {
+        this.instrumentIds = instrumentIds;
     }
 }
