@@ -3,7 +3,7 @@ package be.kdg.ip.web.resources;
 import java.io.Serializable;
 
 public class CompositionResource implements Serializable {
-    private String titel;
+    private String title;
     private String artist;
     private String language;
     private String genre;
@@ -13,12 +13,12 @@ public class CompositionResource implements Serializable {
     private String fileFormat;
     private String content;
 
-    public String getTitel() {
-        return titel;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTitel(String titel) {
-        this.titel = titel;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getArtist() {
