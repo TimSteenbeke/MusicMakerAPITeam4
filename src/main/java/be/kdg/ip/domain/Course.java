@@ -13,6 +13,10 @@ public class Course {
     @Column
     @GeneratedValue
     private int courseId;
+    @Column
+    private String description;
+    @Column
+    private int price;
 
     @ManyToOne
     private CourseType courseType;
@@ -57,6 +61,22 @@ public class Course {
 
     public void setCourseId(int courseId) {
         this.courseId = courseId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public List<Lesson> getLessons() {

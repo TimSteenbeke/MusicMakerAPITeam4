@@ -67,8 +67,8 @@ public class TestAgendaService {
         jef.getGroups().add(group);
         userService.addUser(jef);
         Course course = new Course();
-        //course.setBeschrijving("Een muziekCOURSE");
-        //course.setPrijs(20);
+        course.setDescription("Een muziekCOURSE");
+        course.setPrice(20);
         course.getStudents().add(jef);
         course.getTeachers().add(tim);
         courseService.addCourse(course);

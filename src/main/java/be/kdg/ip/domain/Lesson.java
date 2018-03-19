@@ -42,6 +42,7 @@ public class Lesson {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "lessons")
+    private
     List<Agenda> agendas;
 
     public List<User> getAbsentStudents() {

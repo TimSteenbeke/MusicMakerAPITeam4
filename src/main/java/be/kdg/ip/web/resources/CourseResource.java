@@ -8,7 +8,6 @@ public class CourseResource {
     private List<Integer> teacherids;
     private List<Integer> studentids;
 
-
     public List<Integer> getTeacherids() {
         return teacherids;
     }

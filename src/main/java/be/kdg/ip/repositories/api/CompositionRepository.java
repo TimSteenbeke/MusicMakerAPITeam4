@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface CompositionRepository extends JpaRepository<Composition,Integer> {
     @Query(value = "SELECT r FROM Composition r where upper(r.subject) like concat('%',UPPER(:filter),'%') or" +
-            " upper(r.titel) like concat('%',UPPER(:filter),'%') or" +
+            " upper(r.title) like concat('%',UPPER(:filter),'%') or" +
             " upper(r.genre) like concat('%',UPPER(:filter),'%') or" +
             " upper(r.artist) like concat('%',UPPER(:filter),'%') or" +
             " upper(r.fileFormat) like concat('%',UPPER(:filter),'%') or" +

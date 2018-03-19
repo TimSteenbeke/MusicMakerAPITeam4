@@ -1,9 +1,6 @@
 package be.kdg.ip.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
-import java.awt.*;
 
 @Entity
 @Table(name ="instrument")
@@ -11,64 +8,64 @@ public class Instrument {
 
     @Id
     @GeneratedValue
-    @Column(name="InstrumentId",nullable = false)
-    private int InstrumentId;
+    @Column(name="instrumentId",nullable = false)
+    private int instrumentId;
 
     @ManyToOne(cascade = {CascadeType.MERGE},fetch= FetchType.EAGER)
-    @JoinColumn(name = "InstrumentSoortId")
-    private InstrumentSoort soort;
+    @JoinColumn(name = "instrumentCategoryId")
+    private InstrumentCategory instrumentCategory;
     @Column
-    private String naam;
+    private String instrumentName;
     @Column
     private String type;
     @Column
-    private String uitvoering;
+    private String details;
     @Lob
     @Column
-    private byte[] afbeelding;
+    private byte[] image;
 
     public Instrument(){
 
     }
 
-    public Instrument(InstrumentSoort soort, String naam, String type, String uitvoering) {
-        this.soort = soort;
-        this.naam = naam;
+    public Instrument(InstrumentCategory instrumentCategory, String instrumentName, String type, String details) {
+        this.instrumentCategory = instrumentCategory;
+        this.instrumentName = instrumentName;
         this.type = type;
-        this.uitvoering = uitvoering;
+        this.details = details;
     }
 
 
-    public Instrument(InstrumentSoort soort, String naam, String type, String uitvoering, byte[] afbeelding) {
-        this.soort = soort;
-        this.naam = naam;
+    public Instrument(InstrumentCategory instrumentCategory, String instrumentName, String type, String details, byte[] image) {
+        this.instrumentCategory = instrumentCategory;
+        this.instrumentName = instrumentName;
         this.type = type;
-        this.uitvoering = uitvoering;
-        this.afbeelding = afbeelding;
+        this.details = details;
+        this.image = image;
     }
 
     public int getInstrumentId() {
-        return InstrumentId;
+        return instrumentId;
     }
 
     public void setInstrumentId(int instrumentId) {
-        InstrumentId = instrumentId;
+        this.instrumentId = instrumentId;
     }
 
-    public InstrumentSoort getSoort() {
-        return soort;
+    public InstrumentCategory getInstrumentCategory() {
+        return instrumentCategory;
     }
 
-    public void setSoort(InstrumentSoort soort) {
-        this.soort = soort;
+    public void setInstrumentCategory(InstrumentCategory instrumentCategory) {
+        this.instrumentCategory = instrumentCategory;
     }
 
-    public String getNaam() {
-        return naam;
+    public String getInstrumentName() {
+        return instrumentName;
     }
 
-    public void setNaam(String naam) {
-        this.naam = naam;
+    public void setInstrumentName(String instrumentName) {
+        this.instrumentName = instrumentName;
     }
 
     public String getType() {
@@ -79,19 +76,19 @@ public class Instrument {
         this.type = type;
     }
 
-    public String getUitvoering() {
-        return uitvoering;
+    public String getDetails() {
+        return details;
     }
 
-    public void setUitvoering(String uitvoering) {
-        this.uitvoering = uitvoering;
+    public void setDetails(String details) {
+        this.details = details;
     }
 
-    public byte[] getAfbeelding() {
-        return afbeelding;
+    public byte[] getImage() {
+        return image;
     }
 
-    public void setAfbeelding(byte[] afbeelding) {
-        this.afbeelding = afbeelding;
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }

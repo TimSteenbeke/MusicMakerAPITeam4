@@ -6,8 +6,10 @@ import be.kdg.ip.domain.Lesson;
 import be.kdg.ip.domain.User;
 import be.kdg.ip.services.api.CourseService;
 import be.kdg.ip.services.api.CourseTypeService;
+import be.kdg.ip.services.api.LessonService;
 import be.kdg.ip.web.dto.CourseDTO;
 import be.kdg.ip.web.resources.LessonResource;
+import be.kdg.ip.web.resources.LessonWithStudentsResource;
 import be.kdg.ip.web.resources.LessonsResource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -35,6 +37,9 @@ public class CourseController {
 
     @Autowired
     private CourseTypeService courseTypeService;
+
+    @Autowired
+    private LessonService lessonService;
 
     public CourseController(CourseService courseService) {
         this.courseService = courseService;
@@ -146,9 +151,17 @@ public class CourseController {
     public ResponseEntity<LessonsResource> getLessonFromCourse(@PathVariable("courseId")int courseId) {
         Course course = courseService.getCourse(courseId);
         LessonsResource lessonsResource = new LessonsResource();
+
         for (Lesson lesson : course.getLessons()) {
-            LessonResource lessonResource = new LessonResource(lesson.getStartDateTime(),lesson.getEndDateTime(),course.getCourseId());
-            lessonsResource.getLessonResources().add(lessonResource);
+            LessonWithStudentsResource lessonWithStudentsResource = new LessonWithStudentsResource();
+            lessonWithStudentsResource.setAbsentStudents(lesson.getAbsentStudents());
+            lessonWithStudentsResource.setPresentStudents(lesson.getPresentStudents());
+            lessonWithStudentsResource.setNoStatusStudents(lessonService.getNoStatusStudents(lesson));
+            lessonWithStudentsResource.setCourseid(course.getCourseId());
+            lessonWithStudentsResource.setEnddatetime(lesson.getEndDateTime());
+            lessonWithStudentsResource.setStartdatetime(lesson.getStartDateTime());
+
+            lessonsResource.getLessonResources().add(lessonWithStudentsResource);
         }
         return new ResponseEntity<LessonsResource>(lessonsResource,HttpStatus.OK);
     }

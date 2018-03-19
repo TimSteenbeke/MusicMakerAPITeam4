@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LessonsResource {
-    private List<LessonResource> lessonResources;
+    private List<LessonWithStudentsResource> lessonResources;
 
     public LessonsResource() {
-        this.lessonResources = new ArrayList<LessonResource>();
+        this.lessonResources = new ArrayList<LessonWithStudentsResource>();
     }
 
-    public List<LessonResource> getLessonResources() {
+    public List<LessonWithStudentsResource> getLessonResources() {
         return lessonResources;
     }
 
-    public void setLessonResources(List<LessonResource> lessonResources) {
+    public void setLessonResources(List<LessonWithStudentsResource> lessonResources) {
         this.lessonResources = lessonResources;
     }
 }

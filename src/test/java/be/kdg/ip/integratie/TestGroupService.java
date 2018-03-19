@@ -53,7 +53,7 @@ public class TestGroupService {
 
         List<User> allUsers = this.groupService.getAllUsers(group.getGroupId());
 
-        //assertEquals(allUsers.get(0).getGroupId(), newUser.getGroupId());
-        //assertEquals(allUsers.get(1).getGroupId(), newUser2.getGroupId());
+        //assertEquals(allUsers.get(0).getGroupid(), newUser.getGroupid());
+        //assertEquals(allUsers.get(1).getGroupid(), newUser2.getGroupid());
     }
 }
