@@ -1,8 +1,6 @@
 package be.kdg.ip.web;
 
-import be.kdg.ip.domain.Agenda;
-import be.kdg.ip.domain.User;
-import be.kdg.ip.services.api.AgendaService;
+import be.kdg.ip.domain.*;
 import be.kdg.ip.services.api.UserService;
 import be.kdg.ip.services.exceptions.UserServiceException;
 import be.kdg.ip.web.resources.AgendaResource;
@@ -13,19 +11,17 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
 public class AgendaController {
-    @Autowired
-    private AgendaService agendaService;
+
 
     @Autowired
     private UserService userService;
 
-    public AgendaController(AgendaService agendaService) {
-        this.agendaService = agendaService;
-    }
 
     @CrossOrigin(origins = "*")
     @RequestMapping(method = RequestMethod.GET,value ="/api/agenda")
@@ -36,13 +32,25 @@ public class AgendaController {
             String username = principal.getName();
             User user =  userService.findUserByUsername(username);
 
-            Agenda agenda= user.getAgenda();
+
             AgendaResource agendaResource = new AgendaResource();
 
-            agendaResource.setAgendaOwner(agenda.getUser().getUsername());
-            agendaResource.setAgendaId(agenda.getAgendaId());
-            agendaResource.setLessons(agenda.getLessons());
-            agendaResource.setPerformances(agenda.getPerformances());
+            agendaResource.setAgendaOwner(user.getUsername());
+            //TODO: remove id from resource
+            agendaResource.setAgendaId(1);
+
+            List<Lesson> lessons = new ArrayList<Lesson>();
+            for (Course course : user.getCourses()) {
+                lessons.addAll(course.getLessons());
+            }
+            agendaResource.setLessons(lessons);
+
+            List<Performance> performances = new ArrayList<Performance>();
+            for (Group group: user.getGroups()) {
+                performances.addAll(group.getPerformances());
+            }
+
+            agendaResource.setPerformances(performances);
 
             return  new ResponseEntity<>(agendaResource, HttpStatus.OK);
 
@@ -58,13 +66,25 @@ public class AgendaController {
 
         User user =  userService.findUser(userId);
 
-        Agenda agenda= user.getAgenda();
+
         AgendaResource agendaResource = new AgendaResource();
 
-        agendaResource.setAgendaOwner(agenda.getUser().getUsername());
-        agendaResource.setAgendaId(agenda.getAgendaId());
-        agendaResource.setLessons(agenda.getLessons());
-        agendaResource.setPerformances(agenda.getPerformances());
+        agendaResource.setAgendaOwner(user.getFirstname() + " " + user.getLastname());
+        //TODO: remove id from resource
+        agendaResource.setAgendaId(1);
+
+        List<Lesson> lessons = new ArrayList<Lesson>();
+        for (Course course : user.getCourses()) {
+            lessons.addAll(course.getLessons());
+        }
+        agendaResource.setLessons(lessons);
+
+        List<Performance> performances = new ArrayList<Performance>();
+        for (Group group: user.getGroups()) {
+            performances.addAll(group.getPerformances());
+        }
+
+        agendaResource.setPerformances(performances);
 
         return  new ResponseEntity<>(agendaResource, HttpStatus.OK);
     }

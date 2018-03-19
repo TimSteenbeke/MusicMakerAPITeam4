@@ -34,9 +34,6 @@ public class Performance {
     @ManyToMany
     private List<User> presentMembers;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy="performances")
-    private List<Agenda> agendas;
 
     @JsonIgnore
     @ManyToOne
@@ -44,7 +41,6 @@ public class Performance {
 
 
     public Performance() {
-        this.agendas = new ArrayList<>();
         this.absentMembers = new ArrayList<>();
         this.presentMembers = new ArrayList<>();
     }
@@ -93,14 +89,6 @@ public class Performance {
 
     public void setPerformanceId(int performanceId) {
         this.performanceId = performanceId;
-    }
-
-    public List<Agenda> getAgendas() {
-        return agendas;
-    }
-
-    public void setAgendas(List<Agenda> agendas) {
-        this.agendas = agendas;
     }
 
     public List<User> getAbsentMembers() {

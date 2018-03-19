@@ -3,7 +3,6 @@ package be.kdg.ip.web;
 import be.kdg.ip.domain.Group;
 import be.kdg.ip.domain.Performance;
 import be.kdg.ip.domain.User;
-import be.kdg.ip.services.api.AgendaService;
 import be.kdg.ip.services.api.GroupService;
 import be.kdg.ip.services.api.PerformanceService;
 import be.kdg.ip.services.api.UserService;
@@ -11,11 +10,9 @@ import be.kdg.ip.services.exceptions.UserServiceException;
 import be.kdg.ip.web.dto.StatusDTO;
 import be.kdg.ip.web.resources.PerformanceGetResource;
 import be.kdg.ip.web.resources.PerformanceResource;
-import org.bouncycastle.pqc.crypto.gmss.GMSSRootCalc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,9 +28,6 @@ public class PerformanceController {
 
     @Autowired
     PerformanceService performanceService;
-
-    @Autowired
-    AgendaService agendaService;
 
     @Autowired
     GroupService groupService;
@@ -60,8 +54,6 @@ public class PerformanceController {
         //Add performance
         performanceService.addPerformance(performance);
 
-        //add Performance to every involved agenda
-        agendaService.addPerformanceToEveryAgenda(performance);
 
         return  new ResponseEntity<>(performanceResource, HttpStatus.OK);
     }
@@ -102,7 +94,6 @@ public class PerformanceController {
     public ResponseEntity<Performance> deletePerformance(@PathVariable("performanceId") Integer performanceId){
 
 
-        agendaService.removePerformanceFromEveryAgenda(performanceService.getPerformance(performanceId));
         performanceService.deletePerformance(performanceId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -114,14 +105,12 @@ public class PerformanceController {
         Performance performance= performanceService.getPerformance(id);
 
 
-        agendaService.removePerformanceFromEveryAgenda(performance);
         Group group = groupService.getGroup(performanceResource.getGroup());
         performance.setGroup(group);
         performance.setDescription(performanceResource.getDescription());
         performance.setEndDateTime(performanceResource.getEnddatetime());
         performance.setStartDateTime(performanceResource.getStartdatetime());
 
-        agendaService.addPerformanceToEveryAgenda(performance);
 
         //Lesson toevoegen
         performanceService.updatePerformance(performance);

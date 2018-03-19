@@ -28,9 +28,6 @@ public class Initializer {
     private LessonService lessonService;
 
     @Autowired
-    private AgendaService agendaService;
-
-    @Autowired
     private PerformanceService performanceService;
 
     @Autowired
@@ -174,7 +171,6 @@ public class Initializer {
         course.setCourseType(courseType);
 
 
-        Agenda agenda = jef.getAgenda();
 
         LocalDateTime vandaag = LocalDateTime.now();
 
@@ -190,9 +186,8 @@ public class Initializer {
         userService.updateUser(tim);
         courseService.addCourse(course);
 
-
         lesson.setCourse(course);
-        lessonService.addLesson(agenda, lesson);
+
 
         Performance performance = new Performance();
         performance.setDescription("een beschrijving van een optreden");
@@ -212,10 +207,6 @@ public class Initializer {
         performanceService.addPerformance(performance);
         performanceService.addPerformance(performance2);
 
-
-        agenda.getPerformances().add(performance);
-        agenda.getPerformances().add(performance2);
-        agendaService.saveAgenda(agenda);
 
 
         System.out.println("agenda items toegevoegd");
