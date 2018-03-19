@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -94,6 +93,7 @@ public class TestGroupService {
         users.add(newUser);
         group.setUsers(users);
         group.setSupervisor(supervisor);
+        group.setGroupImage(new byte[5]);
         groupService.addGroup(group);
 
         supervisor.getGroups().add(group);
@@ -116,6 +116,7 @@ public class TestGroupService {
 
         Group group = new Group();
         group.setName("Groepsnaam");
+
         //groupService.addGroup(group);
         List<Group> groupList = Collections.singletonList(group);
 

@@ -42,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-public class TestMuziekstukken {
+public class TestCompositionService {
     @Autowired
     private MockMvc mockMvc;
 

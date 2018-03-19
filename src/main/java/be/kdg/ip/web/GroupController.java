@@ -10,13 +10,13 @@ import be.kdg.ip.web.resources.GroupUserResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Collection;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -33,6 +33,7 @@ public class GroupController {
     }
 
     @GetMapping("/allgroups")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<List<GroupUserResource>> findAll() {
         List<Group> groups = groupService.getAllGroups();
         List<GroupUserResource> groupUserResources = new ArrayList<>();
@@ -108,7 +109,9 @@ public class GroupController {
         Group group = this.groupService.getGroup(groupId);
         GroupUserResource groupUserResource = new GroupUserResource();
         groupUserResource.setGroupid(groupId);
-        groupUserResource.setGroupimage(group.getGroupImage());
+        if(group.getGroupImage() != null) {
+            groupUserResource.setGroupimage(group.getGroupImage());
+        }
         groupUserResource.setName(group.getName());
         groupUserResource.setSupervisor(group.getSupervisor());
         groupUserResource.setUsers(new ArrayList<>());
