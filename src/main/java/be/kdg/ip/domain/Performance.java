@@ -46,16 +46,23 @@ public class Performance {
     @ManyToOne
     private Group group;
 
+
+    public Performance() {
+        this.agendas = new ArrayList<>();
+        this.absentMembers = new ArrayList<>();
+        this.presentMembers = new ArrayList<>();
+    }
+
+    public Performance(String beschrijving, LocalDateTime startDateTime, LocalDateTime endDateTime, Group group) {
+        this.beschrijving = beschrijving;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
+        this.group = group;
+    }
+
     public Group getGroup() {
         return group;
     }
-
-    public Performance() {
-        this.agendas = new ArrayList<Agenda>();
-        this.absentMembers = new ArrayList<User>();
-        this.presentMembers = new ArrayList<User>();
-    }
-
     public void setGroup(Group group) {
         this.group = group;
     }

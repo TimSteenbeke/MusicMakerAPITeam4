@@ -1,5 +1,6 @@
 package be.kdg.ip.web.resources;
 
+import be.kdg.ip.domain.Course;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -7,18 +8,14 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 import java.time.LocalDateTime;
 
-public class PerformanceResource {
-
-    private Integer group;
+public class LessonGetResource {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime startdatetime;
-
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime enddatetime;
-
-    private String beschrijving;
+    private Course course;
 
     public LocalDateTime getStartdatetime() {
         return startdatetime;
@@ -36,19 +33,11 @@ public class PerformanceResource {
         this.enddatetime = enddatetime;
     }
 
-    public String getBeschrijving() {
-        return beschrijving;
+    public Course getCourse() {
+        return course;
     }
 
-    public void setBeschrijving(String beschrijving) {
-        this.beschrijving = beschrijving;
-    }
-
-    public Integer getGroup() {
-        return group;
-    }
-
-    public void setGroup(Integer group) {
-        this.group = group;
+    public void setCourse(Course course) {
+        this.course = course;
     }
 }

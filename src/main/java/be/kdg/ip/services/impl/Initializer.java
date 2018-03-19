@@ -179,12 +179,14 @@ public class Initializer {
 
         performance.setStartDateTime(vandaag);
         performance.setEndDateTime(vandaag.plusHours(2));
+        performance.setGroup(group);
 
 
         Performance performance2 = new Performance();
         performance2.setBeschrijving("een beschrijving van ANDER OPTREDEN");
         performance2.setStartDateTime(vandaag.plusDays(1));
         performance2.setEndDateTime(vandaag.plusDays(1).plusHours(4));
+        performance2.setGroup(group2);
 
         performanceService.addPerformance(performance);
         performanceService.addPerformance(performance2);

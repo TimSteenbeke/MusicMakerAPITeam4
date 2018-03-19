@@ -9,6 +9,8 @@ import be.kdg.ip.services.exceptions.UserServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service("LessonService")
 public class LessonServiceImpl implements LessonService {
     @Autowired
@@ -29,6 +31,21 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public Lesson getLesson(int lessonId) {
         return lessonRepository.findOne(lessonId);
+    }
+
+    @Override
+    public List<Lesson> getAllLessons() {
+        return lessonRepository.findAll();
+    }
+
+    @Override
+    public void deleteLesson(int lessonId) {
+        lessonRepository.delete(lessonId);
+    }
+
+    @Override
+    public Lesson updateLesson(Lesson lesson) {
+        return lessonRepository.save(lesson);
     }
 
     //TODO: error handling

@@ -6,6 +6,7 @@ import be.kdg.ip.domain.User;
 import be.kdg.ip.services.api.InstrumentLevelService;
 import be.kdg.ip.services.api.InstrumentService;
 import be.kdg.ip.services.api.UserService;
+import be.kdg.ip.web.resources.InstrumentLevelIncDecResource;
 import be.kdg.ip.web.resources.InstrumentLevelResource;
 import be.kdg.ip.web.resources.InstrumentLevelUserInstrumentResource;
 import org.springframework.http.HttpStatus;
@@ -133,5 +134,40 @@ public class InstrumentLevelController {
         resource.setInstrument(out.getInstrument());
 
         return new ResponseEntity<>(resource,HttpStatus.OK);
+    }
+
+
+    @PostMapping("/instrumentleveldown/{id}")
+    public ResponseEntity<InstrumentLevelUserInstrumentResource> decreaseLevel(@PathVariable("id") int id){
+
+        InstrumentLevel instrumentLevel = instrumentLevelService.getIntrumentLevel(id);
+        int newLevel = instrumentLevel.getLevel()-1;
+        if (newLevel>=0){
+            instrumentLevel.setLevel(newLevel);
+            instrumentLevel = instrumentLevelService.updateInstrumentLevel(instrumentLevel);
+        }
+        InstrumentLevelUserInstrumentResource instrumentLevelUserInstrumentResource = new InstrumentLevelUserInstrumentResource();
+        instrumentLevelUserInstrumentResource.setMaxLevel(instrumentLevel.getMaxLevel());
+        instrumentLevelUserInstrumentResource.setLevel(instrumentLevel.getLevel());
+        instrumentLevelUserInstrumentResource.setInstrument(instrumentLevel.getInstrument());
+        instrumentLevelUserInstrumentResource.setUser(instrumentLevel.getUser());
+        return new ResponseEntity<>(instrumentLevelUserInstrumentResource,HttpStatus.OK);
+    }
+
+    @PostMapping("/instrumentlevelup/{id}")
+    public ResponseEntity<InstrumentLevelUserInstrumentResource> increaseLevel(@PathVariable("id") int id){
+
+        InstrumentLevel instrumentLevel = instrumentLevelService.getIntrumentLevel(id);
+        int newLevel = instrumentLevel.getLevel()+1;
+        if (newLevel<=10){
+            instrumentLevel.setLevel(newLevel);
+            instrumentLevel = instrumentLevelService.updateInstrumentLevel(instrumentLevel);
+        }
+        InstrumentLevelUserInstrumentResource instrumentLevelUserInstrumentResource = new InstrumentLevelUserInstrumentResource();
+        instrumentLevelUserInstrumentResource.setMaxLevel(instrumentLevel.getMaxLevel());
+        instrumentLevelUserInstrumentResource.setLevel(instrumentLevel.getLevel());
+        instrumentLevelUserInstrumentResource.setInstrument(instrumentLevel.getInstrument());
+        instrumentLevelUserInstrumentResource.setUser(instrumentLevel.getUser());
+        return new ResponseEntity<>(instrumentLevelUserInstrumentResource,HttpStatus.OK);
     }
 }
