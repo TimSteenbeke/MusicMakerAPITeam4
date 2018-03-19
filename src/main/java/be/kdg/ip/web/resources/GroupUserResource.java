@@ -1,8 +1,10 @@
 package be.kdg.ip.web.resources;
 
+import be.kdg.ip.domain.NewsItem;
 import be.kdg.ip.domain.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GroupUserResource {
@@ -15,7 +17,14 @@ public class GroupUserResource {
     @JsonIgnoreProperties({"username","lastname","password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired"})
     private List<User> users;
     private List<Integer> userids;
+    private List<NewsItem> newsItems;
     private byte[] groupimage;
+
+    public GroupUserResource() {
+        this.users = new ArrayList<User>();
+        this.userids = new ArrayList<Integer>();
+        this.newsItems = new ArrayList<NewsItem>();
+    }
 
     public int getGroupid() {
         return groupid;
@@ -63,5 +72,13 @@ public class GroupUserResource {
 
     public void setGroupimage(byte[] groupimage) {
         this.groupimage = groupimage;
+    }
+
+    public List<NewsItem> getNewsItems() {
+        return newsItems;
+    }
+
+    public void setNewsItems(List<NewsItem> newsItems) {
+        this.newsItems = newsItems;
     }
 }

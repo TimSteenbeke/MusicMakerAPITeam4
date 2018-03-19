@@ -1,11 +1,9 @@
 package be.kdg.ip.services.impl;
 
-import be.kdg.ip.domain.Agenda;
 import be.kdg.ip.domain.Lesson;
 import be.kdg.ip.domain.User;
 import be.kdg.ip.repositories.api.LessonRepository;
 import be.kdg.ip.services.api.LessonService;
-import be.kdg.ip.services.exceptions.UserServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +16,6 @@ public class LessonServiceImpl implements LessonService {
 
 
     @Override
-    public void addLesson(Agenda agenda, Lesson lesson) {
-        agenda.getLessons().add(lesson);
-        lessonRepository.save(lesson);
-    }
-
-    @Override
     public void addLesson(Lesson lesson) {
         lessonRepository.save(lesson);
     }
@@ -31,6 +23,21 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public Lesson getLesson(int lessonId) {
         return lessonRepository.findOne(lessonId);
+    }
+
+    @Override
+    public List<Lesson> getAllLessons() {
+        return lessonRepository.findAll();
+    }
+
+    @Override
+    public void deleteLesson(int lessonId) {
+        lessonRepository.delete(lessonId);
+    }
+
+    @Override
+    public Lesson updateLesson(Lesson lesson) {
+        return lessonRepository.save(lesson);
     }
 
     //TODO: error handling

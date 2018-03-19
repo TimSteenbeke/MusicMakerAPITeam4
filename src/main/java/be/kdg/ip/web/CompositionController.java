@@ -1,30 +1,24 @@
 package be.kdg.ip.web;
 
 import be.kdg.ip.domain.Composition;
-import be.kdg.ip.domain.Instrument;
 import be.kdg.ip.services.api.CompositionService;
 import be.kdg.ip.web.assemblers.CompositionAssembler;
 import be.kdg.ip.web.resources.CompositionResource;
-import be.kdg.ip.web.resources.InstrumentResource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.NamedStoredProcedureQueries;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -38,7 +32,7 @@ public class CompositionController {
         this.compositionAssembler = compositionAssembler;
     }
 
-    //Muziekstuk uploaden
+    //uploading of a composition
     @RequestMapping(method = RequestMethod.POST, value="/", consumes = { "multipart/form-data" })
     @CrossOrigin(origins = "*")
     public @ResponseBody ResponseEntity<?> upload(@RequestParam("files") MultipartFile files, @RequestParam("compresource") String compresource) throws Exception
@@ -47,12 +41,14 @@ public class CompositionController {
 
         CompositionResource compositionResource =  mapper.readValue(compresource, CompositionResource.class);
         Composition composition = new Composition();
-        composition.setTitel(compositionResource.getTitel());
+        composition.setTitle(compositionResource.getTitle());
         composition.setArtist(compositionResource.getArtist());
         composition.setLanguage(compositionResource.getLanguage());
         composition.setGenre(compositionResource.getGenre());
         composition.setSubject(compositionResource.getSubject());
         composition.setLink(compositionResource.getLink());
+        composition.setInstrumentType(compositionResource.getInstrumentType());
+        composition.setFileFormat(compositionResource.getFileFormat());
         composition.setInstrumentType(compositionResource.getInstrumentType());
 
         try {
@@ -63,6 +59,7 @@ public class CompositionController {
             byte[] bytes = IOUtils.toByteArray(inputStream);
 
             composition.setContent(bytes);
+
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -72,7 +69,7 @@ public class CompositionController {
         return new ResponseEntity<>(compositionAssembler.toResource(out), HttpStatus.OK);
     }
 
-    //Alle muziekstukken opvragen
+    //Request all compositions
     @GetMapping
     @CrossOrigin(origins = "*")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
@@ -81,7 +78,7 @@ public class CompositionController {
         return new ResponseEntity<>(compositions,HttpStatus.OK);
     }
 
-    //Muziekstukken opvragen
+    //Request single composition
     @GetMapping("/{compositionId}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<Composition> findCompositionById(@PathVariable int compositionId){
@@ -102,7 +99,7 @@ public class CompositionController {
     public ResponseEntity<CompositionResource> updateComposition(@PathVariable("compositionId") int compositionId,@Valid @RequestBody CompositionResource compositionResource) {
         Composition composition = compositionService.getComposition(compositionId);
 
-        composition.setTitel(compositionResource.getTitel());
+        composition.setTitle(compositionResource.getTitle());
         composition.setArtist(compositionResource.getArtist());
         composition.setLanguage(compositionResource.getLanguage());
         composition.setGenre(compositionResource.getGenre());

@@ -3,12 +3,12 @@ package be.kdg.ip.web;
 import be.kdg.ip.domain.Group;
 import be.kdg.ip.domain.Performance;
 import be.kdg.ip.domain.User;
-import be.kdg.ip.services.api.AgendaService;
 import be.kdg.ip.services.api.GroupService;
 import be.kdg.ip.services.api.PerformanceService;
 import be.kdg.ip.services.api.UserService;
 import be.kdg.ip.services.exceptions.UserServiceException;
 import be.kdg.ip.web.dto.StatusDTO;
+import be.kdg.ip.web.resources.PerformanceGetResource;
 import be.kdg.ip.web.resources.PerformanceResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,16 +18,16 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
+@RequestMapping("/api/performance")
 public class PerformanceController {
 
     @Autowired
     PerformanceService performanceService;
-
-    @Autowired
-    AgendaService agendaService;
 
     @Autowired
     GroupService groupService;
@@ -35,31 +35,92 @@ public class PerformanceController {
     @Autowired
     UserService userService;
 
-    @RequestMapping(method = RequestMethod.POST,value ="/api/performance")
+    @PostMapping
     //ToDo: Authorization fix: performance post
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<PerformanceResource> addLesson(@Valid @RequestBody PerformanceResource performanceResource) {
+    public ResponseEntity<PerformanceResource> addPerformance(@Valid @RequestBody PerformanceResource performanceResource) {
 
-        //performance aanmaken based op perforamnceresource
+        //create performance based on performanceresource
         Performance performance = new Performance();
         performance.setStartDateTime(performanceResource.getStartdatetime());
         performance.setEndDateTime(performanceResource.getEnddatetime());
-        performance.setBeschrijving(performanceResource.getBeschrijving());
+        performance.setDescription(performanceResource.getDescription());
 
-        //Group object ophalen en koppelen aan performance
-        Group group = groupService.getGroup(performanceResource.getGroupId());
+
+        //Fetch group object and link it to a performance
+        Group group = groupService.getGroup(performanceResource.getGroup());
         performance.setGroup(group);
 
-        //performance toevoegen
+        //Add performance
         performanceService.addPerformance(performance);
 
-        //add Performance to every involved agenda
-        agendaService.addPerformanceToEveryAgenda(performance);
 
         return  new ResponseEntity<>(performanceResource, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value="/api/performance/present/{performanceid}")
+    @GetMapping("/{performanceId}")
+    public ResponseEntity<PerformanceGetResource> getPerformance(@PathVariable int performanceId){
+
+        Performance performance = performanceService.getPerformance(performanceId);
+
+        PerformanceGetResource performanceGetResource = new PerformanceGetResource();
+
+       performanceGetResource.setBeschrijving(performance.getDescription());
+       performanceGetResource.setEnddatetime(performance.getEndDateTime());
+       performanceGetResource.setStartdatetime(performance.getEndDateTime());
+       performanceGetResource.setGroup(performance.getGroup());
+
+        return new ResponseEntity<>(performanceGetResource,HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PerformanceGetResource>> getAllPerformances(){
+        List<Performance> performances = performanceService.getAllPerformances();
+        List<PerformanceGetResource> performanceGetResources = new ArrayList<>();
+
+        for (Performance performance : performances){
+            PerformanceGetResource performanceGetResource = new PerformanceGetResource();
+            performanceGetResource.setBeschrijving(performance.getDescription());
+            performanceGetResource.setEnddatetime(performance.getEndDateTime());
+            performanceGetResource.setStartdatetime(performance.getEndDateTime());
+            performanceGetResource.setGroup(performance.getGroup());
+            performanceGetResources.add(performanceGetResource);
+        }
+
+        return new ResponseEntity<>(performanceGetResources,HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{performanceId}")
+    public ResponseEntity<Performance> deletePerformance(@PathVariable("performanceId") Integer performanceId){
+
+
+        performanceService.deletePerformance(performanceId);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+
+    @PutMapping("/performance/{id}")
+    public ResponseEntity<PerformanceResource> updatePerformance(@PathVariable("id") int id, @RequestBody PerformanceResource performanceResource){
+
+        Performance performance= performanceService.getPerformance(id);
+
+
+        Group group = groupService.getGroup(performanceResource.getGroup());
+        performance.setGroup(group);
+        performance.setDescription(performanceResource.getDescription());
+        performance.setEndDateTime(performanceResource.getEnddatetime());
+        performance.setStartDateTime(performanceResource.getStartdatetime());
+
+
+        //Lesson toevoegen
+        performanceService.updatePerformance(performance);
+
+        return new ResponseEntity<>(performanceResource,HttpStatus.OK);
+    }
+
+
+
+    @PostMapping("/present/{performanceid}")
     public ResponseEntity registerUserPresent(@PathVariable("performanceid")  int performanceId, Principal principal) {
         try {
             User user = userService.findUserByUsername(principal.getName());
@@ -70,7 +131,7 @@ public class PerformanceController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.POST, value="/api/performance/absent/{performanceid}")
+    @PostMapping("/absent/{performanceid}")
     public ResponseEntity registerUserAbsent(@PathVariable("performanceid")  int performanceId, Principal principal) {
         try {
             User user = userService.findUserByUsername(principal.getName());
@@ -81,7 +142,7 @@ public class PerformanceController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value="/api/performance/attendancestatus/{performanceid}")
+    @GetMapping("/attendancestatus/{performanceid}")
     public ResponseEntity<StatusDTO> getAttendanceStatus(@PathVariable("performanceid")  int performanceId, Principal principal) {
         try {
             User user = userService.findUserByUsername(principal.getName());

@@ -1,17 +1,13 @@
 package be.kdg.ip.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 //import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.fasterxml.jackson.*;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -22,7 +18,7 @@ public class Performance {
     private int performanceId;
 
     @Column
-    private String beschrijving;
+    private String description;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @Column
@@ -38,34 +34,37 @@ public class Performance {
     @ManyToMany
     private List<User> presentMembers;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy="performances")
-    private List<Agenda> agendas;
 
     @JsonIgnore
     @ManyToOne
     private Group group;
 
+
+    public Performance() {
+        this.absentMembers = new ArrayList<>();
+        this.presentMembers = new ArrayList<>();
+    }
+
+    public Performance(String beschrijving, LocalDateTime startDateTime, LocalDateTime endDateTime, Group group) {
+        this.description = beschrijving;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
+        this.group = group;
+    }
+
     public Group getGroup() {
         return group;
     }
-
-    public Performance() {
-        this.agendas = new ArrayList<Agenda>();
-        this.absentMembers = new ArrayList<User>();
-        this.presentMembers = new ArrayList<User>();
-    }
-
     public void setGroup(Group group) {
         this.group = group;
     }
 
-    public String getBeschrijving() {
-        return beschrijving;
+    public String getDescription() {
+        return description;
     }
 
-    public void setBeschrijving(String beschrijving) {
-        this.beschrijving = beschrijving;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public LocalDateTime getStartDateTime() {
@@ -90,14 +89,6 @@ public class Performance {
 
     public void setPerformanceId(int performanceId) {
         this.performanceId = performanceId;
-    }
-
-    public List<Agenda> getAgendas() {
-        return agendas;
-    }
-
-    public void setAgendas(List<Agenda> agendas) {
-        this.agendas = agendas;
     }
 
     public List<User> getAbsentMembers() {

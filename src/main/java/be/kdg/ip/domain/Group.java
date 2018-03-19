@@ -12,7 +12,7 @@ import java.util.List;
 public class Group {
     @Id
     @GeneratedValue
-    @Column(nullable = false)
+    @Column(nullable = false, name = "groupId")
     private int groupId;
 
     @Column
@@ -20,17 +20,16 @@ public class Group {
     private String name;
 
     @ManyToOne
-    //@Cascade(org.hibernate.annotations.CascadeType.ALL)
     private User supervisor;
-
-    //voor jsonignore moet nog andere oplossing gezocht worden? users worden niet opgeslagen nu...
 
     @ManyToMany(mappedBy = "groups")
     private List<User> users;
 
-    //@JsonIgnore
     @OneToMany(mappedBy = "group")
     private List<Performance> performances;
+
+    @OneToMany(mappedBy = "group")
+    private List<NewsItem> newsItems;
 
     @Lob
     @Column
@@ -41,6 +40,7 @@ public class Group {
     public Group() {
         this.users = new ArrayList<>();
         this.performances = new ArrayList<>();
+        this.newsItems = new ArrayList<>();
 
     }
 
@@ -49,6 +49,7 @@ public class Group {
         this.supervisor = supervisor;
         this.users = users;
         this.performances = new ArrayList<>();
+        this.newsItems = new ArrayList<>();
     }
 
     public byte[] getGroupImage() {
@@ -67,6 +68,13 @@ public class Group {
         this.performances = performances;
     }
 
+    public List<NewsItem> getNewsItems() {
+        return newsItems;
+    }
+
+    public void setNewsItems(List<NewsItem> newsItems) {
+        this.newsItems = newsItems;
+    }
 
     public User getSupervisor() {
         return supervisor;

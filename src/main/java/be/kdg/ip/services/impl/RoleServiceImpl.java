@@ -17,9 +17,6 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 
-/**
- * Created by wouter on 30.01.17.
- */
 @Service("roleService")
 @Transactional
 public class RoleServiceImpl implements RoleService {

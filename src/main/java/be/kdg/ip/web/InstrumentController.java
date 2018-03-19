@@ -1,10 +1,12 @@
 package be.kdg.ip.web;
 
 import be.kdg.ip.domain.Instrument;
+import be.kdg.ip.domain.InstrumentCategory;
 import be.kdg.ip.services.api.InstrumentService;
-import be.kdg.ip.services.api.InstrumentSoortService;
+import be.kdg.ip.services.api.InstrumentCategoryService;
 import be.kdg.ip.web.assemblers.InstrumentAssembler;
 import be.kdg.ip.web.assemblers.InstrumentUpdateAssembler;
+import be.kdg.ip.web.resources.InstrumentGetResource;
 import be.kdg.ip.web.resources.InstrumentResource;
 import be.kdg.ip.web.resources.InstrumentUpdateResource;
 import ma.glasnost.orika.MapperFacade;
@@ -13,10 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.imageio.ImageIO;
 import javax.validation.Valid;
-import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -28,65 +29,89 @@ public class InstrumentController {
     private final MapperFacade mapperFacade;
     private final InstrumentAssembler instrumentAssembler;
     private final InstrumentUpdateAssembler instrumentUpdateAssembler;
-    private InstrumentSoortService instrumentSoortService;
+    private InstrumentCategoryService instrumentCategoryService;
 
-    public InstrumentController(InstrumentService instrumentService, MapperFacade mapperFacade, InstrumentAssembler instrumentAssembler, InstrumentUpdateAssembler instrumentUpdateAssembler, InstrumentSoortService instrumentSoortService) {
+    public InstrumentController(InstrumentService instrumentService, MapperFacade mapperFacade, InstrumentAssembler instrumentAssembler, InstrumentUpdateAssembler instrumentUpdateAssembler, InstrumentCategoryService instrumentCategoryService) {
         this.instrumentService = instrumentService;
         this.mapperFacade = mapperFacade;
         this.instrumentAssembler = instrumentAssembler;
-        this.instrumentSoortService = instrumentSoortService;
+        this.instrumentCategoryService = instrumentCategoryService;
         this.instrumentUpdateAssembler = instrumentUpdateAssembler;
     }
 
-    //Nog beter bekijken
-    //Aanmaken van een instrument
+    //Creation of an instrument
     @PostMapping
     //ToDo: Authorization fix: instrument post
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<InstrumentResource> createInstrument(@Valid @RequestBody InstrumentResource instrumentResource) {
+    public ResponseEntity<InstrumentGetResource> createInstrument(@Valid @RequestBody InstrumentResource instrumentResource) {
         Instrument in = new Instrument();
-        in.setSoort(instrumentSoortService.getInstrumentSoort(instrumentResource.getInstrumentsoortid()));
-        in.setNaam(instrumentResource.getNaam());
+        in.setInstrumentCategory(instrumentCategoryService.getInstrumentCategory(instrumentResource.getInstrumentid()));
+        in.setInstrumentName(instrumentResource.getInstrumentname());
         in.setType(instrumentResource.getType());
-        in.setUitvoering(instrumentResource.getUitvoering());
+        in.setDetails(instrumentResource.getDetails());
+        InstrumentCategory instrumentCategory = instrumentCategoryService.getInstrumentCategory(instrumentResource.getInstrumentCategoryid());
+        in.setInstrumentCategory(instrumentCategory);
 
-        //image omzetten
-        String imageString = instrumentResource.getAfbeelding();
+        //converting image
+        String imageString = instrumentResource.getImage();
 
         try {
             // byte[] name = Base64.getEncoder().encode("hello world".getBytes());
             byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
-            in.setAfbeelding(decodedString);
+            in.setImage(decodedString);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 
         Instrument out = instrumentService.addInstrument(in);
 
-        return new ResponseEntity<>(instrumentAssembler.toResource(out), HttpStatus.OK);
+        InstrumentGetResource instrumentGetResource = new InstrumentGetResource();
+        instrumentGetResource.setType(out.getType());
+        instrumentGetResource.setDetails(out.getDetails());
+        instrumentGetResource.setImage(new sun.misc.BASE64Encoder().encode(out.getImage()));
+        instrumentGetResource.setInstrumentname(out.getInstrumentName());
+        instrumentGetResource.setInstrumentCategory(out.getInstrumentCategory());
+
+        return new ResponseEntity<>(instrumentGetResource, HttpStatus.OK);
     }
 
-    //1 Instrument opvragen
+    //Request 1 instrument
     @GetMapping("/{instrumentId}")
     //ToDo: Authorization fix: get instrument
     //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<Instrument> findInstrumentById(@PathVariable int instrumentId) {
+    public ResponseEntity<InstrumentGetResource> findInstrumentById(@PathVariable int instrumentId) {
         Instrument instrument = instrumentService.getInstrument(instrumentId);
-        //InstrumentResource instrumentResource = instrumentAssembler.toResource(instrument);
-        return new ResponseEntity<Instrument>(instrument, HttpStatus.OK);
+
+        InstrumentGetResource instrumentGetResource = new InstrumentGetResource();
+        instrumentGetResource.setType(instrument.getType());
+        instrumentGetResource.setDetails(instrument.getDetails());
+        instrumentGetResource.setImage(new sun.misc.BASE64Encoder().encode(instrument.getImage()));
+        instrumentGetResource.setInstrumentname(instrument.getInstrumentName());
+        instrumentGetResource.setInstrumentCategory(instrument.getInstrumentCategory());
+        return new ResponseEntity<>(instrumentGetResource, HttpStatus.OK);
     }
 
-    //Alle instrumenten opvragen
+    //Request all instruments
     @GetMapping
     @CrossOrigin(origins = "*")
     //ToDo: Authorization fix: get all instrument
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<List<Instrument>> findAll() {
+    public ResponseEntity<List<InstrumentGetResource>> findAll() {
         List<Instrument> instruments = instrumentService.getAllInstruments();
-        return new ResponseEntity<>(instruments, HttpStatus.OK);
+        List<InstrumentGetResource> instrumentGetResources = new ArrayList<>();
+        for (Instrument i : instruments){
+            InstrumentGetResource instrumentGetResource = new InstrumentGetResource();
+            instrumentGetResource.setType(i.getType());
+            instrumentGetResource.setDetails(i.getDetails());
+            instrumentGetResource.setImage(new sun.misc.BASE64Encoder().encode(i.getImage()));
+            instrumentGetResource.setInstrumentname(i.getInstrumentName());
+            instrumentGetResource.setInstrumentCategory(i.getInstrumentCategory());
+            instrumentGetResources.add(instrumentGetResource);
+        }
+        return new ResponseEntity<>(instrumentGetResources, HttpStatus.OK);
     }
 
-    //Een instrument verwijderen
+    //Delete an instrument
     @DeleteMapping("/{instrumentId}")
     //ToDo: Authorization fix: delete instrument
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
@@ -97,26 +122,26 @@ public class InstrumentController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    //Een instrument updaten
+    //Update an instrument
     @RequestMapping(value = "/instrument/{id}", method = RequestMethod.PUT)
     //ToDo: Authorization fix: instrument updaten
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<InstrumentUpdateResource> updateUser(@PathVariable("id") int id, @RequestBody InstrumentUpdateResource instrumentUpdateResource) {
-        //Instrument in = mapperFacade.map(instrumentUpdateResource,Instrument.class);
-        Instrument in = new Instrument();
-        in.setSoort(instrumentSoortService.getInstrumentSoort(instrumentUpdateResource.getInstrumentsoortid()));
-        in.setInstrumentId(id);
-        in.setNaam(instrumentUpdateResource.getNaam());
-        in.setUitvoering(instrumentUpdateResource.getUitvoering());
+    public ResponseEntity<InstrumentGetResource> updateInstrument(@PathVariable("id") int id, @RequestBody InstrumentUpdateResource instrumentUpdateResource) {
+        Instrument in = instrumentService.getInstrument(id);
+        in.setInstrumentName(instrumentUpdateResource.getInstrumentname());
+        in.setDetails(instrumentUpdateResource.getDetails());
         in.setType(instrumentUpdateResource.getType());
 
-        //image omzetten
-        String imageString = instrumentUpdateResource.getAfbeelding();
+        InstrumentCategory instrumentCategory = instrumentCategoryService.getInstrumentCategory(instrumentUpdateResource.getInstrumentCategoryid());
+        in.setInstrumentCategory(instrumentCategory);
+
+        //convert image
+        String imageString = instrumentUpdateResource.getImage();
 
         try {
             imageString = imageString.replaceAll("(\\r|\\n)", "");
             byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
-            in.setAfbeelding(decodedString);
+            in.setImage(decodedString);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -124,6 +149,13 @@ public class InstrumentController {
         Instrument out = instrumentService.updateInstrument(in);
 
 
-        return new ResponseEntity<>(instrumentUpdateAssembler.toResource(out), HttpStatus.OK);
+        InstrumentGetResource instrumentGetResource = new InstrumentGetResource();
+        instrumentGetResource.setType(out.getType());
+        instrumentGetResource.setDetails(out.getDetails());
+        instrumentGetResource.setImage(new sun.misc.BASE64Encoder().encode(out.getImage()));
+        instrumentGetResource.setInstrumentname(out.getInstrumentName());
+        instrumentGetResource.setInstrumentCategory(out.getInstrumentCategory());
+
+        return new ResponseEntity<>(instrumentGetResource, HttpStatus.OK);
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Null;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -40,7 +41,7 @@ public class CourseTypeController {
     //ToDo: Authorization fix: courses delete
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<CourseType> updateCourseType(@PathVariable("courseTypeId") int courseTypeId, @RequestBody CourseTypeResource courseTypeResource){
-        CourseType courseType = new CourseType();
+        CourseType courseType = courseTypeService.getCourseType(courseTypeId);
         courseType.setCourseTypeId(courseTypeId);
         courseType.setDescription(courseTypeResource.getDescription());
         courseType.setPrice(courseTypeResource.getPrice());
@@ -77,5 +78,11 @@ public class CourseTypeController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public List<CourseType> getAllCourseTypes() {
         return courseTypeService.getAllCourseTypes();
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NullPointerException.class)
+    public String return404(NullPointerException ex) {
+        return ex.getMessage();
     }
 }
