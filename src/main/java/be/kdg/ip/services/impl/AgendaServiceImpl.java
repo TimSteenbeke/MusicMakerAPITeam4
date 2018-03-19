@@ -82,6 +82,44 @@ public class AgendaServiceImpl implements AgendaService {
 }
 
     @Override
+    public void removeLessonFromEveryAgenda(Lesson lesson) {
+        //Get course from lesson
+        Course course = lesson.getCourse();
+
+        //create collection of users (empty)
+        List<User> users = new ArrayList<User>();
+
+        //loop over group,teachers, students and add UNIQUE Users
+        // TODO: implement group feature
+        //loop teachers
+        if (course.getTeachers() != null) {
+            for (User teacher : course.getTeachers()) {
+                if (!users.contains(teacher)) {
+                    users.add(teacher);
+                }
+            }
+        }
+        //loop students
+        if (course.getStudents() != null) {
+            for (User student : course.getStudents()) {
+                if (!users.contains(student)) {
+                    users.add(student);
+                }
+            }
+        }
+
+
+
+        //Loop over collection of users and add lesson to their agenda
+        for (User user : users) {
+            Agenda agenda = user.getAgenda();
+            agenda.getLessons().remove(lesson);
+            agendaRepository.save(agenda);
+        }
+    }
+
+
+    @Override
     public void addPerformanceToEveryAgenda(Performance performance) {
         //Get group from performance
         Group group = performance.getGroup();
@@ -108,6 +146,34 @@ public class AgendaServiceImpl implements AgendaService {
             agendaRepository.save(agenda);
         }
 
+    }
+
+    @Override
+    public void removePerformanceFromEveryAgenda(Performance performance) {
+        //Get group from performance
+        Group group = performance.getGroup();
+
+        //create collection of users (empty)
+        List<User> users = new ArrayList<User>();
+
+        for (User user : group.getUsers()) {
+            if (!users.contains(user)) {
+                users.add(user);
+            }
+        }
+
+        User supervisor = group.getSupervisor();
+        if (supervisor != null) {
+            if (!users.contains(supervisor)) {
+                users.add(supervisor);
+            }
+        }
+
+        for (User user: users) {
+            Agenda agenda = user.getAgenda();
+            agenda.getPerformances().remove(performance);
+            agendaRepository.save(agenda);
+        }
     }
 
 

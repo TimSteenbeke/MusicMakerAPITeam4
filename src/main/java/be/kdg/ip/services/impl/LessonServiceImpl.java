@@ -32,6 +32,21 @@ public class LessonServiceImpl implements LessonService {
         return lessonRepository.findOne(lessonId);
     }
 
+    @Override
+    public List<Lesson> getAllLessons() {
+        return lessonRepository.findAll();
+    }
+
+    @Override
+    public void deleteLesson(int lessonId) {
+        lessonRepository.delete(lessonId);
+    }
+
+    @Override
+    public Lesson updateLesson(Lesson lesson) {
+        return lessonRepository.save(lesson);
+    }
+
     //TODO: error handling
     @Override
     public void setUserPresent(int lessonId, User user) {

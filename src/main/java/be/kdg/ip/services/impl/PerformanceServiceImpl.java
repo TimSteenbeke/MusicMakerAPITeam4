@@ -8,6 +8,8 @@ import be.kdg.ip.services.api.PerformanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service("PerformanceService")
 public class PerformanceServiceImpl implements PerformanceService {
     @Autowired
@@ -21,6 +23,21 @@ public class PerformanceServiceImpl implements PerformanceService {
     @Override
     public Performance getPerformance(int performanceId) {
         return performanceRepository.findOne(performanceId);
+    }
+
+    @Override
+    public List<Performance> getAllPerformances() {
+        return performanceRepository.findAll();
+    }
+
+    @Override
+    public void deletePerformance(int performanceId) {
+        performanceRepository.delete(performanceId);
+    }
+
+    @Override
+    public Performance updatePerformance(Performance performance) {
+        return performanceRepository.save(performance);
     }
 
     @Override
