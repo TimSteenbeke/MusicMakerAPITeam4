@@ -35,9 +35,6 @@ public class AgendaController {
             AgendaResource agendaResource = new AgendaResource();
             agendaResource.setAgendaOwner(user.getUsername());
 
-            //TODO: remove id from resource
-            agendaResource.setAgendaId(1);
-
             List<Lesson> lessons = new ArrayList<Lesson>();
             for (Course course : user.getCourses()) {
                 lessons.addAll(course.getLessons());
@@ -67,8 +64,6 @@ public class AgendaController {
 
         AgendaResource agendaResource = new AgendaResource();
         agendaResource.setAgendaOwner(user.getFirstname() + " " + user.getLastname());
-        //TODO: remove id from resource
-        agendaResource.setAgendaId(1);
 
         List<Lesson> lessons = new ArrayList<Lesson>();
         for (Course course : user.getCourses()) {
