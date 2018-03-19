@@ -1,5 +1,7 @@
+/*
 package be.kdg.ip.services.impl;
-
+ */
+/*
 import be.kdg.ip.domain.*;
 import be.kdg.ip.domain.roles.Administrator;
 import be.kdg.ip.domain.roles.Student;
@@ -55,7 +57,7 @@ public class Initializer {
 
     @Autowired
     private CourseTypeService courseTypeService;
-
+/*
     @PostConstruct
     public void addDummyInstruments() {
 
@@ -211,4 +213,6 @@ public class Initializer {
 
         //GROUPS TOEVOEGEN
     }
-}
+
+}*/
+

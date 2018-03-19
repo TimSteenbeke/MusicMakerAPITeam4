@@ -71,7 +71,7 @@ dependencies {
     compile("org.webjars:jquery:3.1.0")
 
     testCompile("org.springframework.boot:spring-boot-starter-test")*/
-
+    compile group: 'org.springframework', name: 'spring-websocket', version: '5.0.4.RELEASE'
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.boot:spring-boot-starter-websocket')
 
