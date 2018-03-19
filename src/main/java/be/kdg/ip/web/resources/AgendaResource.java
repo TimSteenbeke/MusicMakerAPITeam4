@@ -20,6 +20,7 @@ public class AgendaResource {
 
     public void setAgendaId(int agendaId) {
         this.agendaId = agendaId;
+        
     }
 
     public List<Performance> getPerformances() {
