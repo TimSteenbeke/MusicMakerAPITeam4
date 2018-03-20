@@ -3,6 +3,8 @@ package be.kdg.ip.services.impl;
 import be.kdg.ip.domain.Course;
 import be.kdg.ip.repositories.api.CourseRepository;
 import be.kdg.ip.services.api.CourseService;
+import be.kdg.ip.services.api.LessonService;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private CourseRepository repository;
+
+    @Autowired
+    private LessonService lessonService;
 
     @Override
     public Course addCourse(Course course) {
@@ -33,6 +38,8 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public void removeCourse(int courseId) {
+        Course course = repository.findOne(courseId);
+        lessonService.removeAllLessonsFromCourse(course);
         repository.delete(courseId);
     }
 
