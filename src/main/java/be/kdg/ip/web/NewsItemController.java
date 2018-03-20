@@ -41,7 +41,13 @@ public class NewsItemController {
         newsItem.setDate(new Date());
         newsItem.setEditor(principal.getName());
         newsItem.setTitle(newsItemResource.getTitle());
-        newsItem.setGroup(groupService.getGroup(newsItemResource.getGroupid()));
+
+
+        List<Group> groups = new ArrayList<>();
+        for (Integer groupId : newsItemResource.getGroupids()) {
+            groups.add(groupService.getGroup(groupId));
+        }
+        newsItem.setGroups(groups);
 
         String imageString = newsItemResource.getMessageImage();
 

@@ -30,7 +30,7 @@ public class Group {
     @OneToMany(mappedBy = "group")
     private List<Performance> performances;
 
-    @OneToMany(mappedBy = "group")
+    @ManyToMany(mappedBy = "groups")
     private List<NewsItem> newsItems;
 
     @Lob
