@@ -28,7 +28,8 @@ public class DatasourceConfig {
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        dataSource.setUrl("jdbc:sqlserver://localhost;databaseName=team4");
+       // dataSource.setUrl("jdbc:sqlserver://localhost;databaseName=team4");
+        dataSource.setUrl("jdbc:sqlserver://213.119.33.110;databaseName=team4");
         dataSource.setUsername("sa");
         dataSource.setPassword("team4");
         return dataSource;
