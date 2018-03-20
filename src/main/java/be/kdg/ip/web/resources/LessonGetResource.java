@@ -16,6 +16,15 @@ public class LessonGetResource {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime enddatetime;
     private Course course;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public LocalDateTime getStartdatetime() {
         return startdatetime;
