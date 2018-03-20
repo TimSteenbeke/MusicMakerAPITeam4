@@ -112,6 +112,8 @@ public class TestInstrumentController {
     @Test
     public void findAllInstruments() throws Exception {
 
+
+        
         Instrument instrument = new Instrument();
         instrument.setType("type");
         instrument.setDetails("details");
