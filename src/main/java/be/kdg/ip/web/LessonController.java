@@ -76,6 +76,7 @@ public class LessonController {
         List<LessonGetResource> lessonGetResources = new ArrayList<>();
         for (Lesson lesson : lessons){
             LessonGetResource lessonGetResource = new LessonGetResource();
+            lessonGetResource.setId(lesson.getLessonId());
             lessonGetResource.setEnddatetime(lesson.getEndDateTime());
             lessonGetResource.setStartdatetime(lesson.getStartDateTime());
             lessonGetResource.setCourse(lesson.getCourse());
