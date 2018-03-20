@@ -1,6 +1,7 @@
 package be.kdg.ip.web.resources;
 
 public class UserAddressDetailsResource {
+    private int id;
     private String firstname;
     private String lastname;
     private String street;
@@ -11,6 +12,9 @@ public class UserAddressDetailsResource {
     private String username;
     private String userimage;
 
+    public int getId(){return id;}
+
+    public void setId(int id){this.id = id;}
 
     public String getFirstname() {
         return firstname;
