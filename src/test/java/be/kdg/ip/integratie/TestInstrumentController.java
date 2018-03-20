@@ -31,6 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.in;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -135,5 +136,27 @@ public class TestInstrumentController {
                 .andExpect(jsonPath("$[0].instrumentCategory.categoryName",CoreMatchers.is(instrument.getInstrumentCategory().getCategoryName())));
     }
 
-    
+    @Test
+    public void testDeleteInstrument() throws Exception {
+
+        int instrumentId =1;
+
+        Instrument instrument = new Instrument();
+        instrument.setType("type");
+        instrument.setDetails("details");
+        instrument.setImage(new byte[0]);
+        instrument.setInstrumentName("instrumentname");
+        InstrumentCategory instrumentCategory = new InstrumentCategory();
+        instrumentCategory.setCategoryName("categoryname");
+        instrumentCategory.setInstrumentCategoryId(1);
+        instrument.setInstrumentCategory(instrumentCategory);
+        instrument.setInstrumentCategory(instrument.getInstrumentCategory());
+
+        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("gemockteUser","ADMIN");
+
+        given(instrumentService.getInstrument(instrumentId)).willReturn(null);
+        mockMvc.perform(delete("http://localhost:8080/api/instruments/1").with(bearerToken))
+                .andDo(print());
+
+    }
 }
