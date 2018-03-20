@@ -159,7 +159,7 @@ public class TestInstrumentController {
 
         RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("gemockteUser","ADMIN");
 
-        given(instrumentService.getInstrument(instrumentId)).willReturn(null);
+        given(instrumentService.getInstrument(instrumentId)).willReturn(instrument);
         mockMvc.perform(delete("http://localhost:8080/api/instruments/" + instrumentId).with(bearerToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -182,7 +182,7 @@ public class TestInstrumentController {
 
         RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("gemockteUser","ADMIN");
 
-        given(instrumentService.addInstrument(instrument)).willReturn(instrument);
+        given(instrumentService.addInstrument(Matchers.isA(Instrument.class))).willReturn(instrument);
 
         mockMvc.perform(post("http://localhost:8080/api/instruments").with(bearerToken)
                 .contentType(MediaType.APPLICATION_JSON)
