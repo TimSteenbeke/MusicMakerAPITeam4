@@ -3,7 +3,6 @@ package be.kdg.ip.domain;
 import com.sun.istack.internal.Nullable;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +15,6 @@ public class Group {
     private int groupId;
 
     @Column
-    @Size(min = 4)
     private String name;
 
     @ManyToOne

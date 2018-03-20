@@ -68,15 +68,16 @@ public class GroupController {
         group.setUsers(users);
         group.setSupervisor(userService.findUser(groupResource.getSupervisorid()));
 
-        String imageString = groupResource.getGroupimage();
-        try {
-            // byte[] name = Base64.getEncoder().encode("hello world".getBytes());
-            byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
-            group.setGroupImage(decodedString);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        if(groupResource.getGroupimage() != null) {
+            String imageString = groupResource.getGroupimage();
+            try {
+                // byte[] name = Base64.getEncoder().encode("hello world".getBytes());
+                byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
+                group.setGroupImage(decodedString);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
-
         groupService.addGroup(group);
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -164,5 +165,11 @@ public class GroupController {
         groupService.updateGroup(group);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+   @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NullPointerException.class)
+    public String return404(NullPointerException ex) {
+        return ex.getMessage();
     }
 }

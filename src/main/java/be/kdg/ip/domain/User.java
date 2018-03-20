@@ -89,8 +89,6 @@ public class User implements Serializable, UserDetails {
         this.instrumentLevels = new ArrayList<>();
         this.teachescourses= new ArrayList<>();
         this.courses= new ArrayList<>();
-
-
     }
 
     public User(String username, String firstname, String lastname, String password, List<Role> roles) {
