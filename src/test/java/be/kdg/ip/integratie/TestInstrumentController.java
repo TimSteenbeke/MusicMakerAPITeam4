@@ -6,6 +6,8 @@ import be.kdg.ip.domain.InstrumentCategory;
 import be.kdg.ip.services.api.InstrumentService;
 import be.kdg.ip.web.InstrumentController;
 import be.kdg.ip.web.resources.InstrumentGetResource;
+import be.kdg.ip.web.resources.InstrumentResource;
+import be.kdg.ip.web.resources.InstrumentUpdateResource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
@@ -180,11 +182,19 @@ public class TestInstrumentController {
         instrument.setInstrumentCategory(instrumentCategory);
         instrument.setInstrumentCategory(instrument.getInstrumentCategory());
 
+        InstrumentResource instrumentResource = new InstrumentResource();
+        instrumentResource.setType(instrument.getType());
+        instrumentResource.setDetails(instrument.getDetails());
+        instrumentResource.setImage(new sun.misc.BASE64Encoder().encode(instrument.getImage()));
+        instrumentResource.setInstrumentname(instrument.getInstrumentName());
+        instrumentResource.setInstrumentCategoryid(instrument.getInstrumentCategory().getInstrumentCategoryId());
+
         RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("gemockteUser","ADMIN");
 
         given(instrumentService.addInstrument(Matchers.isA(Instrument.class))).willReturn(instrument);
 
         mockMvc.perform(post("http://localhost:8080/api/instruments").with(bearerToken)
+                .content(asJsonString(instrumentResource))
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(csrf())
                 .accept(MediaType.APPLICATION_JSON))
@@ -214,12 +224,20 @@ public class TestInstrumentController {
         instrument.setInstrumentCategory(instrument.getInstrumentCategory());
         instrument.setInstrumentId(instrumentId);
 
+        InstrumentUpdateResource instrumentResource = new InstrumentUpdateResource();
+        instrumentResource.setType(instrument.getType());
+        instrumentResource.setDetails(instrument.getDetails());
+        instrumentResource.setImage(new sun.misc.BASE64Encoder().encode(instrument.getImage()));
+        instrumentResource.setInstrumentname(instrument.getInstrumentName());
+        instrumentResource.setInstrumentCategoryid(instrument.getInstrumentCategory().getInstrumentCategoryId());
+
         RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("gemockteUser","ADMIN");
 
         given(instrumentService.getInstrument(instrumentId)).willReturn(new Instrument());
         given(instrumentService.updateInstrument(Matchers.isA(Instrument.class))).willReturn(instrument);
 
         mockMvc.perform(put("http://localhost:8080/api/instruments/instrument/" + instrumentId).with(bearerToken)
+                .content(asJsonString(instrumentResource))
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(csrf())
                 .accept(MediaType.APPLICATION_JSON))
