@@ -169,8 +169,8 @@ public class TestCourseType {
         courseType.setDescription("GitaarLes");
         courseType.setPrice(10);
 
-        given(courseTypeService.getCourseType(98)).willReturn(courseType);
-        given(courseTypeService.updateCourseType(courseType)).willReturn(courseType);
+        given(courseTypeService.getCourseType(98)).willReturn(new CourseType());
+        given(courseTypeService.updateCourseType(Matchers.isA(CourseType.class))).willReturn(courseType);
 
         this.mockMvc.perform(put("http://localhost:8080/api/courseTypes/98").with(bearerToken)
                 .content(asJsonString(courseType))
