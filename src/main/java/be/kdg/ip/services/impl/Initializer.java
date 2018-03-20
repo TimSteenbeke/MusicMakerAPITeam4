@@ -17,6 +17,7 @@ import java.util.List;
 
 @Service
 public class Initializer {
+    /*
 
     @Autowired
     private UserService userService;
@@ -86,7 +87,7 @@ public class Initializer {
     }
 
     @PostConstruct
-    void addAgendaItems() throws UserServiceException {
+     void addAgendaItems() throws UserServiceException {
         Role administrator = new Administrator();
         roleService.addRole(administrator);
         Role teacher = new Teacher();
@@ -211,5 +212,5 @@ public class Initializer {
 
 
         //GROUPS TOEVOEGEN
-    }
+    }*/
 }
