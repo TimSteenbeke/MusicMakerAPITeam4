@@ -4,10 +4,7 @@ import be.kdg.ip.domain.*;
 import be.kdg.ip.domain.roles.Administrator;
 import be.kdg.ip.domain.roles.Student;
 import be.kdg.ip.domain.roles.Teacher;
-import be.kdg.ip.services.api.AddressService;
-import be.kdg.ip.services.api.CompositionService;
-import be.kdg.ip.services.api.RoleService;
-import be.kdg.ip.services.api.UserService;
+import be.kdg.ip.services.api.*;
 import be.kdg.ip.services.exceptions.UserServiceException;
 import be.kdg.ip.web.resources.*;
 import be.kdg.ip.web.dto.RoleDTO;
@@ -38,12 +35,14 @@ public class UserController {
     private RoleService roleService;
     private AddressService addressService;
     private CompositionService compositionService;
+    private EmailService emailService;
 
-    public UserController(UserService userService, RoleService roleService, AddressService addressService, CompositionService compositionService) {
+    public UserController(UserService userService, RoleService roleService, AddressService addressService, CompositionService compositionService, EmailService emailService) {
         this.userService = userService;
         this.roleService = roleService;
         this.addressService = addressService;
         this.compositionService = compositionService;
+        this.emailService = emailService;
     }
 
 
@@ -104,7 +103,7 @@ public class UserController {
         userResource.setStreet(user.getAddress().getStreet());
         userResource.setStreetnumber(user.getAddress().getStreetNumber());
         userResource.setUserimage(new sun.misc.BASE64Encoder().encode(user.getUserImage()));
-
+        sendEmail();
         return new ResponseEntity<>(userResource, HttpStatus.OK);
     }
 
@@ -329,10 +328,19 @@ public class UserController {
                 rolesDTO.getRoles().add(roleDTO);
             }
 
-
             return new ResponseEntity<RolesDTO>(rolesDTO,HttpStatus.OK);
         } catch (UserServiceException e) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private void sendEmail(){
+        Mail mail = new Mail();
+        mail.setFrom("musicmakerstest@gmail.com");
+        mail.setTo("timobot4@gmail.com");
+        mail.setSubject("Sending Simple Email with JavaMailSender Example");
+        mail.setContent("This tutorial demonstrates how to send a simple email using Spring Framework.");
+
+        emailService.sendSimpleMessage(mail);
     }
 }
