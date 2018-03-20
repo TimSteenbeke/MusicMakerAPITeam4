@@ -28,9 +28,6 @@ public class Initializer {
     private LessonService lessonService;
 
     @Autowired
-    private AgendaService agendaService;
-
-    @Autowired
     private PerformanceService performanceService;
 
     @Autowired
@@ -73,6 +70,10 @@ public class Initializer {
         Instrument instrument = new Instrument(instrumentCategory, "Drum", "drummen", "Tim");
         Instrument instrument2 = new Instrument(instrumentCategory2, "Trompet", "Tim", "Tim");
         Instrument instrument3 = new Instrument(instrumentCategory3, "Tim", "Tim", "Tim");
+
+        instrument.setImage(new byte[0]);
+        instrument2.setImage(new byte[0]);
+        instrument3.setImage(new byte[0]);
 
         instrumentService.addInstrument(instrument);
         instrumentService.addInstrument(instrument2);
@@ -121,7 +122,6 @@ public class Initializer {
         User timS = new User("timS", "tims", "Tim", "Steenbeke", rolesAll,new byte[0],address4);
 
 
-
         userService.addUser(timS);
         userService.addUser(tim);
         userService.addUser(jef);
@@ -135,7 +135,7 @@ public class Initializer {
         List<User> users = group.getUsers();
         users.add(userService.findUserByUsername("jef"));
         users.add(userService.findUserByUsername("jos"));
-        group.setUsers(users);
+        //group.setUsers(users);
         group.setSupervisor(userService.findUserByUsername("tim"));
         groupService.addGroup(group);
 
@@ -170,9 +170,6 @@ public class Initializer {
 
         course.setCourseType(courseType);
 
-
-        Agenda agenda = jef.getAgenda();
-
         LocalDateTime vandaag = LocalDateTime.now();
 
         Lesson lesson = new Lesson();
@@ -181,15 +178,13 @@ public class Initializer {
 
         course.getStudents().add(jef);
         jef.getCourses().add(course);
-        userService.updateUser(jef);
+
+        // userService.updateUser(jef);
         course.getTeachers().add(tim);
         tim.getTeachescourses().add(course);
-        userService.updateUser(tim);
+      //  userService.updateUser(tim);
+        course.getLessons().add(lesson);
         courseService.addCourse(course);
-
-
-        lesson.setCourse(course);
-        lessonService.addLesson(agenda, lesson);
 
         Performance performance = new Performance();
         performance.setDescription("een beschrijving van een optreden");
@@ -197,20 +192,18 @@ public class Initializer {
 
         performance.setStartDateTime(vandaag);
         performance.setEndDateTime(vandaag.plusHours(2));
+        performance.setGroup(group);
 
 
         Performance performance2 = new Performance();
         performance2.setDescription("een beschrijving van ANDER OPTREDEN");
         performance2.setStartDateTime(vandaag.plusDays(1));
         performance2.setEndDateTime(vandaag.plusDays(1).plusHours(4));
+        performance2.setGroup(group2);
 
         performanceService.addPerformance(performance);
         performanceService.addPerformance(performance2);
 
-
-        agenda.getPerformances().add(performance);
-        agenda.getPerformances().add(performance2);
-        agendaService.saveAgenda(agenda);
 
 
         System.out.println("agenda items toegevoegd");

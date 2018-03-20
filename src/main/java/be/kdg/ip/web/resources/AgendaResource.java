@@ -7,20 +7,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
 
 public class AgendaResource {
-    private int agendaId;
     @JsonIgnoreProperties({"absentMembers","presentMembers"})
     private List<Performance> performances;
     @JsonIgnoreProperties({"absentStudents","presentStudents"})
     private List<Lesson> lessons;
     private String agendaOwner;
-
-    public int getAgendaId() {
-        return agendaId;
-    }
-
-    public void setAgendaId(int agendaId) {
-        this.agendaId = agendaId;
-    }
 
     public List<Performance> getPerformances() {
         return performances;
