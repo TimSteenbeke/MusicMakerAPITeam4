@@ -1,3 +1,4 @@
+/*
 package be.kdg.ip.restTests;
 
 import be.kdg.ip.OAuthHelper;
@@ -147,3 +148,4 @@ public class TestAgendaController {
         }
     }
 }
+*/

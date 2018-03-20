@@ -9,6 +9,7 @@ import be.kdg.ip.services.api.GroupService;
 import be.kdg.ip.services.api.UserService;
 import be.kdg.ip.services.impl.GroupServiceImpl;
 import be.kdg.ip.web.resources.GroupResource;
+import be.kdg.ip.web.resources.GroupUserResource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
@@ -117,12 +118,12 @@ public class TestGroupService {
         Group group = new Group();
         group.setName("Groepsnaam");
 
-        //groupService.addGroup(group);
-        List<Group> groupList = Collections.singletonList(group);
+        GroupUserResource groupUserResource = new GroupUserResource();
+        groupUserResource.setName(group.getName());
 
-        given(groupService.getAllGroups()).willReturn(groupList);
+        List<GroupUserResource> groupUserResourceList = Collections.singletonList(groupUserResource);
 
-        mockMvc.perform(get("http://localhost:8080/api/groups/allgroups/").with(bearerToken)
+        mockMvc.perform(get("http://localhost:8080/api/groups/allgroups").with(bearerToken)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -133,6 +134,9 @@ public class TestGroupService {
     @Test
     public void testPostGroup() throws Exception{
         RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser", "ADMIN");
+
+        User user = new User();
+        user.setUsername("lode.wouters@student.kdg.be");
 
         GroupResource groupResource = new GroupResource();
         groupResource.setName("testGroep");
@@ -168,5 +172,11 @@ public class TestGroupService {
 
         //assertEquals(allUsers.get(0).getGroupid(), newUser.getGroupid());
         //assertEquals(allUsers.get(1).getGroupid(), newUser2.getGroupid());
+    }
+
+    @Test
+    public void testDeleteGroup() throws Exception{
+        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser","ADMIN");
+
     }
 }

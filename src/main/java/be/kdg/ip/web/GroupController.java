@@ -33,7 +33,8 @@ public class GroupController {
         this.userService = userService;
     }
 
-    @GetMapping("/allgroups")
+
+     @GetMapping("/allgroups")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<List<GroupUserResource>> findAll() {
         List<Group> groups = groupService.getAllGroups();
@@ -54,7 +55,7 @@ public class GroupController {
     }
 
     @PostMapping
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<GroupUserResource> postNewGroup(@RequestBody GroupResource groupResource) {
         Group group = new Group();
         group.setName(groupResource.getName());
@@ -82,7 +83,7 @@ public class GroupController {
     }
 
     @GetMapping("/{groupId}")
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<GroupUserResource> getGroup(@PathVariable int groupId) {
         Group group = groupService.getGroup(groupId);
 
@@ -105,7 +106,7 @@ public class GroupController {
 
     @GetMapping
     @CrossOrigin(origins = "*")
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<List<GroupUserResource>> getGroupsByUser(Principal principal) {
         String username = principal.getName();
 
