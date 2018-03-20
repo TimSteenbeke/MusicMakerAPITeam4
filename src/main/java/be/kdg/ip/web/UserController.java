@@ -119,6 +119,7 @@ public class UserController {
         User user = null;
         try {
             user = userService.findUserByUsername(username);
+            userResource.setId(user.getId());
             userResource.setUsername(user.getUsername());
             userResource.setFirstname(user.getFirstname());
             userResource.setLastname(user.getLastname());
