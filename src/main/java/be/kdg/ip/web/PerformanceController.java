@@ -65,7 +65,7 @@ public class PerformanceController {
 
         PerformanceGetResource performanceGetResource = new PerformanceGetResource();
 
-       performanceGetResource.setBeschrijving(performance.getDescription());
+       performanceGetResource.setDescription(performance.getDescription());
        performanceGetResource.setEnddatetime(performance.getEndDateTime());
        performanceGetResource.setStartdatetime(performance.getEndDateTime());
        performanceGetResource.setGroup(performance.getGroup());
@@ -81,7 +81,8 @@ public class PerformanceController {
 
         for (Performance performance : performances){
             PerformanceGetResource performanceGetResource = new PerformanceGetResource();
-            performanceGetResource.setBeschrijving(performance.getDescription());
+            performanceGetResource.setId(performance.getPerformanceId());
+            performanceGetResource.setDescription(performance.getDescription());
             performanceGetResource.setEnddatetime(performance.getEndDateTime());
             performanceGetResource.setStartdatetime(performance.getEndDateTime());
             performanceGetResource.setGroup(performance.getGroup());

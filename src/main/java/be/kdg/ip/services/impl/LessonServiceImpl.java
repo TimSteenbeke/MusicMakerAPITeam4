@@ -41,7 +41,6 @@ public class LessonServiceImpl implements LessonService {
         return lessonRepository.save(lesson);
     }
 
-    //TODO: error handling
     @Override
     public void setUserPresent(int lessonId, User user) {
         Lesson lesson = lessonRepository.findOne(lessonId);
