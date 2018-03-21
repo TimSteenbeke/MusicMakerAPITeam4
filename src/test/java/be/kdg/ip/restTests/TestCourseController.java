@@ -29,6 +29,8 @@ import org.springframework.web.context.WebApplicationContext;
 import static be.kdg.ip.integratie.TestCourseType.asJsonString;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -191,6 +193,17 @@ public class TestCourseController {
 
 
 
+    }
+
+    @Test
+    public void testReturn404WhenNotFound() throws Exception {
+        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("gemockteUser","ADMIN");
+
+        when(courseService.getCourse(999)).thenReturn(null);
+
+        this.mockMvc.perform(get("http://localhost:8080/api/courses/999").with(bearerToken)
+                .accept(APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 
 
