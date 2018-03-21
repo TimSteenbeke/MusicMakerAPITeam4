@@ -7,11 +7,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InstrumentCatergoryGetResource {
-
+    private int categoryid;
     private String categoryname;
 
     @JsonIgnoreProperties({"instrumentCategory"})
     private List<Instrument> instruments = new ArrayList<>();
+
+    public int getCategoryid() {
+        return categoryid;
+    }
+
+    public void setCategoryid(int categoryid) {
+        this.categoryid = categoryid;
+    }
 
     public String getCategoryname() {
         return categoryname;
