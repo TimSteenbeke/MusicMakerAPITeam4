@@ -103,6 +103,7 @@ public class UserController {
         userResource.setStreet(user.getAddress().getStreet());
         userResource.setStreetnumber(user.getAddress().getStreetNumber());
         userResource.setUserimage(new sun.misc.BASE64Encoder().encode(user.getUserImage()));
+        userResource.setRoles(user.getRoles());
 
         return new ResponseEntity<>(userResource, HttpStatus.OK);
     }
@@ -207,6 +208,15 @@ public class UserController {
         user.setFirstname(userResource.getFirstname());
         user.setLastname(userResource.getLastname());
         user.setUsername(userResource.getUsername());
+
+        List<Role> roles = new ArrayList<>();
+
+        for (Integer roleid: userResource.getRoleids())
+        {
+            roles.add(roleService.getRole(roleid));
+        }
+
+        user.setRoles(roles);
 
         //image omzetten
         String imageString = userResource.getUserimage();

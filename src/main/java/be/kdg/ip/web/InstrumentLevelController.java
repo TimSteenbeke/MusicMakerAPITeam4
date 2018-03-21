@@ -93,6 +93,7 @@ public class InstrumentLevelController {
         for (InstrumentLevel i : instrumentLevels) {
             InstrumentLevelUserInstrumentResource resource = new InstrumentLevelUserInstrumentResource();
             resource.setMaxLevel(i.getMaxLevel());
+            resource.setInstrumentlevelid(i.getInstrumentLevelId());
             resource.setLevel(i.getLevel());
             resource.setUser(i.getUser());
             resource.setInstrument(i.getInstrument());
@@ -145,11 +146,11 @@ public class InstrumentLevelController {
     }
 
 
-    @PostMapping("/instrumentleveldown/{id}")
+    @PostMapping("/instrumentleveldown/{instrumentLevelId}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<InstrumentLevelUserInstrumentResource> decreaseLevel(@PathVariable("id") int id) {
+    public ResponseEntity<InstrumentLevelUserInstrumentResource> decreaseLevel(@PathVariable("instrumentLevelId") int instrumentLevelId) {
 
-        InstrumentLevel instrumentLevel = instrumentLevelService.getIntrumentLevel(id);
+        InstrumentLevel instrumentLevel = instrumentLevelService.getIntrumentLevel(instrumentLevelId);
         int newLevel = instrumentLevel.getLevel() - 1;
         if (newLevel >= 0) {
             instrumentLevel.setLevel(newLevel);
@@ -163,11 +164,11 @@ public class InstrumentLevelController {
         return new ResponseEntity<>(instrumentLevelUserInstrumentResource, HttpStatus.OK);
     }
 
-    @PostMapping("/instrumentlevelup/{id}")
+    @PostMapping("/instrumentlevelup/{instrumentLevelId}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<InstrumentLevelUserInstrumentResource> increaseLevel(@PathVariable("id") int id) {
+    public ResponseEntity<InstrumentLevelUserInstrumentResource> increaseLevel(@PathVariable("instrumentLevelId") int instrumentLevelId) {
 
-        InstrumentLevel instrumentLevel = instrumentLevelService.getIntrumentLevel(id);
+        InstrumentLevel instrumentLevel = instrumentLevelService.getIntrumentLevel(instrumentLevelId);
         int newLevel = instrumentLevel.getLevel() + 1;
         if (newLevel <= 10) {
             instrumentLevel.setLevel(newLevel);
