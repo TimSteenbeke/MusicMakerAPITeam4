@@ -46,7 +46,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-public class TestCompositionService {
+public class TestCompositions {
+    
     @Autowired
     private MockMvc mockMvc;
 
@@ -167,7 +168,7 @@ public class TestCompositionService {
     @Test
     public void testDeleteComposition() throws Exception {
         RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser","ADMIN");
-        
+
         compositionService.addComposition(new Composition("Test", "Test", "Test","Test","Test","Test","Test","Test",new byte[5]));
 
         this.mockMvc.perform(delete("/api/compositions/1").with(bearerToken)

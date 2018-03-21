@@ -53,8 +53,14 @@ public class UserController {
         user.setLastname(userResource.getLastname());
         user.setPassword(userResource.getPassword());
         user.setUsername(userResource.getUsername());
-        List<Role> roles = user.getRoles();
-        roles.add(roleService.getRoleByName("Student"));
+        List<Role> roles = new ArrayList<>();
+
+
+        for (Integer roleid : userResource.getRoleids())
+        {
+            roles.add(roleService.getRole(roleid));
+        }
+
         user.setRoles(roles);
 
         //image omzetten
@@ -293,13 +299,27 @@ public class UserController {
         return new ResponseEntity<>(user.getExercises(), HttpStatus.OK);
     }
 
-    @GetMapping("/user/instrumentlevels/{userId}")
-    public ResponseEntity<List<InstrumentLevel>> getInstrumentLevelsUser(@PathVariable int userId) {
+    @GetMapping("/myinstrumentlevels/")
+    public ResponseEntity<List<InstrumentLevelUserInstrumentResource>> getInstrumentLevelsUser(Principal principal) throws UserServiceException {
+        User user = userService.findUserByUsername(principal.getName());
 
-        List<InstrumentLevel> instrumentLevels = userService.findUser(userId).getInstrumentLevels();
+        List<InstrumentLevel> instrumentLevels = user.getInstrumentLevels();
 
 
-        return new ResponseEntity<>(instrumentLevels, HttpStatus.OK);
+        List<InstrumentLevelUserInstrumentResource> resources = new ArrayList<>();
+
+        for (InstrumentLevel i : instrumentLevels){
+            InstrumentLevelUserInstrumentResource resource = new InstrumentLevelUserInstrumentResource();
+            resource.setMaxLevel(i.getMaxLevel());
+            resource.setLevel(i.getLevel());
+            resource.setUser(i.getUser());
+            resource.setInstrument(i.getInstrument());
+            resources.add(resource);
+        }
+
+
+        return new ResponseEntity<>(resources,HttpStatus.OK);
+
     }
 
     private UserDetailsResource createUserDetailsResource(User user) {

@@ -1,5 +1,6 @@
 package be.kdg.ip.web;
 
+import be.kdg.ip.domain.Group;
 import be.kdg.ip.domain.NewsItem;
 import be.kdg.ip.services.api.GroupService;
 import be.kdg.ip.services.api.NewsItemService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -43,7 +45,13 @@ public class NewsItemController {
         newsItem.setDate(new Date());
         newsItem.setEditor(principal.getName());
         newsItem.setTitle(newsItemResource.getTitle());
-        newsItem.setGroup(groupService.getGroup(newsItemResource.getGroupid()));
+
+
+        List<Group> groups = new ArrayList<>();
+        for (Integer groupId : newsItemResource.getGroupids()) {
+            groups.add(groupService.getGroup(groupId));
+        }
+        newsItem.setGroups(groups);
 
         String imageString = newsItemResource.getMessageImage();
 
@@ -79,7 +87,7 @@ public class NewsItemController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<NewsItemResource> deleteNewsItem(@PathVariable("newsitemId") int newsitemId) {
         newsItemService.removeNewsItem(newsitemId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(value = "/newsitem/{newsitemId}", method = RequestMethod.PUT)
@@ -104,4 +112,11 @@ public class NewsItemController {
 
         return new ResponseEntity<>(newsItemResource, HttpStatus.OK);
     }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NullPointerException.class)
+    public String return404(NullPointerException ex) {
+        return ex.getMessage();
+    }
+
 }

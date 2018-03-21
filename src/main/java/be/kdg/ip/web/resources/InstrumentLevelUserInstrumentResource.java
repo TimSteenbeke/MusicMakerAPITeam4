@@ -8,7 +8,9 @@ public class InstrumentLevelUserInstrumentResource {
     private int maxLevel;
     private int level;
 
+    @JsonIgnoreProperties({"instrumentCategory"})
     private Instrument instrument;
+
     @JsonIgnoreProperties({"username","lastname","password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired","instrumentLevels"})
     private User user;
 
