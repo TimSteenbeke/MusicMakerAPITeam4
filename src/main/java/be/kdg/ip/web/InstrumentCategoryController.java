@@ -129,4 +129,9 @@ public class InstrumentCategoryController {
 
         return  new ResponseEntity<>(instrumentCatergoryGetResource, HttpStatus.OK);
     }
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NullPointerException.class)
+    public String return404(NullPointerException ex) {
+        return ex.getMessage();
+    }
 }
