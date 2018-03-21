@@ -28,10 +28,10 @@ public class WebSocketController {
     @MessageMapping("/send/message/{chatroom}")
     public void onRecieveMessage(@PathVariable("chatroom") String chatroom, String message) {
         Message out = messageService.addMessage(new Message(message,chatroom));
-        this.template.convertAndSend("/chat/" + chatroom,
-                new SimpleDateFormat("HH:mm:ss").format(new Date()) + "- " + message);
         System.out.println("---------- ---------- ---------- ---------- message Added ---------- ---------- ---------- ----------");
         System.out.println(out);
         System.out.println("---------- ---------- ---------- ---------- message Added ---------- ---------- ---------- ----------");
+        this.template.convertAndSend("/chat/" + chatroom,
+                new SimpleDateFormat("HH:mm:ss").format(new Date()) + "- " + message);
     }
 }
