@@ -99,15 +99,19 @@ public class CourseController {
 
             //Add all students to the course
             List<User> students = new ArrayList<User>();
-            for (Integer studentid : courseResource.getStudentids()) {
-                students.add(userService.findUser(studentid));
+            if (courseResource.getStudentids() != null) {
+                for (Integer studentid : courseResource.getStudentids()) {
+                    students.add(userService.findUser(studentid));
+                }
             }
             course.setStudents(students);
 
             //Add all teachers to the course
             List<User> teachers = new ArrayList<User>();
-            for (Integer teacherid : courseResource.getTeacherids()) {
-                teachers.add(userService.findUser(teacherid));
+            if (courseResource.getTeacherids() != null) {
+                for (Integer teacherid : courseResource.getTeacherids()) {
+                    teachers.add(userService.findUser(teacherid));
+                }
             }
 
             course.setTeachers(teachers);
@@ -124,7 +128,7 @@ public class CourseController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<CourseResource> updateCourse(@PathVariable("courseId") int courseId) {
         courseService.removeCourse(courseId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(method = RequestMethod.GET,value ="api/courses/{courseId}")
@@ -180,6 +184,12 @@ public class CourseController {
         } catch (UserServiceException e) {
            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NullPointerException.class)
+    public String return404(NullPointerException ex) {
+        return ex.getMessage();
     }
 
 
