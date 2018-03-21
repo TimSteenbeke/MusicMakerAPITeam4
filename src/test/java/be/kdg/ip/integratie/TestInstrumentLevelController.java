@@ -83,8 +83,64 @@ public class TestInstrumentLevelController {
     }
 
     @Test
-    public void testGetInstrumentLevel(){
+    public void testGetInstrumentLevel() throws Exception {
 
+        int instrumentLevelId = 50;
+        int userId = 58;
+        int addressId = 10;
+        int instrumentId = 10;
+
+        User user = new User();
+        user.setFirstname("Jos");
+        user.setLastname("Bakkers");
+        user.setUsername("Jos.Bakkers@gmail.com");
+        user.setPassword("password");
+        user.setUserImage(new byte[0]);
+        Address address = new Address();
+        address.setId(addressId);
+        address.setStreet("straat");
+        address.setStreetNumber("20");
+        address.setCity("Antwerpen");
+        address.setPostalCode("2980");
+        address.setCountry("Belgie");
+        user.setAddress(address);
+        user.setId(userId);
+
+        Instrument instrument = new Instrument();
+        instrument.setType("type");
+        instrument.setDetails("details");
+        instrument.setImage(new byte[0]);
+        instrument.setInstrumentName("instrumentname");
+        InstrumentCategory instrumentCategory = new InstrumentCategory();
+        instrumentCategory.setCategoryName("categoryname");
+        instrumentCategory.setInstrumentCategoryId(1);
+        instrument.setInstrumentCategory(instrumentCategory);
+        instrument.setInstrumentCategory(instrument.getInstrumentCategory());
+        instrument.setInstrumentId(instrumentId);
+
+        InstrumentLevel instrumentLevel = new InstrumentLevel();
+        instrumentLevel.setMaxLevel(10);
+        instrumentLevel.setLevel(8);
+        instrumentLevel.setUser(user);
+        instrumentLevel.setInstrument(instrument);
+        instrumentLevel.setInstrumentLevelId(instrumentLevelId);
+
+        InstrumentLevelUserInstrumentResource instrumentLevelUserInstrumentResource = new InstrumentLevelUserInstrumentResource();
+        instrumentLevelUserInstrumentResource.setMaxLevel(instrumentLevel.getMaxLevel());
+        instrumentLevelUserInstrumentResource.setLevel(instrumentLevel.getLevel());
+        instrumentLevelUserInstrumentResource.setInstrument(instrumentLevel.getInstrument());
+        instrumentLevelUserInstrumentResource.setUser(instrumentLevel.getUser());
+
+        given(instrumentLevelService.getIntrumentLevel(instrumentLevel.getInstrumentLevelId())).willReturn(instrumentLevel);
+        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("gemockteUser","ADMIN");
+
+        mockMvc.perform(get("http://localhost:8080/api/instrumentlevels/" +instrumentLevel.getInstrumentLevelId()).with(bearerToken))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.maxLevel", CoreMatchers.is(instrumentLevelUserInstrumentResource.getMaxLevel())))
+                .andExpect(jsonPath("$.level", CoreMatchers.is(instrumentLevelUserInstrumentResource.getLevel())))
+                .andExpect(jsonPath("$.instrument.instrumentId", CoreMatchers.is(instrumentLevelUserInstrumentResource.getInstrument().getInstrumentId())))
+                .andExpect(jsonPath("$.user.id", CoreMatchers.is(instrumentLevelUserInstrumentResource.getUser().getId())));
     }
 
     @Test
