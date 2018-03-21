@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 public class Initializer {
 
-    /*
+
     @Autowired
     private InstrumentService instrumentService;
 
@@ -49,7 +49,7 @@ public class Initializer {
 
     @Autowired
     private CourseTypeService courseTypeService;
-     */
+
 
 
 
@@ -65,7 +65,7 @@ public class Initializer {
     @Autowired
     private InstrumentCategoryService instrumentCategoryService;
 
-    /*
+
     @PostConstruct
     public void addDummyInstruments() {
 
@@ -127,9 +127,9 @@ public class Initializer {
 
 
     }
-    */
 
-    /*
+
+
     @PostConstruct
     void addAgendaItems() throws UserServiceException {
         Role administrator = new Administrator();
@@ -256,6 +256,6 @@ public class Initializer {
 
         //GROUPS TOEVOEGEN
     }
-    */
+
 }
 
