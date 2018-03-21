@@ -1,6 +1,7 @@
 package be.kdg.ip.integratie;
 
 import be.kdg.ip.OAuthHelper;
+import be.kdg.ip.domain.Address;
 import be.kdg.ip.domain.Composition;
 import be.kdg.ip.services.api.CompositionService;
 import be.kdg.ip.web.resources.CompositionResource;
@@ -9,6 +10,7 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -46,7 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-public class testCompositionService {
+public class TestCompositionController {
     @Autowired
     private MockMvc mockMvc;
 
@@ -139,7 +141,7 @@ public class testCompositionService {
         compositionResource.setFileFormat("Tim");
         compositionResource.setContent("Tim");
 
-        this.mockMvc.perform(post("").with(bearerToken)
+        this.mockMvc.perform(post("http://localhost:8080/api/compositions").with(bearerToken)
                 //.with(user("admin1").roles("ADMIN"))
                 .param("files", "Tim")
                 .param("compresource", asJsonString(compositionResource))
@@ -153,61 +155,58 @@ public class testCompositionService {
     @Test
     public void testGetCompositionWhenIdExists() throws Exception {
         RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser","ADMIN");
+        Composition composition =  new Composition("Test", "Test", "Test","Test","Test","Test","Test","Test",new byte[5]);
 
-        // given
         given(compositionService.getComposition(1))
-                .willReturn(new Composition("Test", "Test", "Test","Test","Test","Test","Test","Test",new byte[5]));
+                .willReturn(composition);
 
-        // when
-        MockHttpServletResponse response = mockMvc.perform(
-                get("https://musicmaker-api-team4.herokuapp.com/api/compositions/1").with(bearerToken)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andReturn().getResponse();
-
-        CompositionResource compositionResource = new CompositionResource();
-        compositionResource.setTitle("Tim");
-        compositionResource.setArtist("Tim");
-        compositionResource.setGenre("Tim");
-        compositionResource.setLanguage("Tim");
-        compositionResource.setSubject("Tim");
-        compositionResource.setInstrumentType("Tim");
-        compositionResource.setFileFormat("Tim");
-        compositionResource.setContent("Tim");
-
-        // then
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        //assertThat(response.getContentAsString()).isEqualTo(new Composition("Test", "Test", "Test","Test","Test","Test","Test","Test",new byte[5])).getjson();
+         mockMvc.perform(get("http://localhost:8080/api/compositions/1").with(bearerToken)
+                 .contentType(APPLICATION_JSON))
+                 .andDo(print())
+                 .andExpect(status().isOk())
+                 .andExpect(jsonPath("$.title", CoreMatchers.is(composition.getTitle())))
+                 .andExpect(jsonPath("$.artist", CoreMatchers.is(composition.getArtist())))
+                 .andExpect(jsonPath("$.language", CoreMatchers.is(composition.getLanguage())))
+                 .andExpect(jsonPath("$.genre", CoreMatchers.is(composition.getGenre())))
+                 .andExpect(jsonPath("$.subject", CoreMatchers.is(composition.getSubject())))
+                 .andExpect(jsonPath("$.instrumentType", CoreMatchers.is(composition.getInstrumentType())))
+                 .andExpect(jsonPath("$.link", CoreMatchers.is(composition.getLink())))
+                 .andExpect(jsonPath("$.fileFormat", CoreMatchers.is(composition.getFileFormat())))
+                 .andExpect(jsonPath("$.content", CoreMatchers.is(new sun.misc.BASE64Encoder().encode(composition.getContent()))));
     }
 
     @Test
     public void testDeleteComposition() throws Exception {
         RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser","ADMIN");
         
-        compositionService.addComposition(new Composition("Test", "Test", "Test","Test","Test","Test","Test","Test",new byte[5]));
-
-        this.mockMvc.perform(delete("/api/compositions/1").with(bearerToken)
+        Composition composition =  new Composition("Test", "Test", "Test","Test","Test","Test","Test","Test",new byte[5]);
+        given(compositionService.getComposition(1)).willReturn(composition);
+        this.mockMvc.perform(delete("http://localhost:8080/api/compositions/1").with(bearerToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
-    /*@Test
+    @Test
     public void testUpdateComposition() throws Exception {
         Composition composition = new Composition("Test", "Test", "Test","Test","Test","Test","Test","Test",new byte[5]);
 
-        when(compositionService.getComposition(composition.getMuziekstukId())).thenReturn(composition);
-        doNothing().when(compositionService).updateComposition(composition).;
-
-        mockMvc.perform(
-                put("/api/compositions/{MuziekstukId}", composition.getMuziekstukId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(composition)))
-                .andExpect(status().isOk());
-
-        verify(compositionService, times(1)).getComposition(composition.getMuziekstukId());
-        verify(compositionService, times(1)).updateComposition(composition);
-        verifyNoMoreInteractions(compositionService);
-    }*/
+        given(compositionService.getComposition(composition.getCompositionId())).willReturn(composition);
+        given(compositionService.updateComposition(Matchers.isA(Composition.class))).willReturn(composition);
+        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser","ADMIN");
+        mockMvc.perform(put("http://localhost:8080/api/compositions//composition/{compositionId}", composition.getCompositionId()).with(bearerToken)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(asJsonString(composition)))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.title", CoreMatchers.is(composition.getTitle())))
+                    .andExpect(jsonPath("$.artist", CoreMatchers.is(composition.getArtist())))
+                    .andExpect(jsonPath("$.language", CoreMatchers.is(composition.getLanguage())))
+                    .andExpect(jsonPath("$.genre", CoreMatchers.is(composition.getGenre())))
+                    .andExpect(jsonPath("$.subject", CoreMatchers.is(composition.getSubject())))
+                    .andExpect(jsonPath("$.instrumentType", CoreMatchers.is(composition.getInstrumentType())))
+                    .andExpect(jsonPath("$.link", CoreMatchers.is(composition.getLink())))
+                    .andExpect(jsonPath("$.fileFormat", CoreMatchers.is(composition.getFileFormat())));
+    }
 
     @Test
     public void testReturn404WhenNotFound() throws Exception {
@@ -218,5 +217,30 @@ public class testCompositionService {
         this.mockMvc.perform(get("api/compositions/23").with(bearerToken)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testFindCompositionByFilter() throws Exception {
+        Composition composition = new Composition("Test", "Test", "Test","Test","Test","Test","Test","Test",new byte[5]);
+        String filter = "filter";
+
+        List<Composition> compositions = singletonList(composition);
+        given(compositionService.getCompositionsByFilter(filter)).willReturn(compositions);
+        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser","ADMIN");
+
+        mockMvc.perform(get("http://localhost:8080/api/compositions/filter/" + filter).with(bearerToken)
+                .contentType(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].title", CoreMatchers.is(composition.getTitle())))
+                .andExpect(jsonPath("$[0].artist", CoreMatchers.is(composition.getArtist())))
+                .andExpect(jsonPath("$[0].language", CoreMatchers.is(composition.getLanguage())))
+                .andExpect(jsonPath("$[0].genre", CoreMatchers.is(composition.getGenre())))
+                .andExpect(jsonPath("$[0].subject", CoreMatchers.is(composition.getSubject())))
+                .andExpect(jsonPath("$[0].instrumentType", CoreMatchers.is(composition.getInstrumentType())))
+                .andExpect(jsonPath("$[0].link", CoreMatchers.is(composition.getLink())))
+                .andExpect(jsonPath("$[0].fileFormat", CoreMatchers.is(composition.getFileFormat())))
+                .andExpect(jsonPath("$[0].content", CoreMatchers.is(new sun.misc.BASE64Encoder().encode(composition.getContent()))));
     }
 }
