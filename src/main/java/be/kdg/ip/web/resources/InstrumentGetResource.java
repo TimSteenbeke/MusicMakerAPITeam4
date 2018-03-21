@@ -4,12 +4,21 @@ import be.kdg.ip.domain.InstrumentCategory;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public class InstrumentGetResource {
+    private Integer instrumentid;
     private String instrumentname;
     private String type;
     private String details;
     private String image;
     @JsonIgnoreProperties({"instrumentList"})
     private InstrumentCategory instrumentCategory;
+
+    public Integer getInstrumentid() {
+        return instrumentid;
+    }
+
+    public void setInstrumentid(Integer instrumentid) {
+        this.instrumentid = instrumentid;
+    }
 
     public String getInstrumentname() {
         return instrumentname;

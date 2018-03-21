@@ -1,5 +1,6 @@
 package be.kdg.ip.services.api;
 
+import be.kdg.ip.domain.Course;
 import be.kdg.ip.domain.Lesson;
 import be.kdg.ip.domain.User;
 import org.springframework.stereotype.Service;
@@ -16,4 +17,5 @@ public interface LessonService {
     void setUserPresent(int lessonId, User user);
     void setUserAbsent(int lessonId, User user);
     List<User> getNoStatusStudents(Lesson lesson);
+    void removeAllLessonsFromCourse(Course course);
 }

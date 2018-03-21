@@ -1,5 +1,6 @@
 package be.kdg.ip.services.impl;
 
+import be.kdg.ip.domain.Course;
 import be.kdg.ip.domain.Lesson;
 import be.kdg.ip.domain.User;
 import be.kdg.ip.repositories.api.LessonRepository;
@@ -81,6 +82,11 @@ public class LessonServiceImpl implements LessonService {
 
         return allStudents;
 
+    }
+
+    @Override
+    public void removeAllLessonsFromCourse(Course course) {
+        lessonRepository.delete(course.getLessons());
     }
 }
 

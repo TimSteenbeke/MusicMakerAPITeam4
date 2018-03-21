@@ -43,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestAgendaController {
 
-    @Autowired
+    /*@Autowired
     private MockMvc mockMvc;
 
     @Autowired
@@ -146,6 +146,6 @@ public class TestAgendaController {
         } catch (UserServiceException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }
 */

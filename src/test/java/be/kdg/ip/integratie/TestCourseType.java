@@ -163,7 +163,6 @@ public class TestCourseType {
     @Test
     public void testUpdateCourseType() throws Exception {
         RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("gemockteUser","ADMIN");
-
         CourseType courseType = new CourseType();
         courseType.setCourseTypeId(98);
         courseType.setDescription("GitaarLes");
