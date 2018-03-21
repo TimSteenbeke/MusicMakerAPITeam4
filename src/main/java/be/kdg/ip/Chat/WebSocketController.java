@@ -1,5 +1,7 @@
 package be.kdg.ip.Chat;
 
+import be.kdg.ip.domain.Message;
+import be.kdg.ip.services.api.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -13,6 +15,7 @@ import java.util.Date;
 @CrossOrigin(origins = "*")
 @RestController
 public class WebSocketController {
+
     private final SimpMessagingTemplate template;
 
     @Autowired
