@@ -25,7 +25,15 @@ public class DatasourceConfig {
         dataSource.setPassword("");
         return dataSource;
 
-        //Working External Database, but we don't want to risk on the presentation that there is a technical faillure at the side of the database.
+
+        //////////
+        //
+        //Working External Database.
+        // We don't want to risk a technical faillure at the side of the database,
+        //While giving the presentation.
+        //
+        //////////
+
         /*
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");

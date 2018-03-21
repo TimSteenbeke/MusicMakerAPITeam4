@@ -1,7 +1,5 @@
 package be.kdg.ip.Chat;
 
-import be.kdg.ip.domain.Message;
-import be.kdg.ip.services.api.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;

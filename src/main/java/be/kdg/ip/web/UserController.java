@@ -44,8 +44,7 @@ public class UserController {
 
     //bekijken return type
     @PostMapping
-    //ToDo: Authorization fix: instrument post
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<User> createUser(@Valid @RequestBody UserResource userResource) {
 
         User user = new User();
@@ -91,8 +90,7 @@ public class UserController {
 
     //1 User opvragen userId
     @GetMapping("/{userId}")
-    //ToDo: Authorization fix: user get
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<UserAddressDetailsResource> findUserByUserId(@PathVariable int userId) throws UserServiceException {
         User user = userService.findUser(userId);
         UserAddressDetailsResource userResource = new UserAddressDetailsResource();
@@ -112,8 +110,7 @@ public class UserController {
 
     @CrossOrigin(origins = "*")
     @GetMapping("/loggedin")
-    //ToDo: Authorization fix: group get by user
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<UserAddressDetailsResource> getCurrentUser(Principal principal) {
         String username = principal.getName();
         UserAddressDetailsResource userResource = new UserAddressDetailsResource();
@@ -140,7 +137,7 @@ public class UserController {
     //Alle groepen opvragen
     @GetMapping
     @CrossOrigin(origins = "*")
-    //ToDo: Authorization fix: get all users
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<UserGetResource> findAll() {
         List<User> users = userService.getUsers();
 
@@ -154,6 +151,7 @@ public class UserController {
     }
 
     @GetMapping("/students")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<UserGetResource> getStudents() {
         Role role = roleService.getRoleByName("Student");
 
@@ -168,6 +166,7 @@ public class UserController {
     }
 
     @GetMapping("/teacherAdmin")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<UserGetResource> getTeacherAdmins() {
         Role teacher = roleService.getRoleByName("Teacher");
         Role admin = roleService.getRoleByName("Admin");
@@ -193,16 +192,14 @@ public class UserController {
 
     //Een user verwijderen
     @DeleteMapping("/{userId}")
-    //ToDo: Authorization fix: delete user
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<User> deleteUser(@PathVariable("userId") Integer userId) {
         userService.deleteUser(userId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
-    //ToDo: Authorization fix: instrument updaten
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<User> updateUser(@PathVariable("id") int id, @RequestBody UserAddressDetailsResource userResource) {
 
         User user = userService.findUser(id);
@@ -235,12 +232,14 @@ public class UserController {
     }
 
     @GetMapping("/roles")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<List<Role>> getRoles() {
         List<Role> roles = roleService.getRoles();
         return new ResponseEntity<>(roles, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/user/role/{id}", method = RequestMethod.PUT)
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<User> updateRoles(@PathVariable("id") int id, @RequestBody RoleUpdateUserResource roleUpdateUserResource) {
 
         User user = userService.findUser(id);
@@ -256,7 +255,7 @@ public class UserController {
 
     //returned voorlopig nog User maar dit moet jwt token worden (denk ik?) dat terug doorgegeven wordt naar browser
     @PostMapping("/login")
-    //ToDo: Delete this method ?
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<User> checkUser(@Valid @RequestBody UserResource userResource) throws UserServiceException {
         User checkedUser = userService.findUserByUsername(userResource.getUsername());
         if ((checkedUser != null) && (checkedUser.getPassword().equals(userResource.getPassword()))) {
@@ -266,6 +265,7 @@ public class UserController {
     }
 
     @GetMapping("/excercises/{userId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<List<Composition>> getExcercisesUser(@PathVariable int userId) {
 
         User user = userService.findUser(userId);
@@ -274,6 +274,7 @@ public class UserController {
     }
 
     @PostMapping("/excercises/{userId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<List<Composition>> addExcerciseUser(@PathVariable int userId, @RequestBody UserExcerciseResource userExcerciseResource) {
 
         User user = userService.findUser(userId);
@@ -286,6 +287,7 @@ public class UserController {
     }
 
     @PostMapping("/excercises/remove/{userId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<List<Composition>> deleteExcerciseUser(@PathVariable int userId, @RequestBody UserExcerciseResource userExcerciseResource) {
         User user = userService.findUser(userId);
         Composition excercise = compositionService.getComposition(userExcerciseResource.getExcerciseid());
@@ -300,6 +302,7 @@ public class UserController {
     }
 
     @GetMapping("/myinstrumentlevels/")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<List<InstrumentLevelUserInstrumentResource>> getInstrumentLevelsUser(Principal principal) throws UserServiceException {
         User user = userService.findUserByUsername(principal.getName());
 
@@ -330,8 +333,8 @@ public class UserController {
         return userDetailsResource;
     }
 
-
     @RequestMapping(value = "/userroles", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<RolesDTO> getRolesfromUser(Principal principal) {
 
         try {
