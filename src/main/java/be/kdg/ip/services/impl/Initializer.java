@@ -84,7 +84,7 @@ public class Initializer {
         compositionService.addComposition(composition);
 
     }
-/*
+
     @PostConstruct
     void addAgendaItems() throws UserServiceException {
         Role administrator = new Administrator();
@@ -212,6 +212,4 @@ public class Initializer {
 
         //GROUPS TOEVOEGEN
     }
-
-    */
 }
