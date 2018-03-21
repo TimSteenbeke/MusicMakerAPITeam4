@@ -10,6 +10,8 @@ import be.kdg.ip.web.resources.InstrumentGetResource;
 import be.kdg.ip.web.resources.InstrumentResource;
 import be.kdg.ip.web.resources.InstrumentUpdateResource;
 import ma.glasnost.orika.MapperFacade;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,17 +28,13 @@ import java.util.List;
 @RequestMapping("/api/instruments")
 public class InstrumentController {
     private InstrumentService instrumentService;
-    private final MapperFacade mapperFacade;
-    private final InstrumentAssembler instrumentAssembler;
-    private final InstrumentUpdateAssembler instrumentUpdateAssembler;
     private InstrumentCategoryService instrumentCategoryService;
+
+    private Logger logger = LoggerFactory.getLogger(InstrumentController.class);
 
     public InstrumentController(InstrumentService instrumentService, MapperFacade mapperFacade, InstrumentAssembler instrumentAssembler, InstrumentUpdateAssembler instrumentUpdateAssembler, InstrumentCategoryService instrumentCategoryService) {
         this.instrumentService = instrumentService;
-        this.mapperFacade = mapperFacade;
-        this.instrumentAssembler = instrumentAssembler;
         this.instrumentCategoryService = instrumentCategoryService;
-        this.instrumentUpdateAssembler = instrumentUpdateAssembler;
     }
 
     //Creation of an instrument
@@ -56,11 +54,10 @@ public class InstrumentController {
         String imageString = instrumentResource.getImage();
 
         try {
-            // byte[] name = Base64.getEncoder().encode("hello world".getBytes());
             byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
             in.setImage(decodedString);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            logger.error("Error converting image while creating an instrument.");
         }
 
         Instrument out = instrumentService.addInstrument(in);
@@ -146,7 +143,7 @@ public class InstrumentController {
             byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
             in.setImage(decodedString);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            logger.error("Error converting image while updating instrument.");
         }
 
         Instrument out = instrumentService.updateInstrument(in);
