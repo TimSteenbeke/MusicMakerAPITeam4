@@ -35,6 +35,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -137,6 +138,8 @@ public class TestInstrumentLevelController {
         instrumentLevelUserInstrumentResource.setUser(instrumentLevel.getUser());
 
         given(instrumentLevelService.getIntrumentLevel(instrumentLevel.getInstrumentLevelId())).willReturn(instrumentLevel);
+        given(userService.findUser(instrumentLevel.getUser().getId())).willReturn(user);
+        given(userService.updateUser(user)).willReturn(user);
         RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("gemockteUser","ADMIN");
 
         mockMvc.perform(get("http://localhost:8080/api/instrumentlevels/" +instrumentLevel.getInstrumentLevelId()).with(bearerToken))
@@ -211,6 +214,58 @@ public class TestInstrumentLevelController {
                 .andExpect(jsonPath("$[0].instrument.instrumentId", CoreMatchers.is(instrumentLevelUserInstrumentResource.getInstrument().getInstrumentId())))
                 .andExpect(jsonPath("$[0].user.id", CoreMatchers.is(instrumentLevelUserInstrumentResource.getUser().getId())));
 
+
+    }
+
+    @Test
+    public void testDeleteInstrumentLevel() throws Exception {
+        int instrumentLevelId = 50;
+        int userId = 58;
+        int addressId = 10;
+        int instrumentId = 10;
+
+        User user = new User();
+        user.setFirstname("Jos");
+        user.setLastname("Bakkers");
+        user.setUsername("Jos.Bakkers@gmail.com");
+        user.setPassword("password");
+        user.setUserImage(new byte[0]);
+        Address address = new Address();
+        address.setId(addressId);
+        address.setStreet("straat");
+        address.setStreetNumber("20");
+        address.setCity("Antwerpen");
+        address.setPostalCode("2980");
+        address.setCountry("Belgie");
+        user.setAddress(address);
+        user.setId(userId);
+
+        Instrument instrument = new Instrument();
+        instrument.setType("type");
+        instrument.setDetails("details");
+        instrument.setImage(new byte[0]);
+        instrument.setInstrumentName("instrumentname");
+        InstrumentCategory instrumentCategory = new InstrumentCategory();
+        instrumentCategory.setCategoryName("categoryname");
+        instrumentCategory.setInstrumentCategoryId(1);
+        instrument.setInstrumentCategory(instrumentCategory);
+        instrument.setInstrumentCategory(instrument.getInstrumentCategory());
+        instrument.setInstrumentId(instrumentId);
+
+        InstrumentLevel instrumentLevel = new InstrumentLevel();
+        instrumentLevel.setMaxLevel(10);
+        instrumentLevel.setLevel(8);
+        instrumentLevel.setUser(user);
+        instrumentLevel.setInstrument(instrument);
+        instrumentLevel.setInstrumentLevelId(instrumentLevelId);
+
+        given(instrumentLevelService.getIntrumentLevel(instrumentLevel.getInstrumentLevelId())).willReturn(instrumentLevel);
+        RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("gemockteUser","ADMIN");
+
+        mockMvc.perform(delete("http://localhost:8080/api/instrumentlevels/" +instrumentLevel.getInstrumentLevelId()).with(bearerToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
 
     }
 

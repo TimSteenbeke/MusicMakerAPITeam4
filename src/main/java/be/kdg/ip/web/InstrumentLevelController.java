@@ -170,4 +170,10 @@ public class InstrumentLevelController {
         instrumentLevelUserInstrumentResource.setUser(instrumentLevel.getUser());
         return new ResponseEntity<>(instrumentLevelUserInstrumentResource,HttpStatus.OK);
     }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NullPointerException.class)
+    public String return404(NullPointerException ex) {
+        return ex.getMessage();
+    }
 }
