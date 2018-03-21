@@ -6,7 +6,6 @@ import be.kdg.ip.domain.User;
 import be.kdg.ip.services.api.InstrumentLevelService;
 import be.kdg.ip.services.api.InstrumentService;
 import be.kdg.ip.services.api.UserService;
-import be.kdg.ip.web.resources.InstrumentLevelIncDecResource;
 import be.kdg.ip.web.resources.InstrumentLevelResource;
 import be.kdg.ip.web.resources.InstrumentLevelUserInstrumentResource;
 import org.springframework.http.HttpStatus;
@@ -45,6 +44,7 @@ public class InstrumentLevelController {
         Instrument instrument = instrumentService.getInstrument(instrumentLevelResource.getInstrumentid());
         instrumentLevel.setInstrument(instrument);
 
+
         User user = userService.findUser(instrumentLevelResource.getUserid());
         instrumentLevel.setUser(user);
 
@@ -66,10 +66,11 @@ public class InstrumentLevelController {
 
 
         return new ResponseEntity<>(instrumentLevelResource,HttpStatus.OK);
+
     }
 
     @GetMapping("/{instrumentLevelId}")
-    public ResponseEntity<InstrumentLevelUserInstrumentResource> getInstrumentLevel(@PathVariable int instrumentLevelId){
+    public ResponseEntity<InstrumentLevelUserInstrumentResource> getInstrumentLevel(@PathVariable int instrumentLevelId) {
 
         InstrumentLevel instrumentLevel = instrumentLevelService.getIntrumentLevel(instrumentLevelId);
 
@@ -79,16 +80,16 @@ public class InstrumentLevelController {
         resource.setUser(instrumentLevel.getUser());
         resource.setInstrument(instrumentLevel.getInstrument());
 
-        return new ResponseEntity<>(resource,HttpStatus.OK);
+        return new ResponseEntity<>(resource, HttpStatus.OK);
     }
 
     @GetMapping
     @CrossOrigin(origins = "*")
-    public ResponseEntity<List<InstrumentLevelUserInstrumentResource>> getAllInstrumentLevels(){
+    public ResponseEntity<List<InstrumentLevelUserInstrumentResource>> getAllInstrumentLevels() {
         List<InstrumentLevel> instrumentLevels = instrumentLevelService.getAllInstrumentLevels();
 
         List<InstrumentLevelUserInstrumentResource> resources = new ArrayList<>();
-        for (InstrumentLevel i : instrumentLevels){
+        for (InstrumentLevel i : instrumentLevels) {
             InstrumentLevelUserInstrumentResource resource = new InstrumentLevelUserInstrumentResource();
             resource.setMaxLevel(i.getMaxLevel());
             resource.setLevel(i.getLevel());
@@ -97,12 +98,12 @@ public class InstrumentLevelController {
             resources.add(resource);
         }
 
-        return new ResponseEntity<>(resources,HttpStatus.OK);
+        return new ResponseEntity<>(resources, HttpStatus.OK);
     }
 
     //fix delete in user!!!!!!
     @DeleteMapping("/{instrumentLevelId}")
-    public ResponseEntity<InstrumentLevel> deleteInstrumentLevel(@PathVariable("instrumentLevelId") Integer instrumentLevelId){
+    public ResponseEntity<InstrumentLevel> deleteInstrumentLevel(@PathVariable("instrumentLevelId") Integer instrumentLevelId) {
         InstrumentLevel instrumentLevel = instrumentLevelService.getIntrumentLevel(instrumentLevelId);
 
         User user = userService.findUser(instrumentLevel.getUser().getId());
@@ -123,6 +124,7 @@ public class InstrumentLevelController {
         instrumentLevel.setLevel(instrumentLevelResource.getLevel());
         InstrumentLevel out =  instrumentLevelService.updateInstrumentLevel(instrumentLevel);
 
+
         User user = userService.findUser(instrumentLevel.getUser().getId());
         List<InstrumentLevel> instrumentLevels = user.getInstrumentLevels();
         instrumentLevels.remove(instrumentLevelService.getIntrumentLevel(instrumentLevelId));
@@ -136,16 +138,16 @@ public class InstrumentLevelController {
         resource.setUser(out.getUser());
         resource.setInstrument(out.getInstrument());
 
-        return new ResponseEntity<>(resource,HttpStatus.OK);
+        return new ResponseEntity<>(resource, HttpStatus.OK);
     }
 
 
     @PostMapping("/instrumentleveldown/{id}")
-    public ResponseEntity<InstrumentLevelUserInstrumentResource> decreaseLevel(@PathVariable("id") int id){
+    public ResponseEntity<InstrumentLevelUserInstrumentResource> decreaseLevel(@PathVariable("id") int id) {
 
         InstrumentLevel instrumentLevel = instrumentLevelService.getIntrumentLevel(id);
-        int newLevel = instrumentLevel.getLevel()-1;
-        if (newLevel>=0){
+        int newLevel = instrumentLevel.getLevel() - 1;
+        if (newLevel >= 0) {
             instrumentLevel.setLevel(newLevel);
             instrumentLevel = instrumentLevelService.updateInstrumentLevel(instrumentLevel);
         }
@@ -154,15 +156,15 @@ public class InstrumentLevelController {
         instrumentLevelUserInstrumentResource.setLevel(instrumentLevel.getLevel());
         instrumentLevelUserInstrumentResource.setInstrument(instrumentLevel.getInstrument());
         instrumentLevelUserInstrumentResource.setUser(instrumentLevel.getUser());
-        return new ResponseEntity<>(instrumentLevelUserInstrumentResource,HttpStatus.OK);
+        return new ResponseEntity<>(instrumentLevelUserInstrumentResource, HttpStatus.OK);
     }
 
     @PostMapping("/instrumentlevelup/{id}")
-    public ResponseEntity<InstrumentLevelUserInstrumentResource> increaseLevel(@PathVariable("id") int id){
+    public ResponseEntity<InstrumentLevelUserInstrumentResource> increaseLevel(@PathVariable("id") int id) {
 
         InstrumentLevel instrumentLevel = instrumentLevelService.getIntrumentLevel(id);
-        int newLevel = instrumentLevel.getLevel()+1;
-        if (newLevel<=10){
+        int newLevel = instrumentLevel.getLevel() + 1;
+        if (newLevel <= 10) {
             instrumentLevel.setLevel(newLevel);
             instrumentLevel = instrumentLevelService.updateInstrumentLevel(instrumentLevel);
         }
@@ -171,6 +173,6 @@ public class InstrumentLevelController {
         instrumentLevelUserInstrumentResource.setLevel(instrumentLevel.getLevel());
         instrumentLevelUserInstrumentResource.setInstrument(instrumentLevel.getInstrument());
         instrumentLevelUserInstrumentResource.setUser(instrumentLevel.getUser());
-        return new ResponseEntity<>(instrumentLevelUserInstrumentResource,HttpStatus.OK);
+        return new ResponseEntity<>(instrumentLevelUserInstrumentResource, HttpStatus.OK);
     }
 }

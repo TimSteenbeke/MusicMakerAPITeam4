@@ -8,7 +8,6 @@ import be.kdg.ip.services.api.UserService;
 import be.kdg.ip.services.exceptions.UserServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,9 +26,8 @@ public class UserServiceImpl implements UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
-
     public User addUser(String username, String password, String firstName, String lastName, List<Role> roles, byte[] userimage, Address address) {
-        return userRepository.save(new User(username,password,firstName,lastName,roles,userimage,address));
+        return userRepository.save(new User(username, password, firstName, lastName, roles, userimage, address));
     }
 
 
@@ -82,7 +80,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 }

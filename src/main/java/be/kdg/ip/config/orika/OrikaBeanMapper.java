@@ -17,13 +17,6 @@ import java.util.Map;
  */
 @Component
 public class OrikaBeanMapper extends ConfigurableMapper {
-    // see https://github.com/dlizarra/orika-spring-integration/blob/master/src/main/java/com/dlizarra/orika/mapper/OrikaBeanMapper.java
-    // see http://kenblair.net/orika-spring-easy-bean-mapping/
-
-    // https://programmeren3-repaircafe.rhcloud.com/repair-cafe-applicatie/repair-cafe-frontend/presentation-layer/orika/
-    // https://programmeren3-repaircafe.rhcloud.com/repair-cafe-applicatie/maven-configuratie/
-    // https://programmeren3-repaircafe.rhcloud.com/repair-cafe-applicatie/repair-cafe-frontend/presentation-layer/resources-en-dto/
-
     private MapperFactory mapperFactory;
     private ApplicationContext applicationContext;
 
@@ -53,15 +46,6 @@ public class OrikaBeanMapper extends ConfigurableMapper {
 
     }
 
-    //@Override
-    /*public void setApplicationContext(ApplicationContext applicationContext) throws BeansException
-    {
-        // search and add all Orika convertors annotated with @Component to the Orika Mapper Factory
-        this.applicationContext = applicationContext;
-        // init ConfigurableMapper
-        this.init();
-    }*/
-
     private void addCustomMapperAndConvertors() {
         final Map<String, Converter> converters = applicationContext.getBeansOfType(Converter.class);
         converters.values().forEach(this::addConverter);
@@ -70,11 +54,11 @@ public class OrikaBeanMapper extends ConfigurableMapper {
         mappers.values().forEach(this::addMapper);
     }
 
-    public void addConverter(final Converter<?, ?> converter) {
+    private void addConverter(final Converter<?, ?> converter) {
         mapperFactory.getConverterFactory().registerConverter(converter);
     }
 
-    public void addMapper(final Mapper<?, ?> mapper) {
+    private void addMapper(final Mapper<?, ?> mapper) {
         mapperFactory.classMap(mapper.getAType(), mapper.getBType())
                 .byDefault()
                 .mapNulls(false)

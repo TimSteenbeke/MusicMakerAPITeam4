@@ -1,7 +1,6 @@
 package be.kdg.ip.domain;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +13,6 @@ public class Group {
     private int groupId;
 
     @Column
-    @Size(min = 4)
     private String name;
 
     @ManyToOne
@@ -30,7 +28,7 @@ public class Group {
     private List<NewsItem> newsItems;
 
     @Lob
-    @Column
+    @Column(nullable = true)
     private byte[] groupImage;
 
 
@@ -108,5 +106,10 @@ public class Group {
     @Override
     public boolean equals(Object obj) {
         return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

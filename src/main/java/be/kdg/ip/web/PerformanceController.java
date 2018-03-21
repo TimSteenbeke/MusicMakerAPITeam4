@@ -150,15 +150,15 @@ public class PerformanceController {
 
             if (performance.getAbsentMembers().contains(user)) {
                 // ABSENT
-                return new ResponseEntity<StatusDTO>(new StatusDTO("absent"),HttpStatus.OK);
+                return new ResponseEntity<>(new StatusDTO("absent"),HttpStatus.OK);
             }
             else {
                 if (performance.getPresentMembers().contains(user)) {
                     //PRESENT
-                    return new ResponseEntity<StatusDTO>(new StatusDTO("present"),HttpStatus.OK);
+                    return new ResponseEntity<>(new StatusDTO("present"),HttpStatus.OK);
                 } else {
                     // NOT SET
-                    return new ResponseEntity<StatusDTO>(new StatusDTO("nostatus"),HttpStatus.OK);
+                    return new ResponseEntity<>(new StatusDTO("nostatus"),HttpStatus.OK);
                 }
             }
         } catch (UserServiceException e) {

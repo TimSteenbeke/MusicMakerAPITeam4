@@ -78,7 +78,7 @@ public class InstrumentCategoryController {
         List<InstrumentCatergoryGetResource> instrumentCatergoryGetResources = new ArrayList<>();
         for (InstrumentCategory instrumentCategory : allInstrumentCategories){
             InstrumentCatergoryGetResource instrumentCatergoryGetResource = new InstrumentCatergoryGetResource();
-
+            instrumentCatergoryGetResource.setCategoryid(instrumentCategory.getInstrumentCategoryId());
             instrumentCatergoryGetResource.setCategoryname(instrumentCategory.getCategoryName());
             instrumentCatergoryGetResource.getInstruments().addAll(instrumentCategory.getInstrumentList());
             instrumentCatergoryGetResources.add(instrumentCatergoryGetResource);

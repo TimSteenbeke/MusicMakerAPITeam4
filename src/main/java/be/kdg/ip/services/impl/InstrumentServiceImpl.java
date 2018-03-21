@@ -27,8 +27,7 @@ public class InstrumentServiceImpl implements InstrumentService {
 
     @Override
     public Instrument getInstrument(int instrumentId) {
-        Instrument instrument = instrumentRepository.findOne(instrumentId);
-        return instrument;
+        return instrumentRepository.findOne(instrumentId);
     }
 
 
@@ -40,8 +39,6 @@ public class InstrumentServiceImpl implements InstrumentService {
     @Override
     public void removeInstrument(int instrumentId) {
         Instrument instrument = instrumentRepository.findOne(instrumentId);
-        //if (instrument == null)
-            //throw new ProductServiceException("Instrument not found");
 
         instrumentRepository.delete(instrument);
     }

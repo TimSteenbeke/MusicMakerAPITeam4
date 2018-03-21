@@ -9,6 +9,8 @@ import be.kdg.ip.web.assemblers.CompositionAssembler;
 import be.kdg.ip.web.resources.CompositionResource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.compress.utils.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,7 +35,12 @@ public class CompositionController {
     private UserService userService;
     private CompositionAssembler compositionAssembler;
 
+
+    private Logger logger = LoggerFactory.getLogger(CompositionController.class);
+
+
     public CompositionController(CompositionService compositionService,UserService userService,CompositionAssembler compositionAssembler){
+
         this.compositionService = compositionService;
         this.userService = userService;
         this.compositionAssembler = compositionAssembler;
@@ -42,8 +49,7 @@ public class CompositionController {
     //uploading of a composition
     @RequestMapping(method = RequestMethod.POST, value="/", consumes = { "multipart/form-data" })
     @CrossOrigin(origins = "*")
-    public @ResponseBody ResponseEntity<?> upload(@RequestParam("files") MultipartFile files, @RequestParam("compresource") String compresource) throws Exception
-    {
+    public @ResponseBody ResponseEntity<?> upload(@RequestParam("files") MultipartFile files, @RequestParam("compresource") String compresource) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
 
         CompositionResource compositionResource =  mapper.readValue(compresource, CompositionResource.class);
@@ -68,7 +74,7 @@ public class CompositionController {
             composition.setContent(bytes);
 
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            logger.error("Error converting image when uploading a new composition.");
         }
 
         Composition out = compositionService.addComposition(composition);
@@ -91,7 +97,7 @@ public class CompositionController {
     public ResponseEntity<Composition> findCompositionById(@PathVariable int compositionId){
         Composition composition = compositionService.getComposition(compositionId);
 
-        return  new ResponseEntity<Composition>(composition,HttpStatus.OK);
+        return  new ResponseEntity<>(composition,HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value="/addtoplaylist/{compositionId}")

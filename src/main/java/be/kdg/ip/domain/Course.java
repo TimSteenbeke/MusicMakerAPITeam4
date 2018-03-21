@@ -50,9 +50,9 @@ public class Course {
     }
 
     public Course() {
-        this.lessons = new ArrayList<Lesson>();
-        this.students = new ArrayList<User>();
-        this.teachers = new ArrayList<User>();
+        this.lessons = new ArrayList<>();
+        this.students = new ArrayList<>();
+        this.teachers = new ArrayList<>();
     }
 
     public int getCourseId() {

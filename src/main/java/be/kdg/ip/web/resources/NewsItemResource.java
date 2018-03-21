@@ -1,7 +1,5 @@
 package be.kdg.ip.web.resources;
 
-import java.util.List;
-
 public class NewsItemResource {
     private String message;
     private String editor;

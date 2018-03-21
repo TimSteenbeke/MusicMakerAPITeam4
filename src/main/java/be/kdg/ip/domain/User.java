@@ -12,7 +12,7 @@ import java.util.List;
 
 
 @Entity
-@Table
+@Table(name ="tUser")
 public class User implements Serializable, UserDetails {
 
     @Id
@@ -87,7 +87,7 @@ public class User implements Serializable, UserDetails {
         this.firstname = firstname;
         this.lastname = lastname;
         this.roles = roles;
-        this.groups = new ArrayList<Group>();
+        this.groups = new ArrayList<>();
         this.userImage = userImage;
         this.address = address;
         this.exercises = new ArrayList<>();
@@ -95,7 +95,6 @@ public class User implements Serializable, UserDetails {
         this.teachescourses= new ArrayList<>();
         this.courses= new ArrayList<>();
         this.playList = new ArrayList<>();
-
 
     }
 
@@ -107,7 +106,7 @@ public class User implements Serializable, UserDetails {
         this.roles = roles;
         this.exercises = new ArrayList<>();
         this.instrumentLevels = new ArrayList<>();
-        this.groups  = new ArrayList<Group>();
+        this.groups  = new ArrayList<>();
         this.teachescourses= new ArrayList<>();
         this.courses= new ArrayList<>();
         this.playList = new ArrayList<>();

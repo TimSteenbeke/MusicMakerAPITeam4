@@ -7,7 +7,7 @@ public class LessonsResource {
     private List<LessonWithStudentsResource> lessonResources;
 
     public LessonsResource() {
-        this.lessonResources = new ArrayList<LessonWithStudentsResource>();
+        this.lessonResources = new ArrayList<>();
     }
 
     public List<LessonWithStudentsResource> getLessonResources() {
