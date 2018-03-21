@@ -102,6 +102,7 @@ public class MessageController {
         }
         return new ResponseEntity<>(messageGetResource, HttpStatus.OK);
     }
+
     @GetMapping("/userid/{userid}")
     @CrossOrigin(origins = "*")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")

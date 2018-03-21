@@ -31,8 +31,7 @@ public class InstrumentCategoryController {
     }
 
     @PostMapping
-    //ToDo: Authorization fix: instrumentsoort create
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<InstrumentCatergoryGetResource> createInstrumentCategory(@Valid @RequestBody InstrumentCategoryResource instrumentCategoryResource) {
 
         InstrumentCategory instrumentCategory = new InstrumentCategory();
@@ -57,7 +56,6 @@ public class InstrumentCategoryController {
 
     //1 InstrumentSoort opvragen
     @GetMapping("/{instrumentSoortId}")
-    //ToDo: Authorization fix: instrumentsoort get
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<InstrumentCatergoryGetResource> findInstrumentCategoryById(@PathVariable int instrumentSoortId){
         InstrumentCategory instrumentCategory = instrumentCategoryService.getInstrumentCategory(instrumentSoortId);
@@ -71,7 +69,6 @@ public class InstrumentCategoryController {
 
     @GetMapping
     @CrossOrigin(origins = "*")
-    //ToDo: Authorization fix: instrumentsoort get all
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<List<InstrumentCatergoryGetResource>> findAll(){
         List<InstrumentCategory> allInstrumentCategories = instrumentCategoryService.getAllInstrumentCategories();
@@ -88,8 +85,7 @@ public class InstrumentCategoryController {
 
     //Een instrumentSoort verwijderen
     @PostMapping("/{instrumentSoortId}")
-    //ToDo: Authorization fix: instrumentsoort delete
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<InstrumentCategory> deleteInstrumentCaterogyById(@PathVariable("instrumentSoortId") Integer instrumentSoortId){
 
         InstrumentCategory instrumentCategory = instrumentCategoryService.getInstrumentCategory(instrumentSoortId);
@@ -108,8 +104,7 @@ public class InstrumentCategoryController {
 
     //Een instrumentCategory updaten
     @RequestMapping(value = "/instrumentsoort/{id}", method = RequestMethod.PUT)
-    //ToDo: Authorization fix: instrumentsoort update
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<InstrumentCatergoryGetResource> updateInstrumentCategory(@PathVariable("id") int id, @RequestBody InstrumentCategoryResource instrumentCategoryResource) {
 
         InstrumentCategory instrumentCategory = instrumentCategoryService.getInstrumentCategory(id);
@@ -129,4 +124,10 @@ public class InstrumentCategoryController {
 
         return  new ResponseEntity<>(instrumentCatergoryGetResource, HttpStatus.OK);
     }
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NullPointerException.class)
+    public String return404(NullPointerException ex) {
+        return ex.getMessage();
+    }
+
 }
