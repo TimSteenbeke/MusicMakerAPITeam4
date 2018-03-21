@@ -11,6 +11,7 @@ import be.kdg.ip.web.resources.GroupUserResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
@@ -32,7 +33,9 @@ public class GroupController {
         this.userService = userService;
     }
 
-    @GetMapping("/allgroups")
+
+     @GetMapping("/allgroups")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<List<GroupUserResource>> findAll() {
         List<Group> groups = groupService.getAllGroups();
         List<GroupUserResource> groupUserResources = new ArrayList<>();
@@ -52,7 +55,7 @@ public class GroupController {
     }
 
     @PostMapping
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<GroupUserResource> postNewGroup(@RequestBody GroupResource groupResource) {
         Group group = new Group();
         group.setName(groupResource.getName());
@@ -65,28 +68,31 @@ public class GroupController {
         group.setUsers(users);
         group.setSupervisor(userService.findUser(groupResource.getSupervisorid()));
 
-        String imageString = groupResource.getGroupimage();
-        try {
-            // byte[] name = Base64.getEncoder().encode("hello world".getBytes());
-            byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
-            group.setGroupImage(decodedString);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        if(groupResource.getGroupimage() != null) {
+            String imageString = groupResource.getGroupimage();
+            try {
+                // byte[] name = Base64.getEncoder().encode("hello world".getBytes());
+                byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
+                group.setGroupImage(decodedString);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
-
         groupService.addGroup(group);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/{groupId}")
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<GroupUserResource> getGroup(@PathVariable int groupId) {
         Group group = groupService.getGroup(groupId);
 
         GroupUserResource groupUserResource = new GroupUserResource();
         groupUserResource.setGroupid(groupId);
-        groupUserResource.setGroupimage(group.getGroupImage());
+        if(group.getGroupImage() != null) {
+            groupUserResource.setGroupimage(group.getGroupImage());
+        }
         groupUserResource.setName(group.getName());
         groupUserResource.setSupervisor(group.getSupervisor());
 
@@ -101,7 +107,7 @@ public class GroupController {
 
     @GetMapping
     @CrossOrigin(origins = "*")
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<List<GroupUserResource>> getGroupsByUser(Principal principal) {
         String username = principal.getName();
 
@@ -159,5 +165,11 @@ public class GroupController {
         groupService.updateGroup(group);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+   @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NullPointerException.class)
+    public String return404(NullPointerException ex) {
+        return ex.getMessage();
     }
 }
