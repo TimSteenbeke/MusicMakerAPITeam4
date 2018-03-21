@@ -16,7 +16,6 @@ public class MessageServiceImpl implements MessageService {
     @Autowired
     private MessageRepository messageRepository;
 
-
     @Override
     public Message addMessage(String chatroom, String message) {
         return messageRepository.save(new Message(chatroom, message));
@@ -39,14 +38,14 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public Message findMessage(int messageId) {
-//        return messageRepository.findAll().stream().filter(m -> m.getMessageId().equals(messageId)).collect(Collectors.toList());
-        return messageRepository.findMessageByMessageId(messageId);
+    public Message findMessage(int id) {
+//        return messageRepository.findAll().stream().filter(m -> m.getId().equals(id)).collect(Collectors.toList());
+        return messageRepository.findMessageById(id);
     }
 
     @Override
-    public void deleteMessage(int messageId) {
-        Message message = messageRepository.findMessageByMessageId(messageId);
+    public void deleteMessage(int id) {
+        Message message = messageRepository.findMessageById(id);
         messageRepository.delete(message);
     }
 }

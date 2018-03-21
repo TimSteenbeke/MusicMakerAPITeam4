@@ -15,13 +15,14 @@ import java.util.Date;
 @CrossOrigin(origins = "*")
 @RestController
 public class WebSocketController {
+
     private final SimpMessagingTemplate template;
     private MessageService messageService;
 
     @Autowired
     public WebSocketController(SimpMessagingTemplate template, MessageService messageService) {
         this.template = template;
-        this.messageService = messageService;
+        this.messageService=messageService;
     }
 
     @MessageMapping("/send/message/{chatroom}")

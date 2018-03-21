@@ -1,14 +1,14 @@
 package be.kdg.ip.domain;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+@Entity
+@Table(name ="Message")
 public class Message {
 
     @Id
     @GeneratedValue
-    @Column(name="messageId",nullable = false)
+    @Column(name="Id",nullable = false)
     private int id;
 
     @Column(name = "Message", nullable = true, length = 255)
@@ -24,11 +24,11 @@ public class Message {
     public Message() {
     }
 
-    public int getMessageId() {
+    public int getId() {
         return id;
     }
 
-    public void setMessageId(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -16,7 +16,7 @@ public interface MessageService {
 
     List<Message> getMessagesForChatroom(String chatroom);
 
-    Message findMessage(int messageId);
+    Message findMessage(int id);
 
-    void deleteMessage(int messageId);
+    void deleteMessage(int id);
 }
