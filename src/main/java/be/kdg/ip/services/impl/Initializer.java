@@ -1,6 +1,6 @@
 
 
-package be.kdg.ip.services.impl;
+/*package be.kdg.ip.services.impl;
 
 import be.kdg.ip.domain.*;
 import be.kdg.ip.domain.roles.Administrator;
@@ -256,7 +256,7 @@ public class Initializer {
 
         //GROUPS TOEVOEGEN
     }
-    */
 
-}
+
+}*/
 
