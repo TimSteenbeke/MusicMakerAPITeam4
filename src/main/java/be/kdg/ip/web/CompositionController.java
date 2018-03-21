@@ -48,9 +48,7 @@ public class CompositionController {
     //uploading of a composition
     @RequestMapping(method = RequestMethod.POST, value = "/", consumes = {"multipart/form-data"})
     @CrossOrigin(origins = "*")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public @ResponseBody
-    ResponseEntity<?> upload(@RequestParam("files") MultipartFile files, @RequestParam("compresource") String compresource) throws IOException {
+    public @ResponseBody ResponseEntity<?> upload(@RequestParam("files") MultipartFile files, @RequestParam("compresource") String compresource) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
 
         CompositionResource compositionResource = mapper.readValue(compresource, CompositionResource.class);
