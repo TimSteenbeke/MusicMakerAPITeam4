@@ -17,10 +17,19 @@ public class Message {
     @Column(name = "Chatroom", nullable = true, length = 255)
     private String chatroom;
 
-    public Message(String message, String chatroom) {
+    @Column(name = "Username", nullable = true, length = 255)
+    private String username;
+
+    @Column(name = "UserId", nullable = true, length = 255)
+    private int userId;
+
+    public Message(String message, String chatroom, String username, int userId) {
         this.message = message;
         this.chatroom = chatroom;
+        this.username = username;
+        this.userId = userId;
     }
+
     public Message() {
     }
 
@@ -46,5 +55,21 @@ public class Message {
 
     public void setChatroom(String chatroom) {
         this.chatroom = chatroom;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

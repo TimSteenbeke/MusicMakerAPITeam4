@@ -17,8 +17,8 @@ public class MessageServiceImpl implements MessageService {
     private MessageRepository messageRepository;
 
     @Override
-    public Message addMessage(String chatroom, String message) {
-        return messageRepository.save(new Message(chatroom, message));
+    public Message addMessage(String chatroom, String message, String username, int userId) {
+        return messageRepository.save(new Message(message,chatroom,username,userId));
     }
 
     @Override
@@ -35,6 +35,18 @@ public class MessageServiceImpl implements MessageService {
     public List<Message> getMessagesForChatroom(String chatroom) {
 //        return messageRepository.findAll().stream().filter(m -> m.getChatroom().equals(chatroom)).collect(Collectors.toList());
         return messageRepository.findMessagesByChatroom(chatroom);
+    }
+
+    @Override
+    public List<Message> getMessageForUsername(String Username) {
+        return messageRepository.findMessageByUsername(Username);
+
+    }
+
+    @Override
+    public List<Message> getMessageForUserId(int userId) {
+        return messageRepository.findMessageByUserId(userId);
+
     }
 
     @Override

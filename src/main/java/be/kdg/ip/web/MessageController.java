@@ -25,13 +25,11 @@ public class MessageController {
 
     //1 message opvragen messageId
     @GetMapping("/{messageId}")
-    //ToDo: Authorization fix: user get
+    @CrossOrigin(origins = "*")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<MessageResource> findMessageByMessageId(@PathVariable int messageId) {
         Message message= messageService.findMessage(messageId);
-        MessageResource messageResource = new MessageResource();
-        messageResource.setChatroom(message.getChatroom());
-        messageResource.setMessage(message.getMessage());
+        MessageResource messageResource = createMessageResource(message);
         return new ResponseEntity<>(messageResource, HttpStatus.OK);
     }
 
@@ -69,6 +67,7 @@ public class MessageController {
 
     //Een message verwijderen
     @DeleteMapping("/{messageId}")
+    @CrossOrigin(origins = "*")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<User> deleteUser(@PathVariable("messageId") Integer messageId) {
         messageService.deleteMessage(messageId);
@@ -76,19 +75,54 @@ public class MessageController {
     }
 
     @PostMapping
+    @CrossOrigin(origins = "*")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<Message> createMessage(@Valid @RequestBody MessageResource messageResource) {
         Message message = new Message();
         message.setMessage(messageResource.getMessage());
         message.setChatroom(messageResource.getChatroom());
+        message.setUserId(messageResource.getUserId());
+        message.setUsername(messageResource.getUsername());
+
         Message out = messageService.addMessage(message);
         return new ResponseEntity<>(out, HttpStatus.OK);
     }
+
+    //Alle messages voor user opvragen
+    @GetMapping("/username/{username}")
+    @CrossOrigin(origins = "*")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    public ResponseEntity<MessageGetResource> findUsernameMessages(@PathVariable("username") String username) {
+        List<Message> messages= messageService.getMessageForUsername(username);
+        MessageGetResource messageGetResource= new MessageGetResource();
+        messageGetResource.setMessages(new ArrayList<>());
+        for (Message message : messages){
+            MessageResource messageResource = createMessageResource(message);
+            messageGetResource.getMessages().add(messageResource);
+        }
+        return new ResponseEntity<>(messageGetResource, HttpStatus.OK);
+    }
+    @GetMapping("/userid/{userid}")
+    @CrossOrigin(origins = "*")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    public ResponseEntity<MessageGetResource> findUserIdMessages(@PathVariable("userid") int userId) {
+        List<Message> messages= messageService.getMessageForUserId(userId);
+        MessageGetResource messageGetResource= new MessageGetResource();
+        messageGetResource.setMessages(new ArrayList<>());
+        for (Message message : messages){
+            MessageResource messageResource = createMessageResource(message);
+            messageGetResource.getMessages().add(messageResource);
+        }
+        return new ResponseEntity<>(messageGetResource, HttpStatus.OK);
+    }
+
 
     private MessageResource createMessageResource(Message message){
         MessageResource messageResource = new MessageResource();
         messageResource.setChatroom(message.getChatroom());
         messageResource.setMessage(message.getMessage());
+        messageResource.setUserId(message.getUserId());
+        messageResource.setUsername(message.getUsername());
         return messageResource;
     }
 }

@@ -17,20 +17,14 @@ import java.util.Date;
 public class WebSocketController {
 
     private final SimpMessagingTemplate template;
-    private MessageService messageService;
 
     @Autowired
-    public WebSocketController(SimpMessagingTemplate template, MessageService messageService) {
+    public WebSocketController(SimpMessagingTemplate template) {
         this.template = template;
-        this.messageService=messageService;
     }
 
     @MessageMapping("/send/message/{chatroom}")
     public void onRecieveMessage(@PathVariable("chatroom") String chatroom, String message) {
-        Message out = messageService.addMessage(new Message(message,chatroom));
-        System.out.println("---------- ---------- ---------- ---------- message Added ---------- ---------- ---------- ----------");
-        System.out.println(out);
-        System.out.println("---------- ---------- ---------- ---------- message Added ---------- ---------- ---------- ----------");
         this.template.convertAndSend("/chat/" + chatroom,
                 new SimpleDateFormat("HH:mm:ss").format(new Date()) + "- " + message);
     }

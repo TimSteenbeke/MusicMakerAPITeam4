@@ -12,4 +12,8 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
     List<Message> findMessagesByChatroom(String chatroom);
 
     Message findMessageById(int id);
+
+    List<Message> findMessageByUserId(int userId);
+
+    List<Message> findMessageByUsername(String username);
 }
