@@ -17,8 +17,6 @@ public class LessonResource {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime enddatetime;
     private int courseid;
-    // private List<Agenda> agendas;
-
 
     public LessonResource(LocalDateTime startdatetime, LocalDateTime enddatetime, int courseid) {
         this.startdatetime = startdatetime;

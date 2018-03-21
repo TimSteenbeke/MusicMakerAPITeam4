@@ -102,16 +102,12 @@ public class LessonController {
 
         lesson.setStartDateTime(lessonResource.getStartdatetime().plusHours(1));
         lesson.setEndDateTime(lessonResource.getEnddatetime().plusHours(1));
-        //Course ophalen
+        //get course
         Course course = courseService.getCourse(lessonResource.getCourseid());
         lesson.setCourse(course);
 
 
-        //Voor iedere User in Course van les ( les toevoegen aan agenda van user) = Best aparte service voor maken
-        //agendaService.updateLessonFromEveryAgenda(lesson);
-
-
-        //Lesson toevoegen
+        //add lesson
         lessonService.updateLesson(lesson);
         return new ResponseEntity<>(lessonResource,HttpStatus.OK);
     }

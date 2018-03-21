@@ -1,4 +1,4 @@
-/*
+
 package be.kdg.ip.restTests;
 
 import be.kdg.ip.OAuthHelper;
@@ -43,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestAgendaController {
 
-    /*@Autowired
+    @Autowired
     private MockMvc mockMvc;
 
     @Autowired
@@ -51,9 +51,6 @@ public class TestAgendaController {
 
     @Autowired
     private AgendaController controller;
-
-    @MockBean
-    private AgendaService agendaService;
 
     @Autowired
     UserService userService;
@@ -148,4 +145,4 @@ public class TestAgendaController {
         }
     }
 }
-*/
+

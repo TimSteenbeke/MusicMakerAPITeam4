@@ -10,7 +10,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Null;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -23,7 +22,7 @@ public class CourseTypeController {
         this.courseTypeService = courseTypeService;
     }
 
-    @RequestMapping(method = RequestMethod.GET,value ="api/courseTypes/{courseTypeId}")
+    @RequestMapping(method = RequestMethod.GET, value = "api/courseTypes/{courseTypeId}")
     //ToDo: Authorization fix
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<CourseTypeResource> getCourseType(@PathVariable("courseTypeId") int courseTypeId) {
@@ -34,13 +33,13 @@ public class CourseTypeController {
         courseTypeResource.setDescription(courseType.getDescription());
         courseTypeResource.setPrice(courseType.getPrice());
 
-        return new ResponseEntity<CourseTypeResource>(courseTypeResource, HttpStatus.OK);
+        return new ResponseEntity<>(courseTypeResource, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value="api/courseTypes/{courseTypeId}")
+    @RequestMapping(method = RequestMethod.PUT, value = "api/courseTypes/{courseTypeId}")
     //ToDo: Authorization fix: courses delete
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<CourseType> updateCourseType(@PathVariable("courseTypeId") int courseTypeId, @RequestBody CourseTypeResource courseTypeResource){
+    public ResponseEntity<CourseType> updateCourseType(@PathVariable("courseTypeId") int courseTypeId, @RequestBody CourseTypeResource courseTypeResource) {
         CourseType courseType = courseTypeService.getCourseType(courseTypeId);
         courseType.setCourseTypeId(courseTypeId);
         courseType.setDescription(courseTypeResource.getDescription());
@@ -50,7 +49,7 @@ public class CourseTypeController {
         return new ResponseEntity<>(out, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE,value ="api/courseTypes/{courseTypeId}")
+    @RequestMapping(method = RequestMethod.DELETE, value = "api/courseTypes/{courseTypeId}")
     //ToDo: Authorization fix
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<CourseTypeResource> removeCourseType(@PathVariable("courseTypeId") int courseTypeId) {
@@ -60,7 +59,7 @@ public class CourseTypeController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(method = RequestMethod.POST,value ="api/courseTypes")
+    @RequestMapping(method = RequestMethod.POST, value = "api/courseTypes")
     //ToDo: Authorization fix
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<CourseType> addCourseType(@Valid @RequestBody CourseTypeResource courseTypeResource) {
@@ -73,7 +72,7 @@ public class CourseTypeController {
     }
 
 
-    @RequestMapping(method = RequestMethod.GET,value ="api/courseTypes")
+    @RequestMapping(method = RequestMethod.GET, value = "api/courseTypes")
     //ToDo: Authorization fix
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public List<CourseType> getAllCourseTypes() {

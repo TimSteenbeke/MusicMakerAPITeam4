@@ -25,6 +25,13 @@ public class InstrumentLevel {
     public InstrumentLevel() {
     }
 
+    public InstrumentLevel(int maxLevel, int level, Instrument instrument, User user) {
+        this.maxLevel = maxLevel;
+        this.level = level;
+        this.instrument = instrument;
+        this.user = user;
+    }
+
     public int getInstrumentLevelId() {
         return InstrumentLevelId;
     }
