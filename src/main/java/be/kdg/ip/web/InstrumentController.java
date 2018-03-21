@@ -71,6 +71,7 @@ public class InstrumentController {
         instrumentGetResource.setImage(new sun.misc.BASE64Encoder().encode(out.getImage()));
         instrumentGetResource.setInstrumentname(out.getInstrumentName());
         instrumentGetResource.setInstrumentCategory(out.getInstrumentCategory());
+        instrumentGetResource.setInstrumentid(out.getInstrumentId());
 
         return new ResponseEntity<>(instrumentGetResource, HttpStatus.OK);
     }
@@ -88,6 +89,7 @@ public class InstrumentController {
         instrumentGetResource.setImage(new sun.misc.BASE64Encoder().encode(instrument.getImage()));
         instrumentGetResource.setInstrumentname(instrument.getInstrumentName());
         instrumentGetResource.setInstrumentCategory(instrument.getInstrumentCategory());
+        instrumentGetResource.setInstrumentid(instrument.getInstrumentId());
         return new ResponseEntity<>(instrumentGetResource, HttpStatus.OK);
     }
 
@@ -106,6 +108,7 @@ public class InstrumentController {
             instrumentGetResource.setImage(new sun.misc.BASE64Encoder().encode(i.getImage()));
             instrumentGetResource.setInstrumentname(i.getInstrumentName());
             instrumentGetResource.setInstrumentCategory(i.getInstrumentCategory());
+            instrumentGetResource.setInstrumentid(i.getInstrumentId());
             instrumentGetResources.add(instrumentGetResource);
         }
         return new ResponseEntity<>(instrumentGetResources, HttpStatus.OK);
@@ -155,6 +158,7 @@ public class InstrumentController {
         instrumentGetResource.setImage(new sun.misc.BASE64Encoder().encode(out.getImage()));
         instrumentGetResource.setInstrumentname(out.getInstrumentName());
         instrumentGetResource.setInstrumentCategory(out.getInstrumentCategory());
+        instrumentGetResource.setInstrumentid(out.getInstrumentId());
 
         return new ResponseEntity<>(instrumentGetResource, HttpStatus.OK);
     }

@@ -43,8 +43,8 @@ public class LessonController {
 
         //Create lesson based on lessonResource
         Lesson lesson = new Lesson();
-        lesson.setStartDateTime(lessonResource.getStartdatetime());
-        lesson.setEndDateTime(lessonResource.getEnddatetime());
+        lesson.setStartDateTime(lessonResource.getStartdatetime().plusHours(1));
+        lesson.setEndDateTime(lessonResource.getEnddatetime().plusHours(1));
         //Get a course
         Course course = courseService.getCourse(lessonResource.getCourseid());
         lesson.setCourse(course);
@@ -100,8 +100,8 @@ public class LessonController {
 
         Lesson lesson = lessonService.getLesson(id);
 
-        lesson.setStartDateTime(lessonResource.getStartdatetime());
-        lesson.setEndDateTime(lessonResource.getEnddatetime());
+        lesson.setStartDateTime(lessonResource.getStartdatetime().plusHours(1));
+        lesson.setEndDateTime(lessonResource.getEnddatetime().plusHours(1));
         //Course ophalen
         Course course = courseService.getCourse(lessonResource.getCourseid());
         lesson.setCourse(course);

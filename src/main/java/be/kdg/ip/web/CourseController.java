@@ -7,23 +7,22 @@ import be.kdg.ip.domain.User;
 import be.kdg.ip.services.api.CourseService;
 import be.kdg.ip.services.api.CourseTypeService;
 import be.kdg.ip.services.api.LessonService;
+import be.kdg.ip.services.exceptions.UserServiceException;
 import be.kdg.ip.web.dto.CourseDTO;
-import be.kdg.ip.web.resources.LessonResource;
-import be.kdg.ip.web.resources.LessonWithStudentsResource;
-import be.kdg.ip.web.resources.LessonsResource;
+import be.kdg.ip.web.resources.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import be.kdg.ip.services.api.UserService;
-import be.kdg.ip.web.resources.CourseResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 @CrossOrigin(origins = "*")
@@ -100,15 +99,19 @@ public class CourseController {
 
             //Add all students to the course
             List<User> students = new ArrayList<User>();
-            for (Integer studentid : courseResource.getStudentids()) {
-                students.add(userService.findUser(studentid));
+            if (courseResource.getStudentids() != null) {
+                for (Integer studentid : courseResource.getStudentids()) {
+                    students.add(userService.findUser(studentid));
+                }
             }
             course.setStudents(students);
 
             //Add all teachers to the course
             List<User> teachers = new ArrayList<User>();
-            for (Integer teacherid : courseResource.getTeacherids()) {
-                teachers.add(userService.findUser(teacherid));
+            if (courseResource.getTeacherids() != null) {
+                for (Integer teacherid : courseResource.getTeacherids()) {
+                    teachers.add(userService.findUser(teacherid));
+                }
             }
 
             course.setTeachers(teachers);
@@ -125,7 +128,7 @@ public class CourseController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<CourseResource> updateCourse(@PathVariable("courseId") int courseId) {
         courseService.removeCourse(courseId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(method = RequestMethod.GET,value ="api/courses/{courseId}")
@@ -167,6 +170,27 @@ public class CourseController {
     }
 
 
+    @RequestMapping(method = RequestMethod.GET,value = "api/mycourses")
+    public ResponseEntity<MyCoursesResource> getMyCourses(Principal principal) {
+        try {
+            User user = userService.findUserByUsername(principal.getName());
+
+            MyCoursesResource myCoursesResource = new MyCoursesResource();
+            myCoursesResource.setTeachesCourses(user.getTeachescourses());
+            myCoursesResource.setFollowCourses(user.getCourses());
+
+            return new ResponseEntity<MyCoursesResource>(myCoursesResource,HttpStatus.OK);
+
+        } catch (UserServiceException e) {
+           return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NullPointerException.class)
+    public String return404(NullPointerException ex) {
+        return ex.getMessage();
+    }
 
 
 }
