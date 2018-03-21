@@ -12,9 +12,9 @@ public class GroupUserResource {
     private int groupid;
 
     private String name;
-    @JsonIgnoreProperties({"username","lastname","password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired"})
+    @JsonIgnoreProperties({"password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired"})
     private User supervisor;
-    @JsonIgnoreProperties({"username","lastname","password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired"})
+    @JsonIgnoreProperties({"password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired"})
     private List<User> users;
     private List<Integer> userids;
     private List<NewsItem> newsItems;
