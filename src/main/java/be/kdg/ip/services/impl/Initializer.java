@@ -1,5 +1,3 @@
-/*
-
 package be.kdg.ip.services.impl;
 
 import be.kdg.ip.domain.*;
@@ -213,4 +211,3 @@ public class Initializer {
         //GROUPS TOEVOEGEN
     }
 }
-*/

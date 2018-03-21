@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RoleRoleTypeConvertor /*extends CustomConverter<Role, Role.RoleType>*/ {
-    // https://programmeren3-repaircafe.rhcloud.com/repair-cafe-applicatie/repair-cafe-frontend/presentation-layer/orika/
 
     /*@Override
     public Role.RoleType convert(Role role, Type<? extends Role.RoleType> type, MappingContext mappingContext) {

@@ -6,13 +6,9 @@ import be.kdg.ip.domain.User;
 import be.kdg.ip.services.exceptions.UserServiceException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
-import sun.nio.cs.US_ASCII;
 
 import java.util.List;
 
-/**
- * Created by wouter on 21.12.16.
- */
 @Service
 public interface UserService extends UserDetailsService {
 
