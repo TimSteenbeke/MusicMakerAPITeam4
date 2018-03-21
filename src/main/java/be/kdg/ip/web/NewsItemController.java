@@ -1,5 +1,6 @@
 package be.kdg.ip.web;
 
+import be.kdg.ip.domain.Group;
 import be.kdg.ip.domain.NewsItem;
 import be.kdg.ip.services.api.GroupService;
 import be.kdg.ip.services.api.NewsItemService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
