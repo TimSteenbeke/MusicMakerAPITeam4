@@ -14,6 +14,7 @@ public class Performance {
 
     @Id
     @GeneratedValue
+    @Column
     private int performanceId;
 
     @Column
