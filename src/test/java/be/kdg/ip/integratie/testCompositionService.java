@@ -87,29 +87,44 @@ public class testCompositionService {
         mockMvc.perform(request)
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.titel", CoreMatchers.is(composition.getTitle())));
+                .andExpect(jsonPath("$.title", CoreMatchers.is(composition.getTitle())))
+                .andExpect(jsonPath("$.artist", CoreMatchers.is(composition.getArtist())))
+                .andExpect(jsonPath("$.language", CoreMatchers.is(composition.getLanguage())))
+                .andExpect(jsonPath("$.genre", CoreMatchers.is(composition.getGenre())))
+                .andExpect(jsonPath("$.subject", CoreMatchers.is(composition.getSubject())))
+                .andExpect(jsonPath("$.instrumentType", CoreMatchers.is(composition.getInstrumentType())))
+                .andExpect(jsonPath("$.link", CoreMatchers.is(composition.getLink())))
+                .andExpect(jsonPath("$.fileFormat", CoreMatchers.is(composition.getFileFormat())))
+                .andExpect(jsonPath("$.content", CoreMatchers.is(new sun.misc.BASE64Encoder().encode(composition.getContent()))));
     }
 
     @Test
     public void testGetAllCompositions() throws Exception {
         RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser","ADMIN");
 
-        Composition composition = new Composition();
-        composition.setTitle("TitelTest");
+        Composition composition = new Composition("Tim", "Test", "Test","Test","Test","Test","Test","Test",new byte[5]);
 
         List<Composition> compositionList = singletonList(composition);
 
         given(compositionService.getAllCompositions()).willReturn(compositionList);
 
-        mockMvc.perform(get("http://localhost:8080/api/compositions/").with(bearerToken)
+        mockMvc.perform(get("http://localhost:8080/api/compositions").with(bearerToken)
                 .contentType(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].titel", is(composition.getTitle())));
+                .andExpect(jsonPath("$[0].title", CoreMatchers.is(composition.getTitle())))
+                .andExpect(jsonPath("$[0].artist", CoreMatchers.is(composition.getArtist())))
+                .andExpect(jsonPath("$[0].language", CoreMatchers.is(composition.getLanguage())))
+                .andExpect(jsonPath("$[0].genre", CoreMatchers.is(composition.getGenre())))
+                .andExpect(jsonPath("$[0].subject", CoreMatchers.is(composition.getSubject())))
+                .andExpect(jsonPath("$[0].instrumentType", CoreMatchers.is(composition.getInstrumentType())))
+                .andExpect(jsonPath("$[0].link", CoreMatchers.is(composition.getLink())))
+                .andExpect(jsonPath("$[0].fileFormat", CoreMatchers.is(composition.getFileFormat())))
+                .andExpect(jsonPath("$[0].content", CoreMatchers.is(new sun.misc.BASE64Encoder().encode(composition.getContent()))));
     }
 
-    /*@Test
+    @Test
     public void testPostComposition() throws Exception {
         RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("mockedUser","ADMIN");
 
@@ -133,7 +148,7 @@ public class testCompositionService {
                 .accept(MediaType.MULTIPART_FORM_DATA))
                 .andDo(print())
                 .andExpect(status().isOk());
-    }*/
+    }
 
     @Test
     public void testGetCompositionWhenIdExists() throws Exception {
