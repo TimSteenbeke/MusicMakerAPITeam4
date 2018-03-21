@@ -1,5 +1,6 @@
 package be.kdg.ip.web;
 
+import be.kdg.ip.domain.Group;
 import be.kdg.ip.domain.NewsItem;
 import be.kdg.ip.services.api.GroupService;
 import be.kdg.ip.services.api.NewsItemService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -36,14 +38,20 @@ public class NewsItemController {
     private Logger logger = LoggerFactory.getLogger(NewsItemController.class);
 
     @RequestMapping(method = RequestMethod.POST, value = "/")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<NewsItemResource> addNewsItem(@Valid @RequestBody NewsItemResource newsItemResource, Principal principal) {
         NewsItem newsItem = new NewsItem();
         newsItem.setMessage(newsItemResource.getMessage());
         newsItem.setDate(new Date());
         newsItem.setEditor(principal.getName());
         newsItem.setTitle(newsItemResource.getTitle());
-        newsItem.setGroup(groupService.getGroup(newsItemResource.getGroupid()));
+
+
+        List<Group> groups = new ArrayList<>();
+        for (Integer groupId : newsItemResource.getGroupids()) {
+            groups.add(groupService.getGroup(groupId));
+        }
+        newsItem.setGroups(groups);
 
         String imageString = newsItemResource.getMessageImage();
 
@@ -76,14 +84,14 @@ public class NewsItemController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{newsitemId}")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<NewsItemResource> deleteNewsItem(@PathVariable("newsitemId") int newsitemId) {
         newsItemService.removeNewsItem(newsitemId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(value = "/newsitem/{newsitemId}", method = RequestMethod.PUT)
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<NewsItemResource> updateNewsItem(@PathVariable("newsitemId") int newsitemId, @RequestBody NewsItemResource newsItemResource) {
         NewsItem newsItem = newsItemService.getNewsItem(newsitemId);
         newsItem.setMessage(newsItemResource.getMessage());
@@ -104,4 +112,11 @@ public class NewsItemController {
 
         return new ResponseEntity<>(newsItemResource, HttpStatus.OK);
     }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NullPointerException.class)
+    public String return404(NullPointerException ex) {
+        return ex.getMessage();
+    }
+
 }

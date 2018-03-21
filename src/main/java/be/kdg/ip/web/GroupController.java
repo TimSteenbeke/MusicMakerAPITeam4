@@ -59,7 +59,7 @@ public class GroupController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<GroupUserResource> postNewGroup(@RequestBody GroupResource groupResource) {
         Group group = new Group();
         group.setName(groupResource.getName());
@@ -134,6 +134,7 @@ public class GroupController {
     }
 
     @DeleteMapping("/{groupId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<Group> deleteGroupById(@PathVariable("groupId") Integer groupId) {
         groupService.removeGroup(groupId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -141,6 +142,7 @@ public class GroupController {
 
 
     @RequestMapping(value = "/group/{id}", method = RequestMethod.PUT)
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<Group> updateGroup(@PathVariable("id") int id, @RequestBody GroupResource groupResource) {
 
         Group group = groupService.getGroup(id);

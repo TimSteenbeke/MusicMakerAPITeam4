@@ -36,7 +36,6 @@ public class PerformanceController {
     UserService userService;
 
     @PostMapping
-    //ToDo: Authorization fix: performance post
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<PerformanceResource> addPerformance(@Valid @RequestBody PerformanceResource performanceResource) {
 
@@ -59,6 +58,7 @@ public class PerformanceController {
     }
 
     @GetMapping("/{performanceId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<PerformanceGetResource> getPerformance(@PathVariable int performanceId){
 
         Performance performance = performanceService.getPerformance(performanceId);
@@ -74,6 +74,7 @@ public class PerformanceController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<List<PerformanceGetResource>> getAllPerformances(){
         List<Performance> performances = performanceService.getAllPerformances();
         List<PerformanceGetResource> performanceGetResources = new ArrayList<>();
@@ -91,6 +92,7 @@ public class PerformanceController {
     }
 
     @DeleteMapping("/{performanceId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<Performance> deletePerformance(@PathVariable("performanceId") Integer performanceId){
 
 
@@ -100,6 +102,7 @@ public class PerformanceController {
 
 
     @PutMapping("/performance/{id}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<PerformanceResource> updatePerformance(@PathVariable("id") int id, @RequestBody PerformanceResource performanceResource){
 
         Performance performance= performanceService.getPerformance(id);
@@ -118,9 +121,8 @@ public class PerformanceController {
         return new ResponseEntity<>(performanceResource,HttpStatus.OK);
     }
 
-
-
     @PostMapping("/present/{performanceid}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity registerUserPresent(@PathVariable("performanceid")  int performanceId, Principal principal) {
         try {
             User user = userService.findUserByUsername(principal.getName());
@@ -132,6 +134,7 @@ public class PerformanceController {
     }
 
     @PostMapping("/absent/{performanceid}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity registerUserAbsent(@PathVariable("performanceid")  int performanceId, Principal principal) {
         try {
             User user = userService.findUserByUsername(principal.getName());
@@ -143,6 +146,7 @@ public class PerformanceController {
     }
 
     @GetMapping("/attendancestatus/{performanceid}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<StatusDTO> getAttendanceStatus(@PathVariable("performanceid")  int performanceId, Principal principal) {
         try {
             User user = userService.findUserByUsername(principal.getName());
