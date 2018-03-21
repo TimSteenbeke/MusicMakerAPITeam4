@@ -79,7 +79,7 @@ public class NewsItemController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<NewsItemResource> deleteNewsItem(@PathVariable("newsitemId") int newsitemId) {
         newsItemService.removeNewsItem(newsitemId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(value = "/newsitem/{newsitemId}", method = RequestMethod.PUT)
@@ -104,4 +104,11 @@ public class NewsItemController {
 
         return new ResponseEntity<>(newsItemResource, HttpStatus.OK);
     }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NullPointerException.class)
+    public String return404(NullPointerException ex) {
+        return ex.getMessage();
+    }
+
 }
