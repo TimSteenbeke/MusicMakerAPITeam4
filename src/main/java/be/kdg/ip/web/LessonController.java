@@ -43,8 +43,10 @@ public class LessonController {
 
         //Create lesson based on lessonResource
         Lesson lesson = new Lesson();
-        lesson.setStartDateTime(lessonResource.getStartdatetime().plusHours(1));
-        lesson.setEndDateTime(lessonResource.getEnddatetime().plusHours(1));
+        if(lessonResource.getStartdatetime() != null && lessonResource.getEnddatetime() != null) {
+            lesson.setStartDateTime(lessonResource.getStartdatetime().plusHours(1));
+            lesson.setEndDateTime(lessonResource.getEnddatetime().plusHours(1));
+        }
         //Get a course
         Course course = courseService.getCourse(lessonResource.getCourseid());
         lesson.setCourse(course);
@@ -61,7 +63,7 @@ public class LessonController {
         Lesson lesson = lessonService.getLesson(lessonId);
 
         LessonGetResource lessonGetResource = new LessonGetResource();
-
+        lessonGetResource.setId(lesson.getLessonId());
         lessonGetResource.setCourse(lesson.getCourse());
         lessonGetResource.setStartdatetime(lesson.getStartDateTime());
         lessonGetResource.setEnddatetime(lesson.getEndDateTime());
@@ -99,9 +101,10 @@ public class LessonController {
     public ResponseEntity<LessonResource> updateLesson(@PathVariable("id") int id, @RequestBody LessonResource lessonResource){
 
         Lesson lesson = lessonService.getLesson(id);
-
-        lesson.setStartDateTime(lessonResource.getStartdatetime().plusHours(1));
-        lesson.setEndDateTime(lessonResource.getEnddatetime().plusHours(1));
+        if(lessonResource.getStartdatetime() != null && lessonResource.getEnddatetime() != null) {
+            lesson.setStartDateTime(lessonResource.getStartdatetime().plusHours(1));
+            lesson.setEndDateTime(lessonResource.getEnddatetime().plusHours(1));
+        }
         //get course
         Course course = courseService.getCourse(lessonResource.getCourseid());
         lesson.setCourse(course);
@@ -161,7 +164,9 @@ public class LessonController {
         }
     }
 
-
-
-
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NullPointerException.class)
+    public String return404(NullPointerException ex) {
+        return ex.getMessage();
+    }
 }
