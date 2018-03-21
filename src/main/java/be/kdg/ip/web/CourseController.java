@@ -63,14 +63,14 @@ public class CourseController {
             course.setCourseType(courseType);
 
             //Add all students to the course
-            List<User> students = new ArrayList<User>();
+            List<User> students = new ArrayList<>();
             for (Integer studentid : courseResource.getStudentids()) {
                 students.add(userService.findUser(studentid));
             }
             course.setStudents(students);
 
             //Add all teachers to the course
-            List<User> teachers = new ArrayList<User>();
+            List<User> teachers = new ArrayList<>();
             for (Integer teacherid : courseResource.getTeacherids()) {
                 teachers.add(userService.findUser(teacherid));
             }
@@ -87,7 +87,7 @@ public class CourseController {
     @RequestMapping(method = RequestMethod.PUT, value="api/courses/{courseId}")
     //ToDo: Authorization fix: courses put
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<CourseResource> updateCourse(@PathVariable("courseId") int courseId,@Valid @RequestBody CourseResource courseResource) {
+    public ResponseEntity<CourseResource> deleteCourse(@PathVariable("courseId") int courseId, @Valid @RequestBody CourseResource courseResource) {
 
         CourseType courseType = courseTypeService.getCourseType(courseResource.getCourseTypeId());
 
@@ -98,7 +98,7 @@ public class CourseController {
             course.setCourseType(courseType);
 
             //Add all students to the course
-            List<User> students = new ArrayList<User>();
+            List<User> students = new ArrayList<>();
             if (courseResource.getStudentids() != null) {
                 for (Integer studentid : courseResource.getStudentids()) {
                     students.add(userService.findUser(studentid));
@@ -107,7 +107,7 @@ public class CourseController {
             course.setStudents(students);
 
             //Add all teachers to the course
-            List<User> teachers = new ArrayList<User>();
+            List<User> teachers = new ArrayList<>();
             if (courseResource.getTeacherids() != null) {
                 for (Integer teacherid : courseResource.getTeacherids()) {
                     teachers.add(userService.findUser(teacherid));
@@ -126,7 +126,7 @@ public class CourseController {
     @RequestMapping(method = RequestMethod.DELETE, value="api/courses/{courseId}")
     //ToDo: Authorization fix: courses delete
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<CourseResource> updateCourse(@PathVariable("courseId") int courseId) {
+    public ResponseEntity<CourseResource> deleteCourse(@PathVariable("courseId") int courseId) {
         courseService.removeCourse(courseId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -144,7 +144,7 @@ public class CourseController {
         CourseType courseType = courseTypeService.getCourseType(course.getCourseType().getCourseTypeId());
         courseDTO.setCourseType(courseType);
 
-        return new ResponseEntity<CourseDTO>(courseDTO,HttpStatus.OK);
+        return new ResponseEntity<>(courseDTO,HttpStatus.OK);
 
 
 
@@ -166,7 +166,7 @@ public class CourseController {
 
             lessonsResource.getLessonResources().add(lessonWithStudentsResource);
         }
-        return new ResponseEntity<LessonsResource>(lessonsResource,HttpStatus.OK);
+        return new ResponseEntity<>(lessonsResource,HttpStatus.OK);
     }
 
 
@@ -179,7 +179,7 @@ public class CourseController {
             myCoursesResource.setTeachesCourses(user.getTeachescourses());
             myCoursesResource.setFollowCourses(user.getCourses());
 
-            return new ResponseEntity<MyCoursesResource>(myCoursesResource,HttpStatus.OK);
+            return new ResponseEntity<>(myCoursesResource,HttpStatus.OK);
 
         } catch (UserServiceException e) {
            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

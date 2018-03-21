@@ -6,6 +6,8 @@ import be.kdg.ip.services.api.GroupService;
 import be.kdg.ip.services.api.NewsItemService;
 import be.kdg.ip.services.api.UserService;
 import be.kdg.ip.web.resources.NewsItemResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,51 +35,59 @@ public class NewsItemController {
     @Autowired
     GroupService groupService;
 
-    @RequestMapping(method = RequestMethod.POST,value ="/")
+    private Logger logger = LoggerFactory.getLogger(NewsItemController.class);
+
+    @RequestMapping(method = RequestMethod.POST, value = "/")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<NewsItemResource> addNewsItem(@Valid @RequestBody NewsItemResource newsItemResource,Principal principal) {
+    public ResponseEntity<NewsItemResource> addNewsItem(@Valid @RequestBody NewsItemResource newsItemResource, Principal principal) {
         NewsItem newsItem = new NewsItem();
         newsItem.setMessage(newsItemResource.getMessage());
         newsItem.setDate(new Date());
         newsItem.setEditor(principal.getName());
         newsItem.setTitle(newsItemResource.getTitle());
-        newsItem.setGroup(groupService.getGroup(newsItemResource.getGroupid()));
+
+
+        List<Group> groups = new ArrayList<>();
+        for (Integer groupId : newsItemResource.getGroupids()) {
+            groups.add(groupService.getGroup(groupId));
+        }
+        newsItem.setGroups(groups);
 
         String imageString = newsItemResource.getMessageImage();
 
-        if(!imageString.equals("")){
+        if (!imageString.equals("")) {
             try {
                 byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
                 newsItem.setMessageImage(decodedString);
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                logger.error("Error converting image while adding a new news item.");
             }
         }
 
         newsItemService.addNewsItem(newsItem);
 
-        return  new ResponseEntity<>(newsItemResource, HttpStatus.OK);
+        return new ResponseEntity<>(newsItemResource, HttpStatus.OK);
     }
 
     @GetMapping("/{newsitemId}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<NewsItem> findNewsItemById(@PathVariable int newsitemId) {
         NewsItem newsItem = newsItemService.getNewsItem(newsitemId);
-        return new ResponseEntity<NewsItem>(newsItem, HttpStatus.OK);
+        return new ResponseEntity<>(newsItem, HttpStatus.OK);
     }
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<List<NewsItem>> findAll(){
+    public ResponseEntity<List<NewsItem>> findAll() {
         List<NewsItem> newsItems = newsItemService.getNewsItems();
-        return new ResponseEntity<>(newsItems,HttpStatus.OK);
+        return new ResponseEntity<>(newsItems, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value="/{newsitemId}")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{newsitemId}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<NewsItemResource> deleteNewsItem(@PathVariable("newsitemId") int newsitemId) {
         newsItemService.removeNewsItem(newsitemId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(value = "/newsitem/{newsitemId}", method = RequestMethod.PUT)
@@ -89,12 +99,12 @@ public class NewsItemController {
 
         String imageString = newsItemResource.getMessageImage();
 
-        if(imageString != null){
+        if (imageString != null) {
             try {
                 byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
                 newsItem.setMessageImage(decodedString);
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                logger.error("Error converting image while updating a news item.");
             }
         }
 
@@ -102,4 +112,11 @@ public class NewsItemController {
 
         return new ResponseEntity<>(newsItemResource, HttpStatus.OK);
     }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NullPointerException.class)
+    public String return404(NullPointerException ex) {
+        return ex.getMessage();
+    }
+
 }

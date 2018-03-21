@@ -8,8 +8,8 @@ public class InstrumentLevel {
 
     @Id
     @GeneratedValue
-    @Column(name="InstrumentLevelId",nullable = false)
-    private int InstrumentLevelId;
+    @Column(name="instrumentLevelId",nullable = false)
+    private int instrumentLevelId;
 
     @Column
     private int maxLevel;
@@ -25,12 +25,19 @@ public class InstrumentLevel {
     public InstrumentLevel() {
     }
 
+    public InstrumentLevel(int maxLevel, int level, Instrument instrument, User user) {
+        this.maxLevel = maxLevel;
+        this.level = level;
+        this.instrument = instrument;
+        this.user = user;
+    }
+
     public int getInstrumentLevelId() {
-        return InstrumentLevelId;
+        return instrumentLevelId;
     }
 
     public void setInstrumentLevelId(int instrumentLevelId) {
-        InstrumentLevelId = instrumentLevelId;
+        this.instrumentLevelId = instrumentLevelId;
     }
 
     public int getMaxLevel() {

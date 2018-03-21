@@ -8,6 +8,8 @@ import be.kdg.ip.services.api.UserService;
 import be.kdg.ip.services.exceptions.UserServiceException;
 import be.kdg.ip.web.resources.GroupResource;
 import be.kdg.ip.web.resources.GroupUserResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,8 @@ import java.util.List;
 public class GroupController {
     private final GroupService groupService;
     private final UserService userService;
+
+    private Logger logger = LoggerFactory.getLogger(GroupController.class);
 
     @Autowired
     public GroupController(GroupService groupService, UserService userService) {
@@ -71,11 +75,10 @@ public class GroupController {
         if(groupResource.getGroupimage() != null) {
             String imageString = groupResource.getGroupimage();
             try {
-                // byte[] name = Base64.getEncoder().encode("hello world".getBytes());
                 byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
                 group.setGroupImage(decodedString);
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                logger.error("Error converting image for new group.");
             }
         }
         groupService.addGroup(group);
@@ -154,11 +157,10 @@ public class GroupController {
         String imageString = groupResource.getGroupimage();
         if (groupResource.getGroupimage() != null) {
             try {
-                // byte[] name = Base64.getEncoder().encode("hello world".getBytes());
                 byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
                 group.setGroupImage(decodedString);
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                logger.error("Error converting image while updating group.");
             }
         }
 

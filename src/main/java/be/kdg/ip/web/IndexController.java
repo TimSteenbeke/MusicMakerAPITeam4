@@ -18,8 +18,6 @@ import java.net.URI;
 public class IndexController {
 
     @RequestMapping("/")
-    //ToDo: Authorization fix: index/home
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity index() {
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(URI.create("https://musicmaker-api-team4.herokuapp.com/swagger-ui.html"));

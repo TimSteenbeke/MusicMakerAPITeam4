@@ -24,7 +24,7 @@ public class Group {
     @OneToMany(mappedBy = "group")
     private List<Performance> performances;
 
-    @OneToMany(mappedBy = "group")
+    @ManyToMany(mappedBy = "groups")
     private List<NewsItem> newsItems;
 
     @Lob
@@ -106,5 +106,10 @@ public class Group {
     @Override
     public boolean equals(Object obj) {
         return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

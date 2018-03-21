@@ -7,7 +7,7 @@ public class RolesDTO {
     private List<RoleDTO> roles;
 
     public RolesDTO() {
-        this.roles = new ArrayList<RoleDTO>();
+        this.roles = new ArrayList<>();
     }
 
     public List<RoleDTO> getRoles() {

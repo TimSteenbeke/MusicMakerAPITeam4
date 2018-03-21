@@ -1,11 +1,16 @@
 package be.kdg.ip.web;
 
 import be.kdg.ip.domain.Composition;
+import be.kdg.ip.domain.User;
 import be.kdg.ip.services.api.CompositionService;
+import be.kdg.ip.services.api.UserService;
+import be.kdg.ip.services.exceptions.UserServiceException;
 import be.kdg.ip.web.assemblers.CompositionAssembler;
 import be.kdg.ip.web.resources.CompositionResource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.compress.utils.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,6 +22,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -25,18 +32,24 @@ import java.util.List;
 @RequestMapping("/api/compositions")
 public class CompositionController {
     private CompositionService compositionService;
+    private UserService userService;
     private CompositionAssembler compositionAssembler;
 
-    public CompositionController(CompositionService compositionService,CompositionAssembler compositionAssembler){
+
+    private Logger logger = LoggerFactory.getLogger(CompositionController.class);
+
+
+    public CompositionController(CompositionService compositionService,UserService userService,CompositionAssembler compositionAssembler){
+
         this.compositionService = compositionService;
+        this.userService = userService;
         this.compositionAssembler = compositionAssembler;
     }
 
     //uploading of a composition
     @RequestMapping(method = RequestMethod.POST, value="/", consumes = { "multipart/form-data" })
     @CrossOrigin(origins = "*")
-    public @ResponseBody ResponseEntity<?> upload(@RequestParam("files") MultipartFile files, @RequestParam("compresource") String compresource) throws Exception
-    {
+    public @ResponseBody ResponseEntity<?> upload(@RequestParam("files") MultipartFile files, @RequestParam("compresource") String compresource) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
 
         CompositionResource compositionResource =  mapper.readValue(compresource, CompositionResource.class);
@@ -61,7 +74,7 @@ public class CompositionController {
             composition.setContent(bytes);
 
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            logger.error("Error converting image when uploading a new composition.");
         }
 
         Composition out = compositionService.addComposition(composition);
@@ -84,7 +97,41 @@ public class CompositionController {
     public ResponseEntity<Composition> findCompositionById(@PathVariable int compositionId){
         Composition composition = compositionService.getComposition(compositionId);
 
-        return  new ResponseEntity<Composition>(composition,HttpStatus.OK);
+        return  new ResponseEntity<>(composition,HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value="/addtoplaylist/{compositionId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
+    public ResponseEntity<User> addCompositionToMyPlaylist(@PathVariable("compositionId") int compositionId,Principal principal) throws UserServiceException {
+        Composition composition = compositionService.getComposition(compositionId);
+        User user = userService.findUserByUsername(principal.getName());
+
+        List<Composition> compositions = user.getPlayList();
+
+        compositions.add(composition);
+
+        user.setPlayList(compositions);
+         userService.updateUser(user);
+
+
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/mycompositions")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    public ResponseEntity<List<Composition>> findCompositionsByUser(Principal principal){
+        User user = null;
+        List<Composition> playList = new ArrayList<>();
+
+        try {
+            user = userService.findUserByUsername(principal.getName());
+            playList = user.getPlayList();
+        } catch (UserServiceException e) {
+            e.printStackTrace();
+        }
+        return  new ResponseEntity<>(playList,HttpStatus.OK);
     }
 
     @GetMapping("/filter/{filter}")
