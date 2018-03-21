@@ -47,6 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
 public class TestCompositions {
+    
     @Autowired
     private MockMvc mockMvc;
 
