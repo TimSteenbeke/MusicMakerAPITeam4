@@ -33,8 +33,7 @@ public class InstrumentLevelController {
     }
 
     @PostMapping
-    //ToDo: Authorization fix: instrument post
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<InstrumentLevelResource> createInstrumentLevel(@Valid @RequestBody InstrumentLevelResource instrumentLevelResource) {
 
         InstrumentLevel instrumentLevel = new InstrumentLevel();
@@ -70,6 +69,7 @@ public class InstrumentLevelController {
     }
 
     @GetMapping("/{instrumentLevelId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<InstrumentLevelUserInstrumentResource> getInstrumentLevel(@PathVariable int instrumentLevelId) {
 
         InstrumentLevel instrumentLevel = instrumentLevelService.getIntrumentLevel(instrumentLevelId);
@@ -85,6 +85,7 @@ public class InstrumentLevelController {
 
     @GetMapping
     @CrossOrigin(origins = "*")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<List<InstrumentLevelUserInstrumentResource>> getAllInstrumentLevels() {
         List<InstrumentLevel> instrumentLevels = instrumentLevelService.getAllInstrumentLevels();
 
@@ -103,6 +104,7 @@ public class InstrumentLevelController {
 
     //fix delete in user!!!!!!
     @DeleteMapping("/{instrumentLevelId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<InstrumentLevel> deleteInstrumentLevel(@PathVariable("instrumentLevelId") Integer instrumentLevelId) {
         InstrumentLevel instrumentLevel = instrumentLevelService.getIntrumentLevel(instrumentLevelId);
 
@@ -118,6 +120,7 @@ public class InstrumentLevelController {
     }
 
     @RequestMapping(value = "/instrumentlevel/{instrumentLevelId}", method = RequestMethod.PUT)
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<InstrumentLevelUserInstrumentResource> updateInstrumentLevel(@PathVariable("instrumentLevelId") int instrumentLevelId, @RequestBody InstrumentLevelResource instrumentLevelResource){
         InstrumentLevel instrumentLevel = instrumentLevelService.getIntrumentLevel(instrumentLevelId);
         instrumentLevel.setMaxLevel(instrumentLevelResource.getMaxlevel());
@@ -143,6 +146,7 @@ public class InstrumentLevelController {
 
 
     @PostMapping("/instrumentleveldown/{id}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<InstrumentLevelUserInstrumentResource> decreaseLevel(@PathVariable("id") int id) {
 
         InstrumentLevel instrumentLevel = instrumentLevelService.getIntrumentLevel(id);
@@ -160,6 +164,7 @@ public class InstrumentLevelController {
     }
 
     @PostMapping("/instrumentlevelup/{id}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<InstrumentLevelUserInstrumentResource> increaseLevel(@PathVariable("id") int id) {
 
         InstrumentLevel instrumentLevel = instrumentLevelService.getIntrumentLevel(id);
@@ -175,4 +180,5 @@ public class InstrumentLevelController {
         instrumentLevelUserInstrumentResource.setUser(instrumentLevel.getUser());
         return new ResponseEntity<>(instrumentLevelUserInstrumentResource, HttpStatus.OK);
     }
+
 }

@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface PerformanceService {
     void addPerformance(Performance performance);
-    //TODO: cruds
     Performance getPerformance(int performanceId);
     List<Performance> getAllPerformances();
     void deletePerformance(int performanceId);

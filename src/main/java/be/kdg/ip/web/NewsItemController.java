@@ -38,7 +38,7 @@ public class NewsItemController {
     private Logger logger = LoggerFactory.getLogger(NewsItemController.class);
 
     @RequestMapping(method = RequestMethod.POST, value = "/")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<NewsItemResource> addNewsItem(@Valid @RequestBody NewsItemResource newsItemResource, Principal principal) {
         NewsItem newsItem = new NewsItem();
         newsItem.setMessage(newsItemResource.getMessage());
@@ -84,14 +84,14 @@ public class NewsItemController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{newsitemId}")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<NewsItemResource> deleteNewsItem(@PathVariable("newsitemId") int newsitemId) {
         newsItemService.removeNewsItem(newsitemId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(value = "/newsitem/{newsitemId}", method = RequestMethod.PUT)
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<NewsItemResource> updateNewsItem(@PathVariable("newsitemId") int newsitemId, @RequestBody NewsItemResource newsItemResource) {
         NewsItem newsItem = newsItemService.getNewsItem(newsitemId);
         newsItem.setMessage(newsItemResource.getMessage());

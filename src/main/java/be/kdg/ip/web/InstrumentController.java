@@ -39,8 +39,7 @@ public class InstrumentController {
 
     //Creation of an instrument
     @PostMapping
-    //ToDo: Authorization fix: instrument post
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<InstrumentGetResource> createInstrument(@Valid @RequestBody InstrumentResource instrumentResource) {
         Instrument in = new Instrument();
         in.setInstrumentCategory(instrumentCategoryService.getInstrumentCategory(instrumentResource.getInstrumentid()));
@@ -75,8 +74,7 @@ public class InstrumentController {
 
     //Request 1 instrument
     @GetMapping("/{instrumentId}")
-    //ToDo: Authorization fix: get instrument
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<InstrumentGetResource> findInstrumentById(@PathVariable int instrumentId) {
         Instrument instrument = instrumentService.getInstrument(instrumentId);
 
@@ -93,7 +91,6 @@ public class InstrumentController {
     //Request all instruments
     @GetMapping
     @CrossOrigin(origins = "*")
-    //ToDo: Authorization fix: get all instrument
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<List<InstrumentGetResource>> findAll() {
         List<Instrument> instruments = instrumentService.getAllInstruments();
@@ -113,8 +110,7 @@ public class InstrumentController {
 
     //Delete an instrument
     @DeleteMapping("/{instrumentId}")
-    //ToDo: Authorization fix: delete instrument
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<Instrument> deleteInstrumentById(@PathVariable("instrumentId") Integer instrumentId) {
         Instrument instrument = instrumentService.getInstrument(instrumentId);
         instrumentService.removeInstrument(instrument.getInstrumentId());
@@ -124,8 +120,7 @@ public class InstrumentController {
 
     //Update an instrument
     @RequestMapping(value = "/instrument/{id}", method = RequestMethod.PUT)
-    //ToDo: Authorization fix: instrument updaten
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<InstrumentGetResource> updateInstrument(@PathVariable("id") int id, @RequestBody InstrumentUpdateResource instrumentUpdateResource) {
         Instrument in = instrumentService.getInstrument(id);
         in.setInstrumentName(instrumentUpdateResource.getInstrumentname());
@@ -159,4 +154,5 @@ public class InstrumentController {
 
         return new ResponseEntity<>(instrumentGetResource, HttpStatus.OK);
     }
+
 }

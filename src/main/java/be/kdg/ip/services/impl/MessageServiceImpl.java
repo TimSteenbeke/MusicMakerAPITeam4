@@ -33,7 +33,6 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<Message> getMessagesForChatroom(String chatroom) {
-//        return messageRepository.findAll().stream().filter(m -> m.getChatroom().equals(chatroom)).collect(Collectors.toList());
         return messageRepository.findMessagesByChatroom(chatroom);
     }
 
@@ -51,7 +50,6 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public Message findMessage(int id) {
-//        return messageRepository.findAll().stream().filter(m -> m.getId().equals(id)).collect(Collectors.toList());
         return messageRepository.findMessageById(id);
     }
 

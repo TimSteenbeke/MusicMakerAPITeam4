@@ -38,8 +38,7 @@ public class CompositionController {
 
     private Logger logger = LoggerFactory.getLogger(CompositionController.class);
 
-
-    public CompositionController(CompositionService compositionService,UserService userService,CompositionAssembler compositionAssembler){
+    public CompositionController(CompositionService compositionService, UserService userService, CompositionAssembler compositionAssembler) {
 
         this.compositionService = compositionService;
         this.userService = userService;
@@ -47,12 +46,14 @@ public class CompositionController {
     }
 
     //uploading of a composition
-    @RequestMapping(method = RequestMethod.POST, value="/", consumes = { "multipart/form-data" })
+    @RequestMapping(method = RequestMethod.POST, value = "/", consumes = {"multipart/form-data"})
     @CrossOrigin(origins = "*")
-    public @ResponseBody ResponseEntity<?> upload(@RequestParam("files") MultipartFile files, @RequestParam("compresource") String compresource) throws IOException {
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    public @ResponseBody
+    ResponseEntity<?> upload(@RequestParam("files") MultipartFile files, @RequestParam("compresource") String compresource) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
 
-        CompositionResource compositionResource =  mapper.readValue(compresource, CompositionResource.class);
+        CompositionResource compositionResource = mapper.readValue(compresource, CompositionResource.class);
         Composition composition = new Composition();
         composition.setTitle(compositionResource.getTitle());
         composition.setArtist(compositionResource.getArtist());
@@ -67,7 +68,7 @@ public class CompositionController {
         try {
             composition.setFileFormat(files.getOriginalFilename());
 
-            byte [] byteArr = files.getBytes();
+            byte[] byteArr = files.getBytes();
             InputStream inputStream = new ByteArrayInputStream(byteArr);
             byte[] bytes = IOUtils.toByteArray(inputStream);
 
@@ -86,23 +87,23 @@ public class CompositionController {
     @GetMapping
     @CrossOrigin(origins = "*")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<List<Composition>> findAll(){
+    public ResponseEntity<List<Composition>> findAll() {
         List<Composition> compositions = compositionService.getAllCompositions();
-        return new ResponseEntity<>(compositions,HttpStatus.OK);
+        return new ResponseEntity<>(compositions, HttpStatus.OK);
     }
 
     //Request single composition
     @GetMapping("/{compositionId}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<Composition> findCompositionById(@PathVariable int compositionId){
+    public ResponseEntity<Composition> findCompositionById(@PathVariable int compositionId) {
         Composition composition = compositionService.getComposition(compositionId);
 
-        return  new ResponseEntity<>(composition,HttpStatus.OK);
+        return new ResponseEntity<>(composition, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value="/addtoplaylist/{compositionId}")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
-    public ResponseEntity<User> addCompositionToMyPlaylist(@PathVariable("compositionId") int compositionId,Principal principal) throws UserServiceException {
+    @RequestMapping(method = RequestMethod.PUT, value = "/addtoplaylist/{compositionId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    public ResponseEntity<User> addCompositionToMyPlaylist(@PathVariable("compositionId") int compositionId, Principal principal) throws UserServiceException {
         Composition composition = compositionService.getComposition(compositionId);
         User user = userService.findUserByUsername(principal.getName());
 
@@ -111,17 +112,15 @@ public class CompositionController {
         compositions.add(composition);
 
         user.setPlayList(compositions);
-         userService.updateUser(user);
-
+        userService.updateUser(user);
 
 
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-
     @GetMapping("/mycompositions")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<List<Composition>> findCompositionsByUser(Principal principal){
+    public ResponseEntity<List<Composition>> findCompositionsByUser(Principal principal) {
         User user = null;
         List<Composition> playList = new ArrayList<>();
 
@@ -131,19 +130,19 @@ public class CompositionController {
         } catch (UserServiceException e) {
             e.printStackTrace();
         }
-        return  new ResponseEntity<>(playList,HttpStatus.OK);
+        return new ResponseEntity<>(playList, HttpStatus.OK);
     }
 
     @GetMapping("/filter/{filter}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
-    public ResponseEntity<List<Composition>> findCompositionByFilter(@PathVariable("filter") String filter){
+    public ResponseEntity<List<Composition>> findCompositionByFilter(@PathVariable("filter") String filter) {
         List<Composition> compositions = compositionService.getCompositionsByFilter(filter);
-        return new ResponseEntity<>(compositions,HttpStatus.OK);
+        return new ResponseEntity<>(compositions, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value="/composition/{compositionId}")
+    @RequestMapping(method = RequestMethod.PUT, value = "/composition/{compositionId}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
-    public ResponseEntity<CompositionResource> updateComposition(@PathVariable("compositionId") int compositionId,@Valid @RequestBody CompositionResource compositionResource) {
+    public ResponseEntity<CompositionResource> updateComposition(@PathVariable("compositionId") int compositionId, @Valid @RequestBody CompositionResource compositionResource) {
         Composition composition = compositionService.getComposition(compositionId);
 
         composition.setTitle(compositionResource.getTitle());
@@ -173,8 +172,8 @@ public class CompositionController {
         return new ResponseEntity<>(compositionAssembler.toResource(out), HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value="/{compositionId}")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{compositionId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<CompositionResource> deleteComposition(@PathVariable("compositionId") int compositionId) {
         compositionService.removeComposition(compositionId);
         return new ResponseEntity<>(HttpStatus.OK);
