@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 public class Initializer {
 
-    /*
+
     @Autowired
     private InstrumentService instrumentService;
 
@@ -49,7 +49,7 @@ public class Initializer {
 
     @Autowired
     private CourseTypeService courseTypeService;
-     */
+
 
 
 
@@ -127,6 +127,7 @@ public class Initializer {
 
 
     }
+
 
     /*
     @PostConstruct
@@ -256,5 +257,6 @@ public class Initializer {
         //GROUPS TOEVOEGEN
     }
     */
+
 }
 
