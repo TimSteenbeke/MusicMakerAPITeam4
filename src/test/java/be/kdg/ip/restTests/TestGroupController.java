@@ -1,22 +1,22 @@
-package be.kdg.ip.integratie;
+package be.kdg.ip.restTests;
 
 
 import be.kdg.ip.OAuthHelper;
 import be.kdg.ip.domain.Group;
-import be.kdg.ip.domain.User;
 import be.kdg.ip.domain.Role;
+import be.kdg.ip.domain.User;
 import be.kdg.ip.domain.roles.Administrator;
 import be.kdg.ip.domain.roles.Student;
 import be.kdg.ip.services.api.GroupService;
 import be.kdg.ip.services.api.RoleService;
 import be.kdg.ip.services.api.UserService;
+import be.kdg.ip.web.GroupController;
 import be.kdg.ip.web.resources.GroupResource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,9 +33,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static java.util.Collections.singletonList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -49,12 +48,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-public class TestGroupService {
+public class TestGroupController {
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
     private WebApplicationContext wac;
+
+    @Autowired
+    private GroupController controller;
 
     @Autowired
     private OAuthHelper oAuthHelper;
@@ -82,15 +84,20 @@ public class TestGroupService {
     }
 
     @Test
+    public void contextLoads() throws Exception {
+        assertThat(controller).isNotNull();
+    }
+
+    @Test
     public void testGetGroupById() throws Exception {
         RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("jef", "ADMIN");
 
-        User supervisor = new User("lode.wouters@student.kdg.be", "rootpwd", "Lode", "Wouters", null);
-        User newUser = new User("Michiel.bervoets@student.kdg.be", "testpwd2", "Michiel", "Bervoets", null);
+        User supervisor = new User("lode.wouters@student.kdg.be", "Lode", "Wouters", "testpwd", null);
+        User newUser = new User("Michiel.bervoets@student.kdg.be", "Michiel", "Bervoets", "testpwd2", null);
         List<User> users = new ArrayList<>();
         users.add(newUser);
 
-        Group group = new Group("testGroep",supervisor,users);
+        Group group = new Group("testGroep", supervisor, users);
 
         System.out.println(group);
         List<Group> getAllGroups = groupService.getAllGroups();
@@ -102,7 +109,11 @@ public class TestGroupService {
         mockMvc.perform(request)
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", CoreMatchers.is(group.getName())));
+                .andExpect(jsonPath("$.name", CoreMatchers.is(group.getName())))
+                .andExpect(jsonPath("$.supervisor.id", CoreMatchers.is(group.getSupervisor().getId())))
+                .andExpect(jsonPath("$.supervisor.firstname", CoreMatchers.is(group.getSupervisor().getFirstname())))
+                .andExpect(jsonPath("$.users[0].firstname" +
+                        "", CoreMatchers.is(group.getUsers().get(0).getFirstname())));
 
     }
 
@@ -123,7 +134,6 @@ public class TestGroupService {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)));
-
     }
 
     @Test
@@ -159,26 +169,6 @@ public class TestGroupService {
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
-    }
-
-    @Test
-    public void testAddMultipleUsersToGroup() {
-        Group group = new Group();
-        List<Group> groups = new ArrayList<>();
-        groups.add(group);
-        User newUser = new User("lode.wouters@student.kdg.be", "rootpwd", "Lode", "Wouters", null);
-        User newUser2 = new User("Michiel.bervoets@student.kdg.be", "testpwd2", "Michiel", "Bervoets", null);
-
-        List<User> users = new ArrayList<>();
-        users.add(newUser);
-        users.add(newUser2);
-
-
-
-        List<User> allUsers = this.groupService.getAllUsers(group.getGroupId());
-
-        assertEquals(allUsers.get(0).getId(), newUser.getId());
-        assertEquals(allUsers.get(1).getId(), newUser2.getId());
     }
 
     @Test

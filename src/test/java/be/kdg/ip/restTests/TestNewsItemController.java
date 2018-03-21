@@ -85,8 +85,6 @@ public class TestNewsItemController {
 
     @Test
     public void getNewsItemById() throws Exception{
-
-
         NewsItem newsItem = new NewsItem();
         newsItem.setNewsItemId(150);
         newsItem.setTitle("a fancy title");
@@ -195,8 +193,6 @@ public class TestNewsItemController {
                 .andExpect(status().isOk());
 
     }
-
-
 
 
     @Test
