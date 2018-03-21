@@ -1,5 +1,9 @@
 package be.kdg.ip.web.resources;
 
+import be.kdg.ip.domain.Role;
+
+import java.util.List;
+
 public class UserAddressDetailsResource {
     private int id;
     private String firstname;
@@ -11,6 +15,8 @@ public class UserAddressDetailsResource {
     private String country;
     private String username;
     private String userimage;
+    private List<Role> roles;
+    private List<Integer> roleids;
 
     public int getId(){return id;}
 
@@ -86,5 +92,21 @@ public class UserAddressDetailsResource {
 
     public void setUserimage(String userimage) {
         this.userimage = userimage;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    public List<Integer> getRoleids() {
+        return roleids;
+    }
+
+    public void setRoleids(List<Integer> roleids) {
+        this.roleids = roleids;
     }
 }

@@ -1,12 +1,14 @@
 package be.kdg.ip.web.resources;
 
+import java.util.List;
+
 public class NewsItemResource {
     private String message;
     private String editor;
     private String date;
     private String messageImage;
     private String title;
-    private Integer groupid;
+    private List<Integer> groupids;
 
     public String getMessage() {
         return message;
@@ -48,11 +50,11 @@ public class NewsItemResource {
         this.messageImage = messageImage;
     }
 
-    public Integer getGroupid() {
-        return groupid;
+    public List<Integer> getGroupids() {
+        return groupids;
     }
 
-    public void setGroupid(Integer groupid) {
-        this.groupid = groupid;
+    public void setGroupids(List<Integer> groupids) {
+        this.groupids = groupids;
     }
 }

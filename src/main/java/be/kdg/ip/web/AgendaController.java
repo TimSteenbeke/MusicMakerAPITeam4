@@ -39,6 +39,10 @@ public class AgendaController {
             for (Course course : user.getCourses()) {
                 lessons.addAll(course.getLessons());
             }
+
+            for (Course course: user.getTeachescourses()) {
+                lessons.addAll(course.getLessons());
+            }
             agendaResource.setLessons(lessons);
 
             List<Performance> performances = new ArrayList<>();

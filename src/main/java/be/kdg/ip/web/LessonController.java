@@ -37,8 +37,7 @@ public class LessonController {
 
     //@CrossOrigin(origins = "*")
     @PostMapping
-    //ToDo: Authorization fix: lesson post
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<LessonResource> addLesson(@Valid @RequestBody LessonResource lessonResource) {
 
         //Create lesson based on lessonResource
@@ -58,6 +57,7 @@ public class LessonController {
     }
 
     @GetMapping("/{lessonId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<LessonGetResource> getLesson(@PathVariable int lessonId){
 
         Lesson lesson = lessonService.getLesson(lessonId);
@@ -73,6 +73,7 @@ public class LessonController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<List<LessonGetResource>> getAllLessons(){
         List<Lesson> lessons = lessonService.getAllLessons();
         List<LessonGetResource> lessonGetResources = new ArrayList<>();
@@ -89,6 +90,7 @@ public class LessonController {
     }
 
     @DeleteMapping("/{lessonId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<Lesson> deleteLesson(@PathVariable("lessonId") Integer lessonId){
 
 
@@ -98,6 +100,7 @@ public class LessonController {
 
 
     @PutMapping("/lesson/{id}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<LessonResource> updateLesson(@PathVariable("id") int id, @RequestBody LessonResource lessonResource){
 
         Lesson lesson = lessonService.getLesson(id);
@@ -118,6 +121,7 @@ public class LessonController {
 
 
     @PostMapping("/absent/{lessonid}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity registerUserAbsent(@PathVariable("lessonid")  int lessonId, Principal principal) {
         try {
             User user = userService.findUserByUsername(principal.getName());
@@ -130,6 +134,7 @@ public class LessonController {
 
 
     @PostMapping("/present/{lessonid}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity registerUserPresent(@PathVariable("lessonid")  int lessonId, Principal principal) {
         try {
             User user = userService.findUserByUsername(principal.getName());
@@ -141,6 +146,7 @@ public class LessonController {
     }
 
     @GetMapping("/attendancestatus/{lessonid}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<StatusDTO> getAttendanceStatus(@PathVariable("lessonid")  int lessonId, Principal principal) {
         try {
             User user = userService.findUserByUsername(principal.getName());

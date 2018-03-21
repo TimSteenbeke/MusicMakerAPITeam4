@@ -3,15 +3,17 @@ package be.kdg.ip.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="newsitem")
 public class NewsItem {
     @Id
     @GeneratedValue
-    @Column(name="NewsItemId",nullable = false)
-    private int NewsItemId;
+    @Column(name="newsItemId",nullable = false)
+    private int newsItemId;
 
     @Column
     private String title;
@@ -23,8 +25,8 @@ public class NewsItem {
     private String editor;
 
     @JsonIgnore
-    @ManyToOne
-    private Group group;
+    @ManyToMany
+    private List<Group> groups;
 
     @Column
     private Date date;
@@ -42,6 +44,7 @@ public class NewsItem {
         this.message = message;
         this.editor = editor;
         this.date = date;
+        this.groups = new ArrayList<>();
     }
 
     public String getTitle() {
@@ -53,11 +56,11 @@ public class NewsItem {
     }
 
     public int getNewsItemId() {
-        return NewsItemId;
+        return newsItemId;
     }
 
     public void setNewsItemId(int newsItemId) {
-        NewsItemId = newsItemId;
+        this.newsItemId = newsItemId;
     }
 
     public String getMessage() {
@@ -76,12 +79,12 @@ public class NewsItem {
         this.editor = editor;
     }
 
-    public Group getGroup() {
-        return group;
+    public List<Group> getGroups() {
+        return groups;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
     }
 
     public Date getDate() {
