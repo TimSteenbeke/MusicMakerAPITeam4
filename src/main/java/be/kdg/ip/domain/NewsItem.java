@@ -12,8 +12,8 @@ import java.util.List;
 public class NewsItem {
     @Id
     @GeneratedValue
-    @Column(name="NewsItemId",nullable = false)
-    private int NewsItemId;
+    @Column(name="newsItemId",nullable = false)
+    private int newsItemId;
 
     @Column
     private String title;
@@ -56,11 +56,11 @@ public class NewsItem {
     }
 
     public int getNewsItemId() {
-        return NewsItemId;
+        return newsItemId;
     }
 
     public void setNewsItemId(int newsItemId) {
-        NewsItemId = newsItemId;
+        this.newsItemId = newsItemId;
     }
 
     public String getMessage() {

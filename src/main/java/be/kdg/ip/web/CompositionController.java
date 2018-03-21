@@ -1,7 +1,10 @@
 package be.kdg.ip.web;
 
 import be.kdg.ip.domain.Composition;
+import be.kdg.ip.domain.User;
 import be.kdg.ip.services.api.CompositionService;
+import be.kdg.ip.services.api.UserService;
+import be.kdg.ip.services.exceptions.UserServiceException;
 import be.kdg.ip.web.assemblers.CompositionAssembler;
 import be.kdg.ip.web.resources.CompositionResource;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +20,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -25,10 +30,12 @@ import java.util.List;
 @RequestMapping("/api/compositions")
 public class CompositionController {
     private CompositionService compositionService;
+    private UserService userService;
     private CompositionAssembler compositionAssembler;
 
-    public CompositionController(CompositionService compositionService,CompositionAssembler compositionAssembler){
+    public CompositionController(CompositionService compositionService,UserService userService,CompositionAssembler compositionAssembler){
         this.compositionService = compositionService;
+        this.userService = userService;
         this.compositionAssembler = compositionAssembler;
     }
 
@@ -85,6 +92,40 @@ public class CompositionController {
         Composition composition = compositionService.getComposition(compositionId);
 
         return  new ResponseEntity<Composition>(composition,HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value="/addtoplaylist/{compositionId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
+    public ResponseEntity<User> addCompositionToMyPlaylist(@PathVariable("compositionId") int compositionId,Principal principal) throws UserServiceException {
+        Composition composition = compositionService.getComposition(compositionId);
+        User user = userService.findUserByUsername(principal.getName());
+
+        List<Composition> compositions = user.getPlayList();
+
+        compositions.add(composition);
+
+        user.setPlayList(compositions);
+         userService.updateUser(user);
+
+
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/mycompositions")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    public ResponseEntity<List<Composition>> findCompositionsByUser(Principal principal){
+        User user = null;
+        List<Composition> playList = new ArrayList<>();
+
+        try {
+            user = userService.findUserByUsername(principal.getName());
+            playList = user.getPlayList();
+        } catch (UserServiceException e) {
+            e.printStackTrace();
+        }
+        return  new ResponseEntity<>(playList,HttpStatus.OK);
     }
 
     @GetMapping("/filter/{filter}")
