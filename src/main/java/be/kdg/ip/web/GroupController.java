@@ -83,7 +83,10 @@ public class GroupController {
             }
         }
         groupService.addGroup(group);
-
+        for (User user : group.getUsers()){
+            user.getGroups().add(group);
+            userService.updateUser(user);
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -148,6 +151,11 @@ public class GroupController {
     public ResponseEntity<Group> updateGroup(@PathVariable("id") int id, @RequestBody GroupResource groupResource) {
 
         Group group = groupService.getGroup(id);
+
+        for (User user : group.getUsers()){
+            user.getGroups().remove(group);
+        }
+
         group.setName(groupResource.getName());
 
         List<User> users = new ArrayList<>();
@@ -169,6 +177,11 @@ public class GroupController {
         }
 
         groupService.updateGroup(group);
+
+        for (User user : group.getUsers()){
+            user.getGroups().add(group);
+            userService.updateUser(user);
+        }
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
