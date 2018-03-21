@@ -2,6 +2,7 @@ package be.kdg.ip.web.resources;
 
 import be.kdg.ip.domain.NewsItem;
 import be.kdg.ip.domain.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.ArrayList;
@@ -16,7 +17,9 @@ public class GroupUserResource {
     private User supervisor;
     @JsonIgnoreProperties({"password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired"})
     private List<User> users;
+    @JsonIgnoreProperties({"password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired"})
     private List<Integer> userids;
+    @JsonIgnoreProperties({"groups"})
     private List<NewsItem> newsItems;
     private byte[] groupimage;
 
