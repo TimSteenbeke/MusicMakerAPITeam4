@@ -1,7 +1,5 @@
 package be.kdg.ip.domain;
 
-import com.sun.istack.internal.Nullable;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +28,7 @@ public class Group {
     private List<NewsItem> newsItems;
 
     @Lob
-    @Column
-    @Nullable
+    @Column(nullable = true)
     private byte[] groupImage;
 
 
