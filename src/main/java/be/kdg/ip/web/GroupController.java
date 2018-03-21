@@ -21,6 +21,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -51,7 +52,7 @@ public class GroupController {
             groupUserResource.setName(group.getName());
             groupUserResource.setSupervisor(group.getSupervisor());
             groupUserResource.setUsers(group.getUsers());
-
+            groupUserResource.setUserids(group.getUsers().stream().map(User :: getId).collect(Collectors.toList()));
             groupUserResources.add(groupUserResource);
         }
 
@@ -82,7 +83,10 @@ public class GroupController {
             }
         }
         groupService.addGroup(group);
-
+        for (User user : group.getUsers()){
+            user.getGroups().add(group);
+            userService.updateUser(user);
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -104,6 +108,7 @@ public class GroupController {
         }
 
         groupUserResource.setUsers(group.getUsers());
+        groupUserResource.setUserids(group.getUsers().stream().map(User :: getId).collect(Collectors.toList()));
 
         return new ResponseEntity<>(groupUserResource, HttpStatus.OK);
     }
@@ -146,6 +151,11 @@ public class GroupController {
     public ResponseEntity<Group> updateGroup(@PathVariable("id") int id, @RequestBody GroupResource groupResource) {
 
         Group group = groupService.getGroup(id);
+
+        for (User user : group.getUsers()){
+            user.getGroups().remove(group);
+        }
+
         group.setName(groupResource.getName());
 
         List<User> users = new ArrayList<>();
@@ -167,6 +177,11 @@ public class GroupController {
         }
 
         groupService.updateGroup(group);
+
+        for (User user : group.getUsers()){
+            user.getGroups().add(group);
+            userService.updateUser(user);
+        }
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
