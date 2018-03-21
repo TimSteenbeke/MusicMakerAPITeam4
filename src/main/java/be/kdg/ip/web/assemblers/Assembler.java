@@ -30,7 +30,7 @@ public abstract class Assembler<S, T> {
     public List<T> toResources(Iterable<? extends S> sources) {
         return StreamSupport
                 .stream(sources.spliterator(), false)
-                .map(s -> toResource(s))
+                .map(this::toResource)
                 .collect(Collectors.toList());
     }
 
@@ -41,7 +41,7 @@ public abstract class Assembler<S, T> {
     public List<S> fromResources(Iterable<? extends T> resources) {
         return StreamSupport
                 .stream(resources.spliterator(), false)
-                .map(r -> fromResource(r))
+                .map(this::fromResource)
                 .collect(Collectors.toList());
     }
 }

@@ -1,3 +1,5 @@
+/*
+
 package be.kdg.ip.services.impl;
 
 import be.kdg.ip.domain.*;
@@ -55,7 +57,6 @@ public class Initializer {
     private CourseTypeService courseTypeService;
 
 
-
     @PostConstruct
     public void addDummyInstruments() {
 
@@ -80,7 +81,7 @@ public class Initializer {
         instrumentService.addInstrument(instrument3);
 
 
-        Composition composition = new Composition("Test", "Test", "Test","Test","Test","Test","Test","Test",new byte[5]);
+        Composition composition = new Composition("Test", "Test", "Test", "Test", "Test", "Test", "Test", "Test", new byte[5]);
         compositionService.addComposition(composition);
 
     }
@@ -105,10 +106,10 @@ public class Initializer {
         rolesAll.add(teacher);
         rolesAll.add(student);
 
-        Address address = new Address("straat","29","2910","Essen","belgie");
-        Address address2 = new Address("straatje","2","2910","Essen","belgie");
-        Address address3 = new Address("straatweg","8","2910","Essen","belgie");
-        Address address4 = new Address("wegstraat","77","2910","Essen","belgie");
+        Address address = new Address("straat", "29", "2910", "Essen", "belgie");
+        Address address2 = new Address("straatje", "2", "2910", "Essen", "belgie");
+        Address address3 = new Address("straatweg", "8", "2910", "Essen", "belgie");
+        Address address4 = new Address("wegstraat", "77", "2910", "Essen", "belgie");
 
         addressService.addAddress(address);
         addressService.addAddress(address2);
@@ -116,10 +117,10 @@ public class Initializer {
         addressService.addAddress(address4);
 
 
-        User jef = new User("jef", "jefiscool", "jef", "jefferson", rolesAdmin,new byte[0],address);
-        User jos = new User("jos", "josiscooler", "jos", "josserson", rolesStudent,new byte[0],address2);
-        User tim = new User("tim", "tim", "brouwers", "brouwersiscool", rolesTeacher,new byte[0],address3);
-        User timS = new User("timS", "tims", "Tim", "Steenbeke", rolesAll,new byte[0],address4);
+        User jef = new User("jef", "jefiscool", "jef", "jefferson", rolesAdmin, new byte[0], address);
+        User jos = new User("jos", "josiscooler", "jos", "josserson", rolesStudent, new byte[0], address2);
+        User tim = new User("tim", "tim", "brouwers", "brouwersiscool", rolesTeacher, new byte[0], address3);
+        User timS = new User("timS", "tims", "Tim", "Steenbeke", rolesAll, new byte[0], address4);
 
 
         userService.addUser(timS);
@@ -127,7 +128,7 @@ public class Initializer {
         userService.addUser(jef);
         userService.addUser(jos);
 
-        NewsItem newsItem = new NewsItem("Dit is een melding!","Dit is de inhoud van de melding","Tim Brouwers",new Date());
+        NewsItem newsItem = new NewsItem("Dit is een melding!", "Dit is de inhoud van de melding", "Tim Brouwers", new Date());
         newsItemService.addNewsItem(newsItem);
 
         Group group = new Group();
@@ -182,7 +183,7 @@ public class Initializer {
         // userService.updateUser(jef);
         course.getTeachers().add(tim);
         tim.getTeachescourses().add(course);
-      //  userService.updateUser(tim);
+        //  userService.updateUser(tim);
         course.getLessons().add(lesson);
         courseService.addCourse(course);
 
@@ -205,7 +206,6 @@ public class Initializer {
         performanceService.addPerformance(performance2);
 
 
-
         System.out.println("agenda items toegevoegd");
         System.out.println("ok");
 
@@ -213,3 +213,4 @@ public class Initializer {
         //GROUPS TOEVOEGEN
     }
 }
+*/
