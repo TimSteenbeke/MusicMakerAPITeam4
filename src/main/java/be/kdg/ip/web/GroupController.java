@@ -21,6 +21,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -51,7 +52,7 @@ public class GroupController {
             groupUserResource.setName(group.getName());
             groupUserResource.setSupervisor(group.getSupervisor());
             groupUserResource.setUsers(group.getUsers());
-
+            groupUserResource.setUserids(group.getUsers().stream().map(User :: getId).collect(Collectors.toList()));
             groupUserResources.add(groupUserResource);
         }
 
@@ -104,6 +105,7 @@ public class GroupController {
         }
 
         groupUserResource.setUsers(group.getUsers());
+        groupUserResource.setUserids(group.getUsers().stream().map(User :: getId).collect(Collectors.toList()));
 
         return new ResponseEntity<>(groupUserResource, HttpStatus.OK);
     }
