@@ -146,6 +146,6 @@ public class TestAgendaController {
         } catch (UserServiceException e) {
             e.printStackTrace();
         }
-    }*/
+    }
 }
 */

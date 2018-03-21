@@ -65,7 +65,7 @@ public class Initializer {
     @Autowired
     private InstrumentCategoryService instrumentCategoryService;
 
-
+    /*
     @PostConstruct
     public void addDummyInstruments() {
 
@@ -127,6 +127,7 @@ public class Initializer {
 
 
     }
+    */
 
     /*
     @PostConstruct
