@@ -13,6 +13,7 @@ import java.util.Date;
 @CrossOrigin(origins = "*")
 @RestController
 public class WebSocketController {
+
     private final SimpMessagingTemplate template;
 
     @Autowired

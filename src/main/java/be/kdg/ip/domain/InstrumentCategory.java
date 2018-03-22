@@ -1,7 +1,5 @@
 package be.kdg.ip.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,16 +10,16 @@ public class InstrumentCategory {
 
     @Id
     @GeneratedValue
-    @Column(name = "instrumentCategoryId",nullable = false)
+    @Column(name = "instrumentCategoryId", nullable = false)
     private int instrumentCategoryId;
 
     @Column
     private String categoryName;
 
-    @OneToMany( mappedBy="instrumentCategory",cascade={CascadeType.MERGE})
+    @OneToMany(mappedBy = "instrumentCategory", cascade = {CascadeType.MERGE})
     private List<Instrument> instrumentList;
 
-    public InstrumentCategory(){
+    public InstrumentCategory() {
         this.instrumentList = new ArrayList<>();
     }
 

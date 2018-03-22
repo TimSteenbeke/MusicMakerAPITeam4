@@ -188,7 +188,7 @@ public class TestCourseType {
     public void testReturn404WhenNotFound() throws Exception {
         RequestPostProcessor bearerToken = oAuthHelper.addBearerToken("gemockteUser","ADMIN");
 
-        when(courseTypeService.getCourseType(123)).thenReturn(null);
+        given(courseTypeService.getCourseType(123)).willReturn(null);
 
         this.mockMvc.perform(get("http://localhost:8080/api/courseTypes/123").with(bearerToken)
                 .accept(APPLICATION_JSON))

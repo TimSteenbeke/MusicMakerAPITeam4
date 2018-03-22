@@ -24,6 +24,24 @@ public class DatasourceConfig {
         dataSource.setUsername("sa");
         dataSource.setPassword("");
         return dataSource;
+
+
+        //////////
+        //
+        //Working External Database.
+        // We don't want to risk a technical faillure at the side of the database,
+        //While giving the presentation.
+        //
+        //////////
+
+        /*
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        dataSource.setUrl("jdbc:sqlserver://213.119.33.110:1433;databaseName=team4");
+        dataSource.setUsername("sa");
+        dataSource.setPassword("team4");
+        return dataSource;
+        */
     }
 
     @Bean

@@ -7,10 +7,21 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class InstrumentLevelUserInstrumentResource {
     private int maxLevel;
     private int level;
+    private int instrumentlevelid;
 
+    @JsonIgnoreProperties({"instrumentCategory"})
     private Instrument instrument;
+
     @JsonIgnoreProperties({"username","lastname","password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired","instrumentLevels"})
     private User user;
+
+    public int getInstrumentlevelid() {
+        return instrumentlevelid;
+    }
+
+    public void setInstrumentlevelid(int instrumentlevelid) {
+        this.instrumentlevelid = instrumentlevelid;
+    }
 
     public int getMaxLevel() {
         return maxLevel;

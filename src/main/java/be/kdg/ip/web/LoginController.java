@@ -1,3 +1,4 @@
+/*
 package be.kdg.ip.web;
 
 import org.springframework.ui.Model;
@@ -8,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/login")
 public class LoginController {
-    //ToDo: login tokenizer
     // Login form
     @RequestMapping("*")
     public String login() {
@@ -22,3 +22,4 @@ public class LoginController {
         return "login";
     }
 }
+*/

@@ -35,13 +35,17 @@ public class AgendaController {
             AgendaResource agendaResource = new AgendaResource();
             agendaResource.setAgendaOwner(user.getUsername());
 
-            List<Lesson> lessons = new ArrayList<Lesson>();
+            List<Lesson> lessons = new ArrayList<>();
             for (Course course : user.getCourses()) {
+                lessons.addAll(course.getLessons());
+            }
+
+            for (Course course: user.getTeachescourses()) {
                 lessons.addAll(course.getLessons());
             }
             agendaResource.setLessons(lessons);
 
-            List<Performance> performances = new ArrayList<Performance>();
+            List<Performance> performances = new ArrayList<>();
             for (Group group: user.getGroups()) {
                 performances.addAll(group.getPerformances());
             }
@@ -65,13 +69,13 @@ public class AgendaController {
         AgendaResource agendaResource = new AgendaResource();
         agendaResource.setAgendaOwner(user.getFirstname() + " " + user.getLastname());
 
-        List<Lesson> lessons = new ArrayList<Lesson>();
+        List<Lesson> lessons = new ArrayList<>();
         for (Course course : user.getCourses()) {
             lessons.addAll(course.getLessons());
         }
         agendaResource.setLessons(lessons);
 
-        List<Performance> performances = new ArrayList<Performance>();
+        List<Performance> performances = new ArrayList<>();
         for (Group group: user.getGroups()) {
             performances.addAll(group.getPerformances());
         }

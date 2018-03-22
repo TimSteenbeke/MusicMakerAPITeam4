@@ -10,6 +10,8 @@ import be.kdg.ip.web.resources.InstrumentGetResource;
 import be.kdg.ip.web.resources.InstrumentResource;
 import be.kdg.ip.web.resources.InstrumentUpdateResource;
 import ma.glasnost.orika.MapperFacade;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,23 +28,18 @@ import java.util.List;
 @RequestMapping("/api/instruments")
 public class InstrumentController {
     private InstrumentService instrumentService;
-    private final MapperFacade mapperFacade;
-    private final InstrumentAssembler instrumentAssembler;
-    private final InstrumentUpdateAssembler instrumentUpdateAssembler;
     private InstrumentCategoryService instrumentCategoryService;
+
+    private Logger logger = LoggerFactory.getLogger(InstrumentController.class);
 
     public InstrumentController(InstrumentService instrumentService, MapperFacade mapperFacade, InstrumentAssembler instrumentAssembler, InstrumentUpdateAssembler instrumentUpdateAssembler, InstrumentCategoryService instrumentCategoryService) {
         this.instrumentService = instrumentService;
-        this.mapperFacade = mapperFacade;
-        this.instrumentAssembler = instrumentAssembler;
         this.instrumentCategoryService = instrumentCategoryService;
-        this.instrumentUpdateAssembler = instrumentUpdateAssembler;
     }
 
     //Creation of an instrument
     @PostMapping
-    //ToDo: Authorization fix: instrument post
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<InstrumentGetResource> createInstrument(@Valid @RequestBody InstrumentResource instrumentResource) {
         Instrument in = new Instrument();
         in.setInstrumentCategory(instrumentCategoryService.getInstrumentCategory(instrumentResource.getInstrumentid()));
@@ -56,11 +53,10 @@ public class InstrumentController {
         String imageString = instrumentResource.getImage();
 
         try {
-            // byte[] name = Base64.getEncoder().encode("hello world".getBytes());
             byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
             in.setImage(decodedString);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            logger.error("Error converting image while creating an instrument.");
         }
 
         Instrument out = instrumentService.addInstrument(in);
@@ -78,8 +74,7 @@ public class InstrumentController {
 
     //Request 1 instrument
     @GetMapping("/{instrumentId}")
-    //ToDo: Authorization fix: get instrument
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<InstrumentGetResource> findInstrumentById(@PathVariable int instrumentId) {
         Instrument instrument = instrumentService.getInstrument(instrumentId);
 
@@ -96,7 +91,6 @@ public class InstrumentController {
     //Request all instruments
     @GetMapping
     @CrossOrigin(origins = "*")
-    //ToDo: Authorization fix: get all instrument
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<List<InstrumentGetResource>> findAll() {
         List<Instrument> instruments = instrumentService.getAllInstruments();
@@ -116,8 +110,7 @@ public class InstrumentController {
 
     //Delete an instrument
     @DeleteMapping("/{instrumentId}")
-    //ToDo: Authorization fix: delete instrument
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<Instrument> deleteInstrumentById(@PathVariable("instrumentId") Integer instrumentId) {
         Instrument instrument = instrumentService.getInstrument(instrumentId);
         instrumentService.removeInstrument(instrument.getInstrumentId());
@@ -127,8 +120,7 @@ public class InstrumentController {
 
     //Update an instrument
     @RequestMapping(value = "/instrument/{id}", method = RequestMethod.PUT)
-    //ToDo: Authorization fix: instrument updaten
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<InstrumentGetResource> updateInstrument(@PathVariable("id") int id, @RequestBody InstrumentUpdateResource instrumentUpdateResource) {
         Instrument in = instrumentService.getInstrument(id);
         in.setInstrumentName(instrumentUpdateResource.getInstrumentname());
@@ -146,7 +138,7 @@ public class InstrumentController {
             byte[] decodedString = Base64.getDecoder().decode(imageString.getBytes("UTF-8"));
             in.setImage(decodedString);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            logger.error("Error converting image while updating instrument.");
         }
 
         Instrument out = instrumentService.updateInstrument(in);
@@ -162,6 +154,7 @@ public class InstrumentController {
 
         return new ResponseEntity<>(instrumentGetResource, HttpStatus.OK);
     }
+
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NullPointerException.class)

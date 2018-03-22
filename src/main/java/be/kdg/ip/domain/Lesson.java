@@ -1,21 +1,15 @@
 package be.kdg.ip.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.*;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name="Lesson")
+@Table(name = "Lesson")
 public class Lesson {
 
     @Id
@@ -40,6 +34,11 @@ public class Lesson {
     @ManyToMany
     private List<User> presentStudents;
 
+    public Lesson() {
+        this.absentStudents = new ArrayList<>();
+        this.presentStudents = new ArrayList<>();
+    }
+
     public List<User> getAbsentStudents() {
         return absentStudents;
     }
@@ -54,11 +53,6 @@ public class Lesson {
 
     public void setPresentStudents(List<User> presentStudents) {
         this.presentStudents = presentStudents;
-    }
-
-    public Lesson() {
-        this.absentStudents = new ArrayList<User>();
-        this.presentStudents = new ArrayList<User>();
     }
 
     public LocalDateTime getStartDateTime() {

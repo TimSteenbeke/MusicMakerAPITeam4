@@ -37,14 +37,15 @@ public class LessonController {
 
     //@CrossOrigin(origins = "*")
     @PostMapping
-    //ToDo: Authorization fix: lesson post
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<LessonResource> addLesson(@Valid @RequestBody LessonResource lessonResource) {
 
         //Create lesson based on lessonResource
         Lesson lesson = new Lesson();
-        lesson.setStartDateTime(lessonResource.getStartdatetime().plusHours(1));
-        lesson.setEndDateTime(lessonResource.getEnddatetime().plusHours(1));
+        if(lessonResource.getStartdatetime() != null && lessonResource.getEnddatetime() != null) {
+            lesson.setStartDateTime(lessonResource.getStartdatetime().plusHours(1));
+            lesson.setEndDateTime(lessonResource.getEnddatetime().plusHours(1));
+        }
         //Get a course
         Course course = courseService.getCourse(lessonResource.getCourseid());
         lesson.setCourse(course);
@@ -56,12 +57,13 @@ public class LessonController {
     }
 
     @GetMapping("/{lessonId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<LessonGetResource> getLesson(@PathVariable int lessonId){
 
         Lesson lesson = lessonService.getLesson(lessonId);
 
         LessonGetResource lessonGetResource = new LessonGetResource();
-
+        lessonGetResource.setId(lesson.getLessonId());
         lessonGetResource.setCourse(lesson.getCourse());
         lessonGetResource.setStartdatetime(lesson.getStartDateTime());
         lessonGetResource.setEnddatetime(lesson.getEndDateTime());
@@ -71,11 +73,13 @@ public class LessonController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<List<LessonGetResource>> getAllLessons(){
         List<Lesson> lessons = lessonService.getAllLessons();
         List<LessonGetResource> lessonGetResources = new ArrayList<>();
         for (Lesson lesson : lessons){
             LessonGetResource lessonGetResource = new LessonGetResource();
+            lessonGetResource.setId(lesson.getLessonId());
             lessonGetResource.setEnddatetime(lesson.getEndDateTime());
             lessonGetResource.setStartdatetime(lesson.getStartDateTime());
             lessonGetResource.setCourse(lesson.getCourse());
@@ -86,6 +90,7 @@ public class LessonController {
     }
 
     @DeleteMapping("/{lessonId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<Lesson> deleteLesson(@PathVariable("lessonId") Integer lessonId){
 
 
@@ -95,22 +100,20 @@ public class LessonController {
 
 
     @PutMapping("/lesson/{id}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
     public ResponseEntity<LessonResource> updateLesson(@PathVariable("id") int id, @RequestBody LessonResource lessonResource){
 
         Lesson lesson = lessonService.getLesson(id);
-
-        lesson.setStartDateTime(lessonResource.getStartdatetime().plusHours(1));
-        lesson.setEndDateTime(lessonResource.getEnddatetime().plusHours(1));
-        //Course ophalen
+        if(lessonResource.getStartdatetime() != null && lessonResource.getEnddatetime() != null) {
+            lesson.setStartDateTime(lessonResource.getStartdatetime().plusHours(1));
+            lesson.setEndDateTime(lessonResource.getEnddatetime().plusHours(1));
+        }
+        //get course
         Course course = courseService.getCourse(lessonResource.getCourseid());
         lesson.setCourse(course);
 
 
-        //Voor iedere User in Course van les ( les toevoegen aan agenda van user) = Best aparte service voor maken
-        //agendaService.updateLessonFromEveryAgenda(lesson);
-
-
-        //Lesson toevoegen
+        //add lesson
         lessonService.updateLesson(lesson);
         return new ResponseEntity<>(lessonResource,HttpStatus.OK);
     }
@@ -118,6 +121,7 @@ public class LessonController {
 
 
     @PostMapping("/absent/{lessonid}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity registerUserAbsent(@PathVariable("lessonid")  int lessonId, Principal principal) {
         try {
             User user = userService.findUserByUsername(principal.getName());
@@ -130,6 +134,7 @@ public class LessonController {
 
 
     @PostMapping("/present/{lessonid}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity registerUserPresent(@PathVariable("lessonid")  int lessonId, Principal principal) {
         try {
             User user = userService.findUserByUsername(principal.getName());
@@ -141,6 +146,7 @@ public class LessonController {
     }
 
     @GetMapping("/attendancestatus/{lessonid}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<StatusDTO> getAttendanceStatus(@PathVariable("lessonid")  int lessonId, Principal principal) {
         try {
             User user = userService.findUserByUsername(principal.getName());
@@ -164,7 +170,9 @@ public class LessonController {
         }
     }
 
-
-
-
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NullPointerException.class)
+    public String return404(NullPointerException ex) {
+        return ex.getMessage();
+    }
 }

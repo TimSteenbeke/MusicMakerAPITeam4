@@ -2,7 +2,6 @@ package be.kdg.ip.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-//import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 import javax.persistence.*;
@@ -15,6 +14,7 @@ public class Performance {
 
     @Id
     @GeneratedValue
+    @Column
     private int performanceId;
 
     @Column
@@ -55,6 +55,7 @@ public class Performance {
     public Group getGroup() {
         return group;
     }
+
     public void setGroup(Group group) {
         this.group = group;
     }

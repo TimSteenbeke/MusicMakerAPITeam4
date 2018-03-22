@@ -12,7 +12,7 @@ import java.util.List;
 
 
 @Entity
-@Table
+@Table(name ="tUser")
 public class User implements Serializable, UserDetails {
 
     @Id
@@ -53,6 +53,9 @@ public class User implements Serializable, UserDetails {
     @ManyToMany
     private List<Composition> exercises;
 
+    @ManyToMany
+    private List<Composition> playList;
+
     @OneToMany
     private List<InstrumentLevel> instrumentLevels;
 
@@ -64,6 +67,7 @@ public class User implements Serializable, UserDetails {
         this.exercises = new ArrayList<>();
         this.instrumentLevels = new ArrayList<>();
         this.teachescourses= new ArrayList<>();
+        this.playList = new ArrayList<>();
     }
 
     public User(String firstname) {
@@ -74,6 +78,7 @@ public class User implements Serializable, UserDetails {
         this.exercises = new ArrayList<>();
         this.instrumentLevels = new ArrayList<>();
         this.teachescourses= new ArrayList<>();
+        this.playList = new ArrayList<>();
     }
 
     public User(String username, String password, String firstname, String lastname, List<Role> roles, byte[] userImage, Address address) {
@@ -82,14 +87,14 @@ public class User implements Serializable, UserDetails {
         this.firstname = firstname;
         this.lastname = lastname;
         this.roles = roles;
-        this.groups = new ArrayList<Group>();
+        this.groups = new ArrayList<>();
         this.userImage = userImage;
         this.address = address;
         this.exercises = new ArrayList<>();
         this.instrumentLevels = new ArrayList<>();
         this.teachescourses= new ArrayList<>();
         this.courses= new ArrayList<>();
-
+        this.playList = new ArrayList<>();
 
     }
 
@@ -101,9 +106,10 @@ public class User implements Serializable, UserDetails {
         this.roles = roles;
         this.exercises = new ArrayList<>();
         this.instrumentLevels = new ArrayList<>();
-        this.groups  = new ArrayList<Group>();
+        this.groups  = new ArrayList<>();
         this.teachescourses= new ArrayList<>();
         this.courses= new ArrayList<>();
+        this.playList = new ArrayList<>();
 
     }
 
@@ -262,4 +268,12 @@ public class User implements Serializable, UserDetails {
     public void setInstrumentLevels(List<InstrumentLevel> instrumentLevels) {
         this.instrumentLevels = instrumentLevels;
     }
+
+    public List<Composition> getPlayList() {
+        return playList;
     }
+
+    public void setPlayList(List<Composition> playList) {
+        this.playList = playList;
+    }
+}
