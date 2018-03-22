@@ -43,8 +43,8 @@ public class LessonController {
         //Create lesson based on lessonResource
         Lesson lesson = new Lesson();
         if(lessonResource.getStartdatetime() != null && lessonResource.getEnddatetime() != null) {
-            lesson.setStartDateTime(lessonResource.getStartdatetime().plusHours(1));
-            lesson.setEndDateTime(lessonResource.getEnddatetime().plusHours(1));
+            lesson.setStartDateTime(lessonResource.getStartdatetime());
+            lesson.setEndDateTime(lessonResource.getEnddatetime());
         }
         //Get a course
         Course course = courseService.getCourse(lessonResource.getCourseid());
