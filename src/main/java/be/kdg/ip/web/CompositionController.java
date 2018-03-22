@@ -99,6 +99,23 @@ public class CompositionController {
         return new ResponseEntity<>(composition, HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "/removefromplaylist/{compositionId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
+    public ResponseEntity<User> removeCompositionFromMyPlaylist(@PathVariable("compositionId") int compositionId, Principal principal) throws UserServiceException {
+        Composition composition = compositionService.getComposition(compositionId);
+        User user = userService.findUserByUsername(principal.getName());
+
+        List<Composition> compositions = user.getPlayList();
+
+        compositions.remove(composition);
+
+
+        user.setPlayList(compositions);
+        userService.updateUser(user);
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.PUT, value = "/addtoplaylist/{compositionId}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<User> addCompositionToMyPlaylist(@PathVariable("compositionId") int compositionId, Principal principal) throws UserServiceException {
