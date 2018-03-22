@@ -142,7 +142,6 @@ public class CourseController {
         return new ResponseEntity<>(courseDTO,HttpStatus.OK);
 
 
-
     }
 
     @RequestMapping(method = RequestMethod.GET, value ="api/courses/{courseId}/lessons")
