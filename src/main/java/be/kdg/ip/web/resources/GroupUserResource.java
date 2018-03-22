@@ -24,9 +24,9 @@ public class GroupUserResource {
     private byte[] groupimage;
 
     public GroupUserResource() {
-        this.users = new ArrayList<User>();
-        this.userids = new ArrayList<Integer>();
-        this.newsItems = new ArrayList<NewsItem>();
+        this.users = new ArrayList<>();
+        this.userids = new ArrayList<>();
+        this.newsItems = new ArrayList<>();
     }
 
     public int getGroupid() {
