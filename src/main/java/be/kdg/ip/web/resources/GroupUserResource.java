@@ -13,11 +13,11 @@ public class GroupUserResource {
     private int groupid;
 
     private String name;
-    @JsonIgnoreProperties({"password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired"})
+    @JsonIgnoreProperties({"password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired","teachescourses","courses","instrumentLevels"})
     private User supervisor;
-    @JsonIgnoreProperties({"password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired"})
+    @JsonIgnoreProperties({"password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired","teachescourses","courses","instrumentLevels"})
     private List<User> users;
-    @JsonIgnoreProperties({"password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired"})
+    @JsonIgnoreProperties({"password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired","teachescourses","courses","instrumentLevels"})
     private List<Integer> userids;
     @JsonIgnoreProperties({"groups"})
     private List<NewsItem> newsItems;
