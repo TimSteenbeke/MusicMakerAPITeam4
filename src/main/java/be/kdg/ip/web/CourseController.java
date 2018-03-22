@@ -128,7 +128,7 @@ public class CourseController {
     }
 
     @RequestMapping(method = RequestMethod.GET,value ="api/courses/{courseId}")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('TEACHER') or hasAuthority('STUDENT')")
     public ResponseEntity<CourseDTO> getCourse(@PathVariable("courseId") int courseId) {
         Course course =  courseService.getCourse(courseId);
 
@@ -140,7 +140,6 @@ public class CourseController {
         courseDTO.setCourseType(courseType);
 
         return new ResponseEntity<>(courseDTO,HttpStatus.OK);
-
 
 
     }

@@ -9,9 +9,9 @@ import java.util.List;
 public class CourseDTO {
 
     private CourseType courseType;
-    @JsonIgnoreProperties({"username","lastname","password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired","address","exercises","instrumentLevels","userImage"})
+    @JsonIgnoreProperties({"username","password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired","address","exercises","instrumentLevels","userImage"})
     private List<User> teachers;
-    @JsonIgnoreProperties({"username","lastname","password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired","address","exercises","instrumentLevels","userImage"})
+    @JsonIgnoreProperties({"username","password","groups","roles","agenda","enabled","authorities","credentialsNonExpired","accountNonLocked","accountNonExpired","address","exercises","instrumentLevels","userImage"})
     private List<User> students;
 
     public List<User> getTeachers() {
